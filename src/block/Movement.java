@@ -44,6 +44,7 @@ public class Movement extends Item
 			return 0;
 		if(Objects.equals(ph, fh))
 			return fh;
+		//Cheat Mode
 		return 1;
 	}
 

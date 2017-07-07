@@ -18,8 +18,9 @@ class SIN
 	static int mapKamZoom = 16;
 	static int fokusX, fokusY;
 	static int mfokusX, mfokusY;
-	private static int inputData1 = -1;
+	private static int inputDataT = -1;
 	private static int inputData2 = -1;
+	private static int inputData3 = -1;
 
 	static void start(Area area1, Texturen tex1)
 	{
@@ -33,8 +34,14 @@ class SIN
 			{
 				if((e.getKeyCode() <= 40 && e.getKeyCode() > 36) || (e.getKeyCode() >= 75 || e.getKeyCode() <= 82))
 				{
-					inputData1 = e.getKeyCode() - 36;
-					inputData2 = -2;
+					/*if(inputDataT == -2 && inputData2 == e.getKeyCode())
+						inputData3++;
+					else*/
+					{
+						inputDataT = -2;
+						inputData2 = e.getKeyCode();
+						inputData3 = 1;
+					}
 				}
 			}
 		});
@@ -44,13 +51,15 @@ class SIN
 			{
 				if(mfokusX >= 0)
 				{
-					inputData1 = mfokusX * 10 + mfokusY;
-					inputData2 = -3;
+					inputDataT = -3;
+					inputData2 = mfokusX;
+					inputData3 = mfokusY;
 				}
 				else
 				{
-					inputData1 = fokusX;
-					inputData2 = fokusY;
+					inputDataT = -4;
+					inputData2 = fokusX;
+					inputData3 = fokusY;
 				}
 			}
 		});
@@ -58,8 +67,9 @@ class SIN
 		{
 			public void mouseWheelMoved(MouseWheelEvent e)
 			{
-				inputData1 = e.getUnitsToScroll() < 0 ? 41 : 42;
-				inputData2 = -2;
+				inputDataT = -2;
+				inputData2 = e.getUnitsToScroll() < 0 ? 77 : 78;
+				inputData3 = 1;
 			}
 		});
 		fr.pack();
@@ -144,34 +154,34 @@ class SIN
 			mfokusX = -1;
 			mfokusY = -1;
 		}
-		if(inputData2 == -2 && inputData1 == 46)
+		if(inputDataT == -2 && inputData2 == 82)
 		{
 			area.reset();
 			mapview = 0;
 			Shift.selectTarget(area.xp, area.yp, area.feld(area.yp, area.xp).visualH(), kamZoom, 6);
 		}
-		else if(inputData2 == -2 && inputData1 == 39 && mapview < 2)
+		else if(inputDataT == -2 && inputData2 == 75 && mapview < 2)
 		{
 			mapview = 1 - mapview;
 			Shift.selectTarget(area.xp, area.yp, area.feld(area.yp, area.xp).visualH(), mapview == 1 ? mapKamZoom : kamZoom, 6);
 		}
-		else if(inputData2 == -2 && (inputData1 == 41 || inputData1 == 42))
+		else if(inputDataT == -2 && (inputData2 == 77 || inputData2 == 78))
 		{
 			if(mapview == 1)
 			{
-				mapKamZoom += inputData1 * 2 - 83;
+				mapKamZoom += inputData2 * 2 - 155;
 				if(mapKamZoom < 4)
 					mapKamZoom = 4;
 			}
 			else
 			{
-				kamZoom += inputData1 * 2 - 83;
+				kamZoom += inputData2 * 2 - 155;
 				if(kamZoom < 4)
 					kamZoom = 4;
 			}
 			Shift.selectTarget(area.xp, area.yp, area.feld(area.yp, area.xp).visualH(), mapview == 1 ? mapKamZoom : kamZoom, 1);
 		}
-		else if(mapview != 1 && area.moveX(inputData1, inputData2))
+		else if(mapview != 1 && area.moveX(inputDataT, inputData2, inputData3))
 		{
 			if(area.mapview && mapview != 2)
 				mapview = 2;
@@ -180,9 +190,10 @@ class SIN
 			Shift.selectTarget(area.xp, area.yp, area.feld(area.yp, area.xp).visualH(), kamZoom, 6);
 		}
 		else if(mapview > 0)
-			Shift.moveTarget(inputData1, inputData2, 6);
-		inputData1 = -1;
+			Shift.moveTarget(inputDataT, inputData2, 6);
+		inputDataT = -1;
 		inputData2 = -1;
+		inputData3 = -1;
 	}
 
 	static void drawX()

@@ -100,16 +100,16 @@ public class BlockLab extends Area
 	}
 
 	@Override
-	public boolean moveX(int clAtX, int clAtY)
+	public boolean moveX(int inputT, int input2, int input3)
 	{
-		if(clAtY == -3 && clAtX >= 10)
+		if(inputT == -3 && input3 > 0)
 		{
-			int y1 = (clAtX % 10) / 2;
+			int y1 = input2 / 2;
 			if(y1 < items.size())
 				akItem = y1;
 			return false;
 		}
-		else if(clAtY == -2 && clAtX > 0 && clAtX <= 4)
+		else if(inputT == -2 && input2 >= 37 && input2 <= 40)
 		{
 			int i;
 			for(i = 0; i < items.size(); i++)
@@ -121,12 +121,12 @@ public class BlockLab extends Area
 					i2 = i - 1;
 				else
 					i2 = i;
-				if(items.get(i2).benutze(xp, yp, hoeheA, geht2.get(i2), clAtX))
+				if(items.get(i2).benutze(xp, yp, hoeheA, geht2.get(i2), input2 - 36))
 					break;
 			}
 			return i < items.size();
 		}
-		else if(clAtY >= 0)
+		else if(inputT == -4)
 		{
 			int i;
 			for(i = 0; i < items.size(); i++)
@@ -138,7 +138,7 @@ public class BlockLab extends Area
 					i2 = i - 1;
 				else
 					i2 = i;
-				if(items.get(i2).benutze(xp, yp, hoeheA, geht2.get(i2), clAtX, clAtY))
+				if(items.get(i2).benutze(xp, yp, hoeheA, geht2.get(i2), input2, input3))
 					break;
 			}
 			return i < items.size();

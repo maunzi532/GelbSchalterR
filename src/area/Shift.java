@@ -71,17 +71,17 @@ public class Shift
 		targetTile = basetile / divisor;
 	}
 
-	static void moveTarget(int input1, int input2, int ticks)
+	static void moveTarget(int inputT, int input2, int ticks)
 	{
-		if(input2 != -2 || input1 < 1 || input1 > 4)
+		if(inputT != -2 || input2 < 37 || input2 > 40)
 			return;
 		tick = 0;
 		maxtick = ticks;
 		startX = shiftX;
 		startY = shiftY;
 		startTile = tile;
-		targetX = targetX + basetile / 2 * (input1 == 3 ? 1 : input1 == 1 ? -1 : 0);
-		targetY = targetY + basetile / 2 * (input1 == 4 ? 1 : input1 == 2 ? -1 : 0);
+		targetX = targetX + basetile / 2 * (input2 == 39 ? 1 : input2 == 37 ? -1 : 0);
+		targetY = targetY + basetile / 2 * (input2 == 40 ? 1 : input2 == 38 ? -1 : 0);
 	}
 
 	static void moveToTarget()

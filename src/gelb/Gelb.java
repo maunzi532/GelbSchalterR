@@ -188,14 +188,14 @@ public class Gelb extends Area
 	@Override
 	public void reset(){}
 
-	public boolean moveX(int clAtX, int clAtY)
+	public boolean moveX(int inputT, int clAtX, int clAtY)
 	{
 		boolean moved = false;
 		int xv = xp;
 		int yv = yp;
 		if(teleport)
 		{
-			if(clAtY >= 0 && geht[clAtY][clAtX] != 0)
+			if(inputT == -4 && geht[clAtY][clAtX] != 0)
 			{
 				xp = clAtX;
 				yp = clAtY;
@@ -205,16 +205,16 @@ public class Gelb extends Area
 				mapview = false;
 			}
 		}
-		else if(clAtY == -2)
+		else if(inputT == -2)
 		{
-			int xt = xv + (clAtX != 4 ? clAtX - 2 : 0);
-			int yt = yv + (clAtX != 1 ? clAtX - 3 : 0);
+			int xt = xv + (clAtX != 40 ? clAtX - 38 : 0);
+			int yt = yv + (clAtX != 37 ? clAtX - 39 : 0);
 			if(tryDirection(xt, yt))
 				moved = !tryDirection(xt * 2 - xv, yt * 2 - yv);
 			else
 				moved = true;
 		}
-		else if(clAtY >= 0 && geht[clAtY][clAtX] != 0)
+		else if(inputT == -4 && geht[clAtY][clAtX] != 0)
 		{
 			if(clAtX == xp && clAtY == yp)
 				moved = useItem();
