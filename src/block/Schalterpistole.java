@@ -1,8 +1,15 @@
 package block;
 
+import laderLC.*;
+
 public class Schalterpistole extends Item
 {
 	int laenge;
+
+	public Schalterpistole()
+	{
+		laenge = 5;
+	}
 
 	public Schalterpistole(int level, int laenge)
 	{
@@ -63,5 +70,25 @@ public class Schalterpistole extends Item
 	public String bildname()
 	{
 		return "Schalterpistole";
+	}
+
+	public void lies2(String value, Integer errStart, Integer errEnd, ErrorVial vial, String textKey)
+	{
+		try
+		{
+			if(textKey.toLowerCase().equals("level"))
+				level = Integer.parseInt(value);
+			if(textKey.toLowerCase().equals("länge"))
+				laenge = Integer.parseInt(value);
+		}catch(Exception e)
+		{
+			vial.add(new CError("Invalides Setzen eines Werts", errStart, errEnd));
+		}
+	}
+
+	public void speichern(StringBuilder sb)
+	{
+		super.speichern(sb);
+		speichernZ(sb, "länge", String.valueOf(laenge));
 	}
 }

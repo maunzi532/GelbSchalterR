@@ -217,7 +217,18 @@ public class BFeld extends Feld
 				case "stange":
 					enterstange = value == null ? hoehe : Integer.parseInt(value);
 					break;
+				case "itemfeuer":
+					item = new Feuer();
+					break;
+				case "itementerhaken":
+					item = new AerialEnterhaken();
+					break;
+				case "itemschalterpistole":
+					item = new Schalterpistole();
+					break;
 			}
+			if(textKey.toLowerCase().startsWith("item"))
+				item.lies(value, errStart, errEnd, vial);
 		}catch(Exception e)
 		{
 			vial.add(new CError("Invalides Setzen eines Werts", errStart, errEnd));
@@ -250,6 +261,12 @@ public class BFeld extends Feld
 			speichernZ(sb, "löscher", null);
 		if(enterstange >= 0)
 			speichernZ(sb, "stange", enterstange == hoehe ? null : String.valueOf(enterstange));
+		if(item != null)
+		{
+			sb.append(" item").append(item.bildname()).append(" = {");
+			item.speichern(sb);
+			sb.append("};");
+		}
 		if(sb.indexOf("; ") >= 0)
 		{
 			sb.append('}');

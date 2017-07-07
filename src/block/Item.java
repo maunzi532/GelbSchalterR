@@ -1,5 +1,7 @@
 package block;
 
+import laderLC.*;
+
 public abstract class Item
 {
 	public BlockLab blockLab;
@@ -51,6 +53,40 @@ public abstract class Item
 	}
 
 	public abstract String bildname();
+
+	private static final KXS IKL2 = new KXS(false, false, true, true, false);
+
+	public void lies(String build, int errStart, int errEnd, ErrorVial vial)
+	{
+		level = 1;
+		if(build.startsWith("{") && build.endsWith("}"))
+			build = build.substring(1, build.length() - 1);
+		LC2.superwaguh(build, errStart, vial, IKL2, this, "lies2");
+	}
+
+	public void lies2(String value, Integer errStart, Integer errEnd, ErrorVial vial, String textKey)
+	{
+		try
+		{
+			if(textKey.toLowerCase().equals("level"))
+				level = Integer.parseInt(value);
+		}catch(Exception e)
+		{
+			vial.add(new CError("Invalides Setzen eines Werts", errStart, errEnd));
+		}
+	}
+
+	public void speichern(StringBuilder sb)
+	{
+		sb.append("level = ").append(String.valueOf(level));
+	}
+
+	public void speichernZ(StringBuilder sb, String key, String value)
+	{
+		sb.append(", ").append(key);
+		if(value != null)
+			sb.append(" = ").append(value);
+	}
 
 	@Override
 	public boolean equals(Object o)

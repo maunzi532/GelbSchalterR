@@ -45,6 +45,8 @@ public abstract class LC2
 	public static ArrayList<String> klaSplit2(String build, boolean v2, int startN, ArrayList<Integer> ends2)
 	{
 		ArrayList<String> lines = new ArrayList<>();
+		if(build.isEmpty())
+			return lines;
 		StringBuilder sb = new StringBuilder();
 		int kla = 0;
 		int end2 = startN;

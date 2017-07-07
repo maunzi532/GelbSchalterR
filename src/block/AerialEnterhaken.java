@@ -1,9 +1,16 @@
 package block;
 
+import laderLC.*;
+
 public class AerialEnterhaken extends Item
 {
 	boolean doppelt;
 	int laenge;
+
+	public AerialEnterhaken()
+	{
+		laenge = 5;
+	}
 
 	public AerialEnterhaken(int level, boolean doppelt, int laenge)
 	{
@@ -60,5 +67,29 @@ public class AerialEnterhaken extends Item
 	public String bildname()
 	{
 		return doppelt ? "Doppelhaken" : "Enterhaken";
+	}
+
+	public void lies2(String value, Integer errStart, Integer errEnd, ErrorVial vial, String textKey)
+	{
+		try
+		{
+			if(textKey.toLowerCase().equals("level"))
+				level = Integer.parseInt(value);
+			if(textKey.toLowerCase().equals("doppelt"))
+				doppelt = true;
+			if(textKey.toLowerCase().equals("länge"))
+				laenge = Integer.parseInt(value);
+		}catch(Exception e)
+		{
+			vial.add(new CError("Invalides Setzen eines Werts", errStart, errEnd));
+		}
+	}
+
+	public void speichern(StringBuilder sb)
+	{
+		super.speichern(sb);
+		if(doppelt)
+			speichernZ(sb, "doppelt", null);
+		speichernZ(sb, "länge", String.valueOf(laenge));
 	}
 }

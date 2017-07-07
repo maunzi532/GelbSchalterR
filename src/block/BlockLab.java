@@ -2,7 +2,11 @@ package block;
 
 import area.*;
 import java.awt.*;
+import java.io.*;
+import java.nio.charset.*;
+import java.nio.file.*;
 import java.util.*;
+import javax.swing.*;
 import laderLC.*;
 
 public class BlockLab extends Area
@@ -48,7 +52,7 @@ public class BlockLab extends Area
 
 	public void reset()
 	{
-		/*JFileChooser fc = new JFileChooser(new File("saves"));
+		JFileChooser fc = new JFileChooser(new File("saves"));
 		if(fc.showSaveDialog(null) == JFileChooser.APPROVE_OPTION)
 			try
 			{
@@ -56,7 +60,7 @@ public class BlockLab extends Area
 			}catch(IOException e)
 			{
 				throw new RuntimeException(e);
-			}*/
+			}
 		farbeAktuell = 'A';
 		dias = 0;
 		items.clear();
