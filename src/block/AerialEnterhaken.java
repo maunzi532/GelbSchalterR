@@ -20,7 +20,7 @@ public class AerialEnterhaken extends Item
 		return i1;
 	}
 
-	public void setzeOptionen(int xp, int yp, int hoeheA, int[][] geht)
+	public void setzeOptionen(int xp, int yp, int hoeheA, int[][] geht, int[][] gehtT)
 	{
 		int ix = xp - laenge;
 		if(ix < 0)

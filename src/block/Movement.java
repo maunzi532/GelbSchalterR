@@ -22,19 +22,26 @@ public class Movement extends Item
 		return false;
 	}
 
-	public void setzeOptionen(int xp, int yp, int hoeheA, int[][] geht)
+	public void setzeOptionen(int xp, int yp, int hoeheA, int[][] geht, int[][] gehtT)
 	{
-		if(yp + 1 < blockLab.yw)
-			geht[yp + 1][xp] = feldBegehbar(xp, yp, yp + 1, xp, hoeheA, 3);
-		if(xp + 1 < blockLab.xw)
-			geht[yp][xp + 1] = feldBegehbar(xp, yp, yp, xp + 1, hoeheA, 2);
-		if(yp - 1 >= 0)
-			geht[yp - 1][xp] = feldBegehbar(xp, yp, yp - 1, xp, hoeheA, 1);
-		if(xp - 1 >= 0)
-			geht[yp][xp - 1] = feldBegehbar(xp, yp, yp, xp - 1, hoeheA, 0);
+		for(int r = 0; r <= 3; r++)
+		{
+			int xm = r != 3 ? r - 1 : 0;
+			int ym = r != 0 ? r - 2 : 0;
+			if(xp + xm < 0 || yp + ym < 0 || xp + xm >= blockLab.xw || yp + ym >= blockLab.yw)
+				continue;
+			int b = feldBegehbar(xp, yp, xp + xm, yp + ym, hoeheA, r);
+			if(b > 0)
+			{
+				geht[yp + ym][xp + xm] = b;
+				gehtT[r + 1][0] = b;
+				gehtT[r + 1][1] = xp + xm;
+				gehtT[r + 1][2] = yp + ym;
+			}
+		}
 	}
 
-	private int feldBegehbar(int xp, int yp, int yf, int xf, int hoeheA, int richtung)
+	private int feldBegehbar(int xp, int yp, int xf, int yf, int hoeheA, int richtung)
 	{
 		Integer ph = blockLab.feld[yp][xp].getH(richtung, false);
 		if(blockLab.feld[yp][xp].hoehe != hoeheA)
@@ -48,11 +55,15 @@ public class Movement extends Item
 		return 1;
 	}
 
-	public boolean benutze(int xp, int yp, int hoeheA, int[][] geht, int r)
+	public boolean benutze(int xp, int yp, int hoeheA, int[][] gehtT, int r)
 	{
-		int xt = xp + (r != 4 ? r - 2 : 0);
-		int yt = yp + (r != 1 ? r - 3 : 0);
-		return benutze(xp, yp, hoeheA, geht, xt, yt);
+		if(gehtT[r][0] <= 0)
+			return false;
+		blockLab.xp = gehtT[r][1];
+		blockLab.yp = gehtT[r][2];
+		blockLab.hoeheA = gehtT[r][0];
+		blockLab.feld[gehtT[r][2]][gehtT[r][1]].gehen();
+		return true;
 	}
 
 	@Override

@@ -19,6 +19,7 @@ public class BlockLab extends Area
 
 	BFeld[][] feld;
 	ArrayList<int[][]> geht2 = new ArrayList<>();
+	ArrayList<int[][]> gehtTasten = new ArrayList<>();
 	BlockLies bl;
 	char farbeAktuell = 'A';
 	int dias;
@@ -82,6 +83,7 @@ public class BlockLab extends Area
 	{
 		geht = new int[yw][xw];
 		geht2.clear();
+		gehtTasten.clear();
 		int disable = 0;
 		for(Item item : items)
 			if(item.disable > disable)
@@ -89,9 +91,11 @@ public class BlockLab extends Area
 		for(int i = 0; i < items.size(); i++)
 		{
 			int[][] geht3 = new int[yw][xw];
+			int[][] gehtT3 = new int[5][3];
 			if(items.get(i).enabled(disable))
-				items.get(i).setzeOptionen(xp, yp, hoeheA, geht3);
+				items.get(i).setzeOptionen(xp, yp, hoeheA, geht3, gehtT3);
 			geht2.add(geht3);
+			gehtTasten.add(gehtT3);
 			for(int iy = 0; iy < geht.length; iy++)
 				for(int ix = 0; ix < geht[iy].length; ix++)
 					if(geht3[iy][ix] > 0)
@@ -102,9 +106,9 @@ public class BlockLab extends Area
 	@Override
 	public boolean moveX(int inputT, int input2, int input3)
 	{
-		if(inputT == -3 && input3 > 0)
+		if(inputT == -3 && input2 > 0)
 		{
-			int y1 = input2 / 2;
+			int y1 = input3 / 2;
 			if(y1 < items.size())
 				akItem = y1;
 			return false;
@@ -121,7 +125,7 @@ public class BlockLab extends Area
 					i2 = i - 1;
 				else
 					i2 = i;
-				if(items.get(i2).benutze(xp, yp, hoeheA, geht2.get(i2), input2 - 36))
+				if(items.get(i2).benutze(xp, yp, hoeheA, gehtTasten.get(i2), input2 - 36))
 					break;
 			}
 			return i < items.size();

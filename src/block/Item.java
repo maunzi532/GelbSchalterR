@@ -32,9 +32,9 @@ public abstract class Item
 		return true;
 	}
 
-	public void setzeOptionen(int xp, int yp, int hoeheA, int[][] geht){}
+	public void setzeOptionen(int xp, int yp, int hoeheA, int[][] geht, int[][] gehtT){}
 
-	public boolean benutze(int xp, int yp, int hoeheA, int[][] geht, int r)
+	public boolean benutze(int xp, int yp, int hoeheA, int[][] gehtT, int r)
 	{
 		return false;
 	}

@@ -18,12 +18,12 @@ public class Schalterpistole extends Item
 		return i1;
 	}
 
-	public void setzeOptionen(int xp, int yp, int hoeheA, int[][] geht)
+	public void setzeOptionen(int xp, int yp, int hoeheA, int[][] geht, int[][] gehtT)
 	{
-		for(int r = 1; r <= 4; r++)
+		for(int r = 0; r <= 3; r++)
 		{
-			int xm = r != 4 ? r - 2 : 0;
-			int ym = r != 1 ? r - 3 : 0;
+			int xm = r != 3 ? r - 1 : 0;
+			int ym = r != 0 ? r - 2 : 0;
 			for(int i = 1; i < laenge; i++)
 			{
 				if(xp + i * xm < 0 || yp + i * ym < 0 || xp + i * xm >= blockLab.xw || yp + i * ym >= blockLab.yw)
@@ -32,14 +32,23 @@ public class Schalterpistole extends Item
 				if(f.getAH() > hoeheA)
 					break;
 				if(f.schalter != 'n' && f.hoehe == hoeheA)
+				{
 					geht[yp + i * ym][xp + i * xm] = hoeheA;
+					gehtT[r + 1][0] = hoeheA;
+					gehtT[r + 1][1] = xp + i * xm;
+					gehtT[r + 1][2] = yp + i * ym;
+					break;
+				}
 			}
 		}
 	}
 
-	public boolean benutze(int xp, int yp, int hoeheA, int[][] geht, int r)
+	public boolean benutze(int xp, int yp, int hoeheA, int[][] gehtT, int r)
 	{
-		return false;
+		if(gehtT[r][0] <= 0)
+			return false;
+		blockLab.farbeAktuell = blockLab.feld[gehtT[r][2]][gehtT[r][1]].schalter;
+		return true;
 	}
 
 	public boolean benutze(int xp, int yp, int hoeheA, int[][] geht, int x, int y)
