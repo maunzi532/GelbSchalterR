@@ -64,6 +64,12 @@ public class AerialEnterhaken extends Item
 	}
 
 	@Override
+	public String speichername()
+	{
+		return "enterhaken";
+	}
+
+	@Override
 	public String bildname()
 	{
 		return doppelt ? "Doppelhaken" : "Enterhaken";

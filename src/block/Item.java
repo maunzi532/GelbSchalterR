@@ -52,6 +52,11 @@ public abstract class Item
 		return true;
 	}
 
+	public String speichername()
+	{
+		return getClass().getSimpleName().toLowerCase();
+	}
+
 	public abstract String bildname();
 
 	private static final KXS IKL2 = new KXS(false, false, true, true, false);

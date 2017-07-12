@@ -229,6 +229,9 @@ public class BFeld extends Feld
 				case "itemflügel":
 					item = new Fluegel();
 					break;
+				case "itemsprungfeder":
+					item = new Sprungfeder();
+					break;
 			}
 			if(textKey.toLowerCase().startsWith("item"))
 				item.lies(value, errStart, errEnd, vial);
@@ -266,7 +269,7 @@ public class BFeld extends Feld
 			speichernZ(sb, "stange", enterstange == hoehe ? null : String.valueOf(enterstange));
 		if(item != null)
 		{
-			sb.append(" item").append(item.bildname()).append(" = {");
+			sb.append(" item").append(item.speichername()).append(" = {");
 			item.speichern(sb);
 			sb.append("};");
 		}
@@ -303,6 +306,9 @@ public class BFeld extends Feld
 					break;
 				case "stange":
 					enterstange = 1;
+					break;
+				case "sprung":
+					item = new Sprungfeder(1, 2);
 					break;
 				default:
 					if(build.toLowerCase().startsWith("enterhaken"))

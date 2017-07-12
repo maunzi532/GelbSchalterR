@@ -1,11 +1,7 @@
 package block;
 
-import laderLC.*;
-
-public class Schalterpistole extends Item
+public class Schalterpistole extends LaengeItem
 {
-	int laenge;
-
 	public Schalterpistole()
 	{
 		laenge = 5;
@@ -13,8 +9,7 @@ public class Schalterpistole extends Item
 
 	public Schalterpistole(int level, int laenge)
 	{
-		super(level);
-		this.laenge = laenge;
+		super(level, laenge);
 	}
 
 	@Override
@@ -31,7 +26,7 @@ public class Schalterpistole extends Item
 		{
 			int xm = r != 3 ? r - 1 : 0;
 			int ym = r != 0 ? r - 2 : 0;
-			for(int i = 1; i < laenge; i++)
+			for(int i = 1; i <= laenge; i++)
 			{
 				if(xp + i * xm < 0 || yp + i * ym < 0 || xp + i * xm >= blockLab.xw || yp + i * ym >= blockLab.yw)
 					break;
@@ -50,6 +45,7 @@ public class Schalterpistole extends Item
 		}
 	}
 
+	@Override
 	public boolean benutze(int xp, int yp, int hoeheA, int[][] gehtT, int r)
 	{
 		if(gehtT[r][0] <= 0)
@@ -58,6 +54,7 @@ public class Schalterpistole extends Item
 		return true;
 	}
 
+	@Override
 	public boolean benutze(int xp, int yp, int hoeheA, int[][] geht, int x, int y)
 	{
 		if(x < 0 || y < 0 || x >= blockLab.xw || y >= blockLab.yw || geht[y][x] <= 0)
@@ -70,25 +67,5 @@ public class Schalterpistole extends Item
 	public String bildname()
 	{
 		return "Schalterpistole";
-	}
-
-	public void lies2(String value, Integer errStart, Integer errEnd, ErrorVial vial, String textKey)
-	{
-		try
-		{
-			if(textKey.toLowerCase().equals("level"))
-				level = Integer.parseInt(value);
-			if(textKey.toLowerCase().equals("länge"))
-				laenge = Integer.parseInt(value);
-		}catch(Exception e)
-		{
-			vial.add(new CError("Invalides Setzen eines Werts", errStart, errEnd));
-		}
-	}
-
-	public void speichern(StringBuilder sb)
-	{
-		super.speichern(sb);
-		speichernZ(sb, "länge", String.valueOf(laenge));
 	}
 }
