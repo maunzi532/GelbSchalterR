@@ -226,6 +226,9 @@ public class BFeld extends Feld
 				case "itemschalterpistole":
 					item = new Schalterpistole();
 					break;
+				case "itemflügel":
+					item = new Fluegel();
+					break;
 			}
 			if(textKey.toLowerCase().startsWith("item"))
 				item.lies(value, errStart, errEnd, vial);
