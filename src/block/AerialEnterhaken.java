@@ -81,10 +81,12 @@ public class AerialEnterhaken extends Item
 		{
 			if(textKey.toLowerCase().equals("level"))
 				level = Integer.parseInt(value);
-			if(textKey.toLowerCase().equals("doppelt"))
+			else if(textKey.toLowerCase().equals("doppelt"))
 				doppelt = true;
-			if(textKey.toLowerCase().equals("länge"))
+			else if(textKey.toLowerCase().equals("länge"))
 				laenge = Integer.parseInt(value);
+			else
+				vial.add(new CError("Unbekannter Wert: " + textKey, errStart, errEnd));
 		}catch(Exception e)
 		{
 			vial.add(new CError("Invalides Setzen eines Werts", errStart, errEnd));

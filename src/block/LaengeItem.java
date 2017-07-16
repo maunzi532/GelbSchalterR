@@ -43,11 +43,12 @@ public abstract class LaengeItem extends Item
 	{
 		try
 		{
-			System.out.println(textKey + " " + value);
 			if(textKey.toLowerCase().equals("level"))
 				level = Integer.parseInt(value);
-			if(textKey.toLowerCase().equals("länge"))
+			else if(textKey.toLowerCase().equals("länge"))
 				laenge = Integer.parseInt(value);
+			else
+				vial.add(new CError("Unbekannter Wert: " + textKey, errStart, errEnd));
 		}catch(Exception e)
 		{
 			vial.add(new CError("Invalides Setzen eines Werts", errStart, errEnd));

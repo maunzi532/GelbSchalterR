@@ -117,6 +117,13 @@ public abstract class LC2
 		return lines;
 	}
 
+	public static String removeKlammernVllt(String build)
+	{
+		if(build.length() > 0 && build.charAt(0) == '{' && build.charAt(build.length() - 1) == '}')
+			return build.substring(1, build.length() - 1);
+		return build;
+	}
+
 	public static void removeKlammern(Object[] wugu, ErrorVial vial)
 	{
 		String build = (String) wugu[0];

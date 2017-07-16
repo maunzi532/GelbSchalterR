@@ -32,16 +32,17 @@ class SIN
 		{
 			public void keyPressed(KeyEvent e)
 			{
-				if((e.getKeyCode() <= 40 && e.getKeyCode() > 36) || (e.getKeyCode() >= 75 || e.getKeyCode() <= 82))
+				if((e.getKeyCode() <= 40 && e.getKeyCode() > 36) || (e.getKeyCode() >= 75 && e.getKeyCode() <= 82))
 				{
-					/*if(inputDataT == -2 && inputData2 == e.getKeyCode())
-						inputData3++;
-					else*/
-					{
-						inputDataT = -2;
-						inputData2 = e.getKeyCode();
-						inputData3 = 1;
-					}
+					inputDataT = -2;
+					inputData2 = e.getKeyCode();
+					inputData3 = 1;
+				}
+				else if(e.getKeyCode() == 69)
+				{
+					inputDataT = -5;
+					inputData2 = fokusX;
+					inputData3 = fokusY;
 				}
 			}
 		});

@@ -1,6 +1,7 @@
 package block;
 
 import area.*;
+import javax.swing.*;
 import laderLC.*;
 
 public class BFeld extends Feld
@@ -156,23 +157,30 @@ public class BFeld extends Feld
 			area.addw(item.bildname());
 	}
 
+	public void liesDirekt(String build)
+	{
+		ErrorVial vial = new ErrorVial();
+		build = vial.prep(build);
+		lies(build, 0, vial.end(), vial);
+		if(!vial.worked())
+			JOptionPane.showMessageDialog(null, vial.toString(), null, JOptionPane.ERROR_MESSAGE);
+	}
+
 	private static final KXS IKL = new KXS(true, false, true, true, false);
 
 	public void lies(String build, int errStart, int errEnd, ErrorVial vial)
 	{
-		if(build.startsWith("{") && build.endsWith("}"))
-		{
-			build = build.substring(1, build.length() - 1);
+		build = LC2.removeKlammernVllt(build);
+		if(build.contains(";"))
 			LC2.superwaguh(build, errStart, vial, IKL, this, "lies2");
+		else try
+		{
+			hoehe = Integer.parseInt(build);
 		}
-		else
-			try
-			{
-				hoehe = Integer.parseInt(build);
-			} catch(NumberFormatException e)
-			{
-				vial.add(new CError("Invalides Feld", errStart, errEnd));
-			}
+		catch(NumberFormatException e)
+		{
+			vial.add(new CError("Keine ; bzw. keine Zahl", errStart, errEnd));
+		}
 	}
 
 	public void lies2(String value, Integer errStart, Integer errEnd, ErrorVial vial, String textKey)
@@ -182,6 +190,8 @@ public class BFeld extends Feld
 			switch(textKey.toLowerCase())
 			{
 				case "h":
+				case "höhe":
+				case "hoehe":
 					hoehe = Integer.parseInt(value);
 					break;
 				case "ziel":
@@ -232,6 +242,8 @@ public class BFeld extends Feld
 				case "itemsprungfeder":
 					item = new Sprungfeder();
 					break;
+				default:
+					vial.add(new CError("Unbekannter Wert: " + textKey, errStart, errEnd));
 			}
 			if(textKey.toLowerCase().startsWith("item"))
 				item.lies(value, errStart, errEnd, vial);

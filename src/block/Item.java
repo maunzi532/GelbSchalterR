@@ -64,8 +64,7 @@ public abstract class Item
 	public void lies(String build, int errStart, int errEnd, ErrorVial vial)
 	{
 		level = 1;
-		if(build.startsWith("{") && build.endsWith("}"))
-			build = build.substring(1, build.length() - 1);
+		build = LC2.removeKlammernVllt(build);
 		LC2.superwaguh(build, errStart, vial, IKL2, this, "lies2");
 	}
 
@@ -75,6 +74,8 @@ public abstract class Item
 		{
 			if(textKey.toLowerCase().equals("level"))
 				level = Integer.parseInt(value);
+			else
+				vial.add(new CError("Unbekannter Wert: " + textKey, errStart, errEnd));
 		}catch(Exception e)
 		{
 			vial.add(new CError("Invalides Setzen eines Werts", errStart, errEnd));
