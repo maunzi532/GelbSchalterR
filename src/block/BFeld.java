@@ -44,6 +44,13 @@ public class BFeld extends Feld
 		return copy;
 	}
 
+	public int getH()
+	{
+		if(blockFarbe != 'n' && blockFarbe != blockLab.farbeAktuell)
+			return sonstH >= 0 ? sonstH : -1;
+		return hoehe;
+	}
+
 	public Integer getH(int side, boolean enter)
 	{
 		if(enter)

@@ -34,7 +34,7 @@ public class Sprungfeder extends LaengeItem
 				BFeld f = blockLab.feld[yp + i * ym][xp + i * xm];
 				if(f.getAH() > hoeheA)
 					break;
-				if(i == laenge && f.hoehe == hoeheA)
+				if(i == laenge && f.getH() == hoeheA)
 				{
 					geht[yp + i * ym][xp + i * xm] = hoeheA;
 					gehtT[r + 1][0] = hoeheA;

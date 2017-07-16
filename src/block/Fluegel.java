@@ -34,7 +34,7 @@ public class Fluegel extends LaengeItem
 				BFeld f = blockLab.feld[yp + i * ym][xp + i * xm];
 				if(f.getAH() > hoeheA)
 					break;
-				if(f.hoehe == hoeheA)
+				if(f.getH() == hoeheA)
 				{
 					if(i > 1)
 					{

@@ -151,11 +151,14 @@ public class BlockLab extends Area
 		else if(inputT == -5)
 		{
 			String alt = feld[input3][input2].speichern();
-			String neu = (String) JOptionPane.showInputDialog(null, null, "W", JOptionPane.QUESTION_MESSAGE, null, null, null);
-			BFeld nf = new BFeld();
-			nf.liesDirekt(neu);
-			bl.feld[input3][input2] = nf;
-			feld[input3][input2] = nf.copy(this);
+			Object neu = JOptionPane.showInputDialog(null, null, null, JOptionPane.QUESTION_MESSAGE, null, null, alt);
+			if(neu instanceof String)
+			{
+				BFeld nf = new BFeld();
+				nf.liesDirekt((String) neu);
+				bl.feld[input3][input2] = nf;
+				feld[input3][input2] = nf.copy(this);
+			}
 		}
 		return false;
 	}
