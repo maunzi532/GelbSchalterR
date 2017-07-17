@@ -2,6 +2,7 @@ package area;
 
 import java.awt.*;
 import java.util.*;
+import sun.reflect.generics.reflectiveObjects.*;
 
 public abstract class Area
 {
@@ -51,6 +52,11 @@ public abstract class Area
 	}
 
 	public abstract void reset();
+
+	public void speichern()
+	{
+		throw new NotImplementedException();
+	}
 
 	public void addw(String name)
 	{

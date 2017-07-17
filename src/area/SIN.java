@@ -32,7 +32,7 @@ class SIN
 		{
 			public void keyPressed(KeyEvent e)
 			{
-				if((e.getKeyCode() <= 40 && e.getKeyCode() > 36) || (e.getKeyCode() >= 75 && e.getKeyCode() <= 82))
+				if((e.getKeyCode() <= 40 && e.getKeyCode() > 36) || (e.getKeyCode() >= 75 && e.getKeyCode() <= 83))
 				{
 					inputDataT = -2;
 					inputData2 = e.getKeyCode();
@@ -155,7 +155,11 @@ class SIN
 			mfokusX = -1;
 			mfokusY = -1;
 		}
-		if(inputDataT == -2 && inputData2 == 82)
+		if(inputDataT == -2 && inputData2 == 83)
+		{
+			area.speichern();
+		}
+		else if(inputDataT == -2 && inputData2 == 82)
 		{
 			area.reset();
 			mapview = 0;
