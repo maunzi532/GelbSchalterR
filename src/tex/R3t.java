@@ -36,12 +36,17 @@ public class R3t
 		}
 		ArrayList<R3p> unten = new ArrayList<>();
 		ArrayList<R3p> oben = new ArrayList<>();
+		int end = 0;
 		for(int j = 0; j < 3; j++)
+		{
 			if(p[j].n[2] * th >= hi)
 				oben.add(p[j]);
 			else
 				unten.add(p[j]);
-		if(unten.size() == 0 || oben.size() == 0)
+			if(p[j].n[2] * th >= hi + 1)
+				end++;
+		}
+		if(unten.size() == 0 || oben.size() == 0 || end == 0)
 			return;
 		R3p m;
 		R3p a1;
@@ -61,18 +66,38 @@ public class R3t
 		if(m.n[2] - a1.n[2] == 0 || m.n[2] - a2.n[2] == 0)
 			return;
 		double h = hi / (double) th;
-		int x1 = (int)(((m.n[2] - h) * a1.n[0] + (h - a1.n[2]) * m.n[0]) / (m.n[2] - a1.n[2]) * tw) + sh;
-		int y1 = (int)(((m.n[2] - h) * a1.n[1] + (h - a1.n[2]) * m.n[1]) / (m.n[2] - a1.n[2]) * tw) + sh;
-		int x2 = (int)(((m.n[2] - h) * a2.n[0] + (h - a2.n[2]) * m.n[0]) / (m.n[2] - a2.n[2]) * tw) + sh;
-		int y2 = (int)(((m.n[2] - h) * a2.n[1] + (h - a2.n[2]) * m.n[1]) / (m.n[2] - a2.n[2]) * tw) + sh;
 		double ha = (hi + 1) / (double) th;
-		int x1a = (int)(((m.n[2] - ha) * a1.n[0] + (ha - a1.n[2]) * m.n[0]) / (m.n[2] - a1.n[2]) * tw) + sh;
-		int y1a = (int)(((m.n[2] - ha) * a1.n[1] + (ha - a1.n[2]) * m.n[1]) / (m.n[2] - a1.n[2]) * tw) + sh;
-		int x2a = (int)(((m.n[2] - ha) * a2.n[0] + (ha - a2.n[2]) * m.n[0]) / (m.n[2] - a2.n[2]) * tw) + sh;
-		int y2a = (int)(((m.n[2] - ha) * a2.n[1] + (ha - a2.n[2]) * m.n[1]) / (m.n[2] - a2.n[2]) * tw) + sh;
-		int[] xk = new int[]{x1, x2, x2a - 1, x1a - 1};
-		int[] yk = new int[]{y1, y2, y2a - 1, y1a - 1};
-		gd.setColor(farbe);
+		//x1, y1, x2, y2, x1a, y1a, x2a, y2a
+		double[] fl = new double[8];
+		fl[0] = ((m.n[2] - h) * a1.n[0] + (h - a1.n[2]) * m.n[0]) / (m.n[2] - a1.n[2]) * tw + sh;
+		fl[1] = ((m.n[2] - h) * a1.n[1] + (h - a1.n[2]) * m.n[1]) / (m.n[2] - a1.n[2]) * tw + sh;
+		fl[2] = ((m.n[2] - h) * a2.n[0] + (h - a2.n[2]) * m.n[0]) / (m.n[2] - a2.n[2]) * tw + sh;
+		fl[3] = ((m.n[2] - h) * a2.n[1] + (h - a2.n[2]) * m.n[1]) / (m.n[2] - a2.n[2]) * tw + sh;
+		fl[4] = ((m.n[2] - ha) * a1.n[0] + (ha - a1.n[2]) * m.n[0]) / (m.n[2] - a1.n[2]) * tw + sh;
+		fl[5] = ((m.n[2] - ha) * a1.n[1] + (ha - a1.n[2]) * m.n[1]) / (m.n[2] - a1.n[2]) * tw + sh;
+		fl[6] = ((m.n[2] - ha) * a2.n[0] + (ha - a2.n[2]) * m.n[0]) / (m.n[2] - a2.n[2]) * tw + sh;
+		fl[7] = ((m.n[2] - ha) * a2.n[1] + (ha - a2.n[2]) * m.n[1]) / (m.n[2] - a2.n[2]) * tw + sh;
+		double shdx = fl[0] - fl[4] + fl[2] - fl[6] + 2;
+		double shdy = fl[1] - fl[5] + fl[3] - fl[7] - 2;
+		double shd = Math.sqrt(shdx * shdx + shdy * shdy);
+		gd.setColor(new Color(shd(farbe.getRed(), shd), shd(farbe.getGreen(), shd), shd(farbe.getBlue(), shd), farbe.getAlpha()));
+		int[] xk = new int[]{inf(fl, 0), inf(fl, 2), inf(fl, 6) - 1, inf(fl, 4) - 1};
+		int[] yk = new int[]{inf(fl, 1), inf(fl, 3), inf(fl, 7) - 1, inf(fl, 5) - 1};
 		gd.fillPolygon(xk, yk, 4);
+	}
+
+	private int inf(double[] fl, int n)
+	{
+		return (int) fl[n];
+	}
+
+	private int shd(int vor, double shd)
+	{
+		int v2 = vor + (int)(shd * 20);
+		if(v2 > 255)
+			return 255;
+		if(v2 < 0)
+			return 0;
+		return v2;
 	}
 }
