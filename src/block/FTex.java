@@ -1,8 +1,8 @@
 package block;
 
-import area.*;
 import java.awt.*;
 import java.awt.image.*;
+import tex.*;
 
 public class FTex extends Texturen
 {

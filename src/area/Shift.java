@@ -1,6 +1,7 @@
 package area;
 
 import java.awt.*;
+import tex.*;
 
 public class Shift
 {
@@ -10,7 +11,10 @@ public class Shift
 	static int startX, startY, startTile;
 	static int targetX, targetY, targetTile;
 	static int tick, maxtick;
-	static int tile, th, shiftX, shiftY;
+	public static int tile;
+	public static int th;
+	static int shiftX;
+	static int shiftY;
 
 	static void resize(int fw, int fh)
 	{
@@ -33,12 +37,12 @@ public class Shift
 		gd.drawString(s, xf * tile - h - shiftX + xd2, yf * tile - h - shiftY + yd2 + tile / 2 + fh2);
 	}
 
-	static void place3Vor(Graphics2D gd, Image im, int sh, int h)
+	public static void place3Vor(Graphics2D gd, Image im, int sh, int h)
 	{
 		gd.drawImage(im, sh - h, sh - h, tile, tile, null);
 	}
 
-	static void placeErsatzTextVor(Graphics2D gd, String s, int sh, int h)
+	public static void placeErsatzTextVor(Graphics2D gd, String s, int sh, int h)
 	{
 		gd.setFont(new Font("Consolas", Font.PLAIN, (int)(tile * 1.5f / s.length())));
 		int fh2 = gd.getFontMetrics().getHeight() / 2;
@@ -46,7 +50,7 @@ public class Shift
 		gd.drawString(s, sh - h, sh - h + tile / 2 + fh2);
 	}
 
-	static void place4(Graphics2D gd, TexturR tr, int xf, int yf)
+	public static void place4(Graphics2D gd, TexturR tr, int xf, int yf)
 	{
 		gd.drawImage(tr.img, xf * tile - tr.shift - shiftX + xd2, yf * tile - tr.shift - shiftY + yd2, null);
 	}

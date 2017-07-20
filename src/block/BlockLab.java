@@ -8,6 +8,7 @@ import java.nio.file.*;
 import java.util.*;
 import javax.swing.*;
 import laderLC.*;
+import tex.*;
 
 public class BlockLab extends Area
 {

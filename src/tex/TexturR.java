@@ -1,11 +1,11 @@
-package area;
+package tex;
 
 import java.awt.image.*;
 
 public class TexturR
 {
-	BufferedImage img;
-	int shift;
+	public BufferedImage img;
+	public int shift;
 
 	public TexturR(BufferedImage img, int shift)
 	{

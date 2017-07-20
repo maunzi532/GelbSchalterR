@@ -3,6 +3,7 @@ package area;
 import java.awt.*;
 import java.util.*;
 import sun.reflect.generics.reflectiveObjects.*;
+import tex.*;
 
 public abstract class Area
 {
@@ -60,16 +61,16 @@ public abstract class Area
 
 	public void addw(String name)
 	{
-		renders.add(new Render(name, ycp, xcp, feld(ycp, xcp).visualH()));
+		renders.add(new Render(name, feld(ycp, xcp).visualH()));
 	}
 
 	public void addw(String name, String text)
 	{
-		renders.add(new Render(name, text, ycp, xcp, feld(ycp, xcp).visualH()));
+		renders.add(new Render(name, text, feld(ycp, xcp).visualH()));
 	}
 
 	public void addm(String name, int h)
 	{
-		renders.add(new Render(name, ycp, xcp, h));
+		renders.add(new Render(name, h));
 	}
 }

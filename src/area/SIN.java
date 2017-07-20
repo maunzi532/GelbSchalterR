@@ -4,6 +4,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.*;
 import javax.swing.*;
+import tex.*;
 
 public class SIN
 {
@@ -232,8 +233,8 @@ public class SIN
 			BufferedImage hintergrund = tex.bilder2D.get("Hintergrund");
 			int hw = hintergrund.getWidth();
 			int hh = hintergrund.getHeight();
-			int aw = size.width - size.height / 10 * 3;
-			int ah = size.height;
+			//int aw = size.width - size.height / 10 * 3;
+			//int ah = size.height;
 			int shtx = Shift.tile * 20;
 			int shty = Shift.tile * 20;
 			int shx = Shift.shiftX / 2 + shtx * t / hw;
@@ -241,7 +242,7 @@ public class SIN
 			for(int i1 = 0; i1 < 3; i1++)
 				for(int i2 = 0; i2 < 3; i2++)
 					gd.drawImage(hintergrund, shtx * i1 - shx, shty * i2 - shy, shtx * (i1 + 1) - shx, shty * (i2 + 1) - shy, 0, 0, hw, hh, null);
-			t+=1;
+			t++;
 			if(t > hw)
 				t = 0;
 		}

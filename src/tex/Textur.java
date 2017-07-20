@@ -1,4 +1,4 @@
-package area;
+package tex;
 
 import java.awt.image.*;
 

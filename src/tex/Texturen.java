@@ -1,5 +1,6 @@
-package area;
+package tex;
 
+import area.*;
 import java.awt.*;
 import java.awt.image.*;
 import java.io.*;
@@ -71,29 +72,6 @@ public class Texturen
 			im[q - kmin] = last;
 		}
 		lk2.put(dir.getName(), new Textur(kmax, kmin, im));
-	}
-
-	public void placeAll(Graphics2D gd, ArrayList<Render> renders)
-	{
-		for(int i = Shift.th * -2; i < Shift.th * 5; i++)
-			for(Render re : renders)
-			{
-				String key = re.what;
-				Textur tex = gettex(re);
-				int texH = i * accuracy / Shift.th - re.height * accuracy;
-				if(tex != null && tex.h_up >= texH && tex.h_down <= texH)
-				{
-					int heightNo = i * accuracy / Shift.th - re.height * accuracy;
-					if(heightNo - tex.h_down < tex.look.length)
-					{
-						Shift.place3(gd, tex.look[heightNo - tex.h_down], re.x, re.y, i);
-						if(tex.h_up == texH && re.text != null)
-							Shift.placeErsatzText(gd, re.text, re.x, re.y, i);
-					}
-				}
-				if(!lk2.containsKey(key) && re.height * accuracy == i * accuracy / Shift.th)
-					Shift.placeErsatzText(gd, key, re.x, re.y, i);
-			}
 	}
 
 	private HashMap<String, TexturR> lk3 = new HashMap<>();

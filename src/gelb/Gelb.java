@@ -2,6 +2,7 @@ package gelb;
 
 import area.*;
 import java.awt.*;
+import tex.*;
 
 public class Gelb extends Area
 {

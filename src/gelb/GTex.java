@@ -1,8 +1,8 @@
 package gelb;
 
-import area.*;
 import java.awt.*;
 import java.awt.image.*;
+import tex.*;
 
 public class GTex extends Texturen
 {
