@@ -1,6 +1,7 @@
 package block;
 
 import area.*;
+import java.awt.*;
 import javax.swing.*;
 import laderLC.*;
 
@@ -142,11 +143,7 @@ public class BFeld extends Feld
 			else
 				area.addw("Einhauwand" + einhauwand);
 		if(dia)
-			if(benutzt)
-				area.addw("DiaB");
-			else
-				//area.addw("Dia");
-				area.add3(new DiaRender());
+			area.add3(DiaRender.gib(0.1, 0.9, 4, SIN.t / (double) SIN.tm, 0.8, new Color(0, 0, benutzt ? 0 : 200, 127)));
 		if(diaTuer > 0)
 			if(diaTuer > blockLab.dias)
 				area.addw("DiaTür", "  " + diaTuer);

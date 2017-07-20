@@ -87,15 +87,15 @@ public class Texturen
 					continue;
 				StringBuilder sb = new StringBuilder();
 				sb.append(Shift.tile).append('-').append(Shift.th);
-				boolean r3 = false;
+				boolean rerender = false;
 				for(Render re : renders[iy][ix])
 				{
-					if(re instanceof Render3)
-						r3 = true;
+					if(re.rerender)
+						rerender = true;
 					sb.append('-').append(re.what).append(re.text).append(re.height);
 				}
 				String s1 = sb.toString();
-				if(r3)
+				if(rerender)
 					Shift.place4(gd, placeThese(renders[iy][ix]), ix, iy);
 				else
 				{

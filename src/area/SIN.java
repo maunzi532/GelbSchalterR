@@ -182,8 +182,8 @@ public class SIN
 			if(mapview == 1)
 			{
 				mapKamZoom += inputData2 * 2 - 155;
-				if(mapKamZoom < 4)
-					mapKamZoom = 4;
+				if(mapKamZoom < 1)
+					mapKamZoom = 1;
 			}
 			else
 			{

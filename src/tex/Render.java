@@ -5,6 +5,7 @@ public class Render
 	String what;
 	String text;
 	public int height;
+	public boolean rerender;
 
 	public Render(String what, int height)
 	{
