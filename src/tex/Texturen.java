@@ -87,12 +87,22 @@ public class Texturen
 					continue;
 				StringBuilder sb = new StringBuilder();
 				sb.append(Shift.tile).append('-').append(Shift.th);
+				boolean r3 = false;
 				for(Render re : renders[iy][ix])
+				{
+					if(re instanceof Render3)
+						r3 = true;
 					sb.append('-').append(re.what).append(re.text).append(re.height);
+				}
 				String s1 = sb.toString();
-				if(!lk3.containsKey(s1))
-					lk3.put(s1, placeThese(renders[iy][ix]));
-				Shift.place4(gd, lk3.get(s1), ix, iy);
+				if(r3)
+					Shift.place4(gd, placeThese(renders[iy][ix]), ix, iy);
+				else
+				{
+					if(!lk3.containsKey(s1))
+						lk3.put(s1, placeThese(renders[iy][ix]));
+					Shift.place4(gd, lk3.get(s1), ix, iy);
+				}
 			}
 	}
 
@@ -102,11 +112,20 @@ public class Texturen
 		int minH = Integer.MAX_VALUE;
 		for(Render re : renders)
 		{
-			Textur tex = gettex(re);
-			if(tex != null)
+			if(re instanceof Render3)
 			{
-				maxH = Math.max(maxH, ((tex.h_up + (re.height + 1) * accuracy) * Shift.th) / accuracy);
-				minH = Math.min(minH, ((tex.h_down + re.height * accuracy) * Shift.th) / accuracy);
+				Render3 re3 = (Render3) re;
+				maxH = Math.max(maxH, (int)((re3.maxh + re3.height + 1) * Shift.th));
+				minH = Math.min(minH, (int)((re3.minh + re3.height) * Shift.th));
+			}
+			else
+			{
+				Textur tex = gettex(re);
+				if(tex != null)
+				{
+					maxH = Math.max(maxH, ((tex.h_up + (re.height + 1) * accuracy) * Shift.th) / accuracy);
+					minH = Math.min(minH, ((tex.h_down + re.height * accuracy) * Shift.th) / accuracy);
+				}
 			}
 		}
 		int iw = maxH - minH + Shift.tile;
@@ -116,21 +135,29 @@ public class Texturen
 		for(int i = minH; i < maxH; i++)
 			for(Render re : renders)
 			{
-				String key = re.what;
-				Textur tex = gettex(re);
-				int texH = i * accuracy / Shift.th - re.height * accuracy;
-				if(tex != null && tex.h_up >= texH && tex.h_down <= texH)
+				if(re instanceof Render3)
 				{
-					int heightNo = i * accuracy / Shift.th - re.height * accuracy;
-					if(heightNo - tex.h_down < tex.look.length)
-					{
-						Shift.place3Vor(gd, tex.look[heightNo - tex.h_down], maxH, i);
-						if(tex.h_up == texH && re.text != null)
-							Shift.placeErsatzTextVor(gd, re.text, maxH, i);
-					}
+					Render3 re3 = (Render3) re;
+					re3.teile(gd, i, Shift.th, maxH, Shift.tile);
 				}
-				if(!lk2.containsKey(key) && re.height * accuracy == i * accuracy / Shift.th)
-					Shift.placeErsatzTextVor(gd, key, maxH, i);
+				else
+				{
+					String key = re.what;
+					Textur tex = gettex(re);
+					int texH = i * accuracy / Shift.th - re.height * accuracy;
+					if(tex != null && tex.h_up >= texH && tex.h_down <= texH)
+					{
+						int heightNo = i * accuracy / Shift.th - re.height * accuracy;
+						if(heightNo - tex.h_down < tex.look.length)
+						{
+							Shift.place3Vor(gd, tex.look[heightNo - tex.h_down], maxH, i);
+							if(tex.h_up == texH && re.text != null)
+								Shift.placeErsatzTextVor(gd, re.text, maxH, i);
+						}
+					}
+					if(!lk2.containsKey(key) && re.height * accuracy == i * accuracy / Shift.th)
+						Shift.placeErsatzTextVor(gd, key, maxH, i);
+				}
 			}
 		return tR;
 	}

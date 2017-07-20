@@ -224,7 +224,8 @@ public class SIN
 		gd.fillRect(0, 0, size.width, size.height);
 	}
 
-	static int t;
+	public static int t;
+	public static int tm;
 
 	static void hintergrund()
 	{
@@ -235,15 +236,16 @@ public class SIN
 			int hh = hintergrund.getHeight();
 			//int aw = size.width - size.height / 10 * 3;
 			//int ah = size.height;
+			tm = hw;
 			int shtx = Shift.tile * 20;
 			int shty = Shift.tile * 20;
-			int shx = Shift.shiftX / 2 + shtx * t / hw;
-			int shy = Shift.shiftY / 2 + (int)(shty / 20 * Math.sin(2 * Math.PI * t / hw));
+			int shx = Shift.shiftX / 2 + shtx * t / tm;
+			int shy = Shift.shiftY / 2 + (int)(shty / 20 * Math.sin(2 * Math.PI * t / tm));
 			for(int i1 = 0; i1 < 3; i1++)
 				for(int i2 = 0; i2 < 3; i2++)
 					gd.drawImage(hintergrund, shtx * i1 - shx, shty * i2 - shy, shtx * (i1 + 1) - shx, shty * (i2 + 1) - shy, 0, 0, hw, hh, null);
 			t++;
-			if(t > hw)
+			if(t > tm)
 				t = 0;
 		}
 	}

@@ -145,7 +145,8 @@ public class BFeld extends Feld
 			if(benutzt)
 				area.addw("DiaB");
 			else
-				area.addw("Dia");
+				//area.addw("Dia");
+				area.add3(new DiaRender());
 		if(diaTuer > 0)
 			if(diaTuer > blockLab.dias)
 				area.addw("DiaTür", "  " + diaTuer);

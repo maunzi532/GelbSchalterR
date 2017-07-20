@@ -1,22 +1,21 @@
-package area;
+package tex;
 
 import java.awt.*;
-import tex.*;
 
 public class Shift
 {
-	static int xd2;
-	static int yd2;
+	public static int xd2;
+	public static int yd2;
 	static int basetile, baseth;
 	static int startX, startY, startTile;
 	static int targetX, targetY, targetTile;
 	static int tick, maxtick;
 	public static int tile;
 	public static int th;
-	static int shiftX;
-	static int shiftY;
+	public static int shiftX;
+	public static int shiftY;
 
-	static void resize(int fw, int fh)
+	public static void resize(int fw, int fh)
 	{
 		xd2 = fw / 13 * 5;
 		yd2 = fh / 2;
@@ -55,7 +54,7 @@ public class Shift
 		gd.drawImage(tr.img, xf * tile - tr.shift - shiftX + xd2, yf * tile - tr.shift - shiftY + yd2, null);
 	}
 
-	static boolean checkObDarauf(int mx, int my, int ix, int iy, int hoch)
+	public static boolean checkObDarauf(int mx, int my, int ix, int iy, int hoch)
 	{
 		return mx > ix * tile - shiftX - hoch * th &&
 				mx < (ix + 1) * tile - shiftX - hoch * th &&
@@ -63,7 +62,7 @@ public class Shift
 				my < (iy + 1) * tile - shiftY - hoch * th;
 	}
 
-	static void selectTarget(int newX, int newY, int newH, int divisor, int ticks)
+	public static void selectTarget(int newX, int newY, int newH, int divisor, int ticks)
 	{
 		tick = 0;
 		maxtick = ticks;
@@ -75,7 +74,7 @@ public class Shift
 		targetTile = basetile / divisor;
 	}
 
-	static void moveTarget(int inputT, int input2, int ticks)
+	public static void moveTarget(int inputT, int input2, int ticks)
 	{
 		if(inputT != -2 || input2 < 37 || input2 > 40)
 			return;
@@ -88,7 +87,7 @@ public class Shift
 		targetY = targetY + basetile / 2 * (input2 == 40 ? 1 : input2 == 38 ? -1 : 0);
 	}
 
-	static void moveToTarget()
+	public static void moveToTarget()
 	{
 		if(tick >= maxtick)
 			return;

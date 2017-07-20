@@ -73,4 +73,10 @@ public abstract class Area
 	{
 		renders.add(new Render(name, h));
 	}
+
+	public void add3(Render3 r3)
+	{
+		r3.height = feld(ycp, xcp).visualH();
+		renders.add(r3);
+	}
 }

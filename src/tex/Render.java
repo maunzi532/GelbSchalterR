@@ -4,7 +4,7 @@ public class Render
 {
 	String what;
 	String text;
-	int height;
+	public int height;
 
 	public Render(String what, int height)
 	{
