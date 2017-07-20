@@ -1,5 +1,6 @@
 package block;
 
+import area.*;
 import java.util.*;
 
 public class Movement extends Item
@@ -51,8 +52,7 @@ public class Movement extends Item
 			return 0;
 		if(Objects.equals(ph, fh))
 			return fh;
-		//Cheat Mode
-		return 1;
+		return SIN.cheatmode ? 1 : 0;
 	}
 
 	public boolean benutze(int xp, int yp, int hoeheA, int[][] gehtT, int r)

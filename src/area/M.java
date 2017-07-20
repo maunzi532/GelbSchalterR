@@ -15,18 +15,26 @@ class M
 
 	public static void main(String[] args)
 	{
-		if(args.length == 0)
+		File selected = null;
+		boolean ch = false;
+		for(int i = 0; i < args.length; i++)
+		{
+			if(args[i].equals("cheatmode"))
+				ch = true;
+			else
+				selected = new File(args[i]);
+		}
+		if(selected == null)
 		{
 			JFileChooser fc = new JFileChooser(new File("saves"));
 			fc.showOpenDialog(null);
-			start(fc.getSelectedFile());
+			selected = fc.getSelectedFile();
 		}
-		else
-			start(new File("saves" + File.separator + args[0] + ".txt"));
+		start(selected, ch);
 		System.exit(0);
 	}
 
-	private static void start(File lv)
+	private static void start(File lv, boolean ch)
 	{
 		String input = null;
 		try
@@ -45,7 +53,7 @@ class M
 			area.readFL(input);
 			area.reset();
 			Texturen tex = new GTex(texPack, texOrdnerName);
-			SIN.start(area, tex);
+			SIN.start(area, tex, ch);
 		}
 		else
 		{
@@ -54,7 +62,7 @@ class M
 			area.readFL(input);
 			area.reset();
 			Texturen tex = new FTex(texPack, texOrdnerName);
-			SIN.start(area, tex);
+			SIN.start(area, tex, ch);
 		}
 	}
 }

@@ -5,8 +5,9 @@ import java.awt.event.*;
 import java.awt.image.*;
 import javax.swing.*;
 
-class SIN
+public class SIN
 {
+	public static boolean cheatmode;
 	public static Texturen tex;
 	static JFrame fr;
 	static Dimension size;
@@ -22,8 +23,9 @@ class SIN
 	private static int inputData2 = -1;
 	private static int inputData3 = -1;
 
-	static void start(Area area1, Texturen tex1)
+	static void start(Area area1, Texturen tex1, boolean ch)
 	{
+		cheatmode = ch;
 		area = area1;
 		tex = tex1;
 		fr = new JFrame();
@@ -115,8 +117,12 @@ class SIN
 			Shift.moveToTarget();
 		}
 		area.noMovement();
-		drawX();
-		U.warte(500);
+		for(int i = 0; i < 20; i++)
+		{
+			drawX();
+			U.warte(20 + i * 3);
+			Shift.moveToTarget();
+		}
 	}
 
 	static void updatePosition()
@@ -205,6 +211,7 @@ class SIN
 	{
 		area.render(fokusX, fokusY);
 		clear();
+		hintergrund();
 		tex.placeAll2(gd, area.renders2, area.xw, area.yw);
 		rahmen();
 		fr.getGraphics().drawImage(img, 0, 0, null);
@@ -214,6 +221,30 @@ class SIN
 	{
 		gd.setColor(Color.BLACK);
 		gd.fillRect(0, 0, size.width, size.height);
+	}
+
+	static int t;
+
+	static void hintergrund()
+	{
+		if(tex.bilder2D.containsKey("Logo"))
+		{
+			BufferedImage hintergrund = tex.bilder2D.get("Hintergrund");
+			int hw = hintergrund.getWidth();
+			int hh = hintergrund.getHeight();
+			int aw = size.width - size.height / 10 * 3;
+			int ah = size.height;
+			int shtx = Shift.tile * 20;
+			int shty = Shift.tile * 20;
+			int shx = Shift.shiftX / 2 + shtx * t / hw;
+			int shy = Shift.shiftY / 2 + (int)(shty / 20 * Math.sin(2 * Math.PI * t / hw));
+			for(int i1 = 0; i1 < 3; i1++)
+				for(int i2 = 0; i2 < 3; i2++)
+					gd.drawImage(hintergrund, shtx * i1 - shx, shty * i2 - shy, shtx * (i1 + 1) - shx, shty * (i2 + 1) - shy, 0, 0, hw, hh, null);
+			t+=1;
+			if(t > hw)
+				t = 0;
+		}
 	}
 
 	private static void rahmen()

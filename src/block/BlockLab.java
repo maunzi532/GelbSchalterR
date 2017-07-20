@@ -155,7 +155,7 @@ public class BlockLab extends Area
 			}
 			return i < items.size();
 		}
-		else if(inputT == -5)
+		else if(inputT == -5 && SIN.cheatmode)
 		{
 			String alt = feld[input3][input2].speichern();
 			Object neu = JOptionPane.showInputDialog(null, null, null, JOptionPane.QUESTION_MESSAGE, null, null, alt);
