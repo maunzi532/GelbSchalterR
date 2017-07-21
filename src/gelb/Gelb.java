@@ -189,40 +189,42 @@ public class Gelb extends Area
 	@Override
 	public void reset(){}
 
-	public boolean moveX(int inputT, int clAtX, int clAtY)
+	public boolean moveX(boolean nichtMap)
 	{
+		if(nichtMap)
+			return false;
 		boolean moved = false;
 		int xv = xp;
 		int yv = yp;
 		if(teleport)
 		{
-			if(inputT == -4 && geht[clAtY][clAtX] != 0)
+			if(TA.take[201] == 2 && geht[SIN.fokusY][SIN.fokusX] != 0)
 			{
-				xp = clAtX;
-				yp = clAtY;
+				xp = SIN.fokusX;
+				yp = SIN.fokusY;
 				gehen(0);
 				moved = true;
 				teleport = false;
 				mapview = false;
 			}
 		}
-		else if(inputT == -2)
+		else if(TA.take[37] == 2 || TA.take[38] == 2 || TA.take[39] == 2 || TA.take[40] == 2)
 		{
-			int xt = xv + (clAtX != 40 ? clAtX - 38 : 0);
-			int yt = yv + (clAtX != 37 ? clAtX - 39 : 0);
+			int xt = xv + (TA.take[39] == 2 ? 1 : 0) - (TA.take[37] == 2 ? 1 : 0);
+			int yt = yv + (TA.take[40] == 2 ? 1 : 0) - (TA.take[38] == 2 ? 1 : 0);
 			if(tryDirection(xt, yt))
 				moved = !tryDirection(xt * 2 - xv, yt * 2 - yv);
 			else
 				moved = true;
 		}
-		else if(inputT == -4 && geht[clAtY][clAtX] != 0)
+		else if(TA.take[201] == 2 && geht[SIN.fokusY][SIN.fokusX] != 0)
 		{
-			if(clAtX == xp && clAtY == yp)
+			if(SIN.fokusX == xp && SIN.fokusY == yp)
 				moved = useItem();
 			else
 			{
-				xp = clAtX;
-				yp = clAtY;
+				xp = SIN.fokusX;
+				yp = SIN.fokusY;
 				gehen(geht[yp][xp]);
 				moved = true;
 			}
@@ -241,7 +243,7 @@ public class Gelb extends Area
 	}
 
 	@Override
-	public void rahmen(Graphics2D gd, Texturen tex, int w1, int w, int h)
+	public void rahmen(Graphics2D gd, Texturen tex, int w1, int h)
 	{
 		int ht = h / 10;
 		gd.setColor(Color.RED);

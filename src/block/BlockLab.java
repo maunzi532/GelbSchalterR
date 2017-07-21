@@ -31,6 +31,7 @@ public class BlockLab extends Area
 	int hoeheA;
 	int akItem;
 	ArrayList<Item> items = new ArrayList<>();
+	boolean ntou;
 
 	public void readFL(String c1)
 	{
@@ -113,16 +114,21 @@ public class BlockLab extends Area
 	}
 
 	@Override
-	public boolean moveX(int inputT, int input2, int input3)
+	public boolean moveX(boolean nichtMap)
 	{
-		if(inputT == -3 && input2 > 0)
+		if(nichtMap)
 		{
-			int y1 = input3 / 2;
-			if(y1 < items.size())
-				akItem = y1;
+			if(SIN.mfokusX >= 1)
+			{
+				int y1 = SIN.mfokusY / 2;
+				if(y1 < items.size())
+					akItem = y1;
+			}
 			return false;
 		}
-		else if(inputT == -2 && input2 >= 37 && input2 <= 40)
+		int mlr = (TA.take[39] == 2 ? 1 : 0) - (TA.take[37] == 2 ? 1 : 0);
+		int mou = (TA.take[40] == 2 ? 1 : 0) - (TA.take[38] == 2 ? 1 : 0);
+		if(mlr != 0 || mou != 0)
 		{
 			int i;
 			for(i = 0; i < items.size(); i++)
@@ -134,12 +140,27 @@ public class BlockLab extends Area
 					i2 = i - 1;
 				else
 					i2 = i;
-				if(items.get(i2).benutze(xp, yp, hoeheA, gehtTasten.get(i2), input2 - 36))
+				int code;
+				if(ntou)
+				{
+					if(mou != 0)
+						code = mou + 3;
+					else
+						code = mlr + 2;
+				}
+				else
+				{
+					if(mlr != 0)
+						code = mlr + 2;
+					else
+						code = mou + 3;
+				}
+				if(items.get(i2).benutze(xp, yp, hoeheA, gehtTasten.get(i2), code))
 					break;
 			}
 			return i < items.size();
 		}
-		else if(inputT == -4)
+		else if(TA.take[201] == 2)
 		{
 			int i;
 			for(i = 0; i < items.size(); i++)
@@ -151,28 +172,28 @@ public class BlockLab extends Area
 					i2 = i - 1;
 				else
 					i2 = i;
-				if(items.get(i2).benutze(xp, yp, hoeheA, geht2.get(i2), input2, input3))
+				if(items.get(i2).benutze(xp, yp, hoeheA, geht2.get(i2), SIN.fokusX, SIN.fokusY))
 					break;
 			}
 			return i < items.size();
 		}
-		else if(inputT == -5 && SIN.cheatmode)
+		else if(TA.take[69] == 2 && SIN.cheatmode)
 		{
-			String alt = feld[input3][input2].speichern();
+			String alt = feld[SIN.fokusY][SIN.fokusX].speichern();
 			Object neu = JOptionPane.showInputDialog(null, null, null, JOptionPane.QUESTION_MESSAGE, null, null, alt);
 			if(neu instanceof String)
 			{
 				BFeld nf = new BFeld();
 				nf.liesDirekt((String) neu);
-				bl.feld[input3][input2] = nf;
-				feld[input3][input2] = nf.copy(this);
+				bl.feld[SIN.fokusY][SIN.fokusX] = nf;
+				feld[SIN.fokusY][SIN.fokusX] = nf.copy(this);
 			}
 		}
 		return false;
 	}
 
 	@Override
-	public void rahmen(Graphics2D gd, Texturen tex, int w1, int w, int h)
+	public void rahmen(Graphics2D gd, Texturen tex, int w1, int h)
 	{
 		int ht = h / 10;
 		gd.setColor(Color.BLACK);
@@ -181,12 +202,8 @@ public class BlockLab extends Area
 		gd.fillRect(w1, 0, ht, h);
 		gd.setColor(Color.BLUE);
 		gd.fillRect(w1, ht * (10 - dias), ht, h);
-		//gd.setColor(Color.BLUE);
-		//gd.fillRect(w - h / 10, 0, h / 10, h / 10 * lab.dias);
 		gd.setColor(Color.WHITE);
-		gd.drawRect(w - h / 10 * 3, 0, h / 10 - 1, h - 1);
-		//gd.drawRect(w - h / 10 * 2, 0, h / 10 - 1, h - 1);
-		//gd.drawRect(w - h / 10, 0, h / 10 - 1, h - 1);
+		gd.drawRect(w1, 0, ht - 1, h - 1);
 		gd.setColor(Color.RED);
 		gd.drawRect(w1 + ht, ht * 2 * akItem, ht * 2 - 1, ht * 2 - 1);
 		for(int i = 0; i < items.size(); i++)

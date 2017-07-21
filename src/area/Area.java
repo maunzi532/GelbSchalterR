@@ -19,9 +19,9 @@ public abstract class Area
 
 	public abstract void checkFields();
 
-	public abstract boolean moveX(int inputT, int input2, int input3);
+	public abstract boolean moveX(boolean nichtMap);
 
-	public abstract void rahmen(Graphics2D gd, Texturen tex, int w1, int w, int h);
+	public abstract void rahmen(Graphics2D gd, Texturen tex, int w1, int h);
 
 	public void noMovement()
 	{

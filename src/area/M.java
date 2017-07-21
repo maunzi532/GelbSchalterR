@@ -22,6 +22,8 @@ class M
 		{
 			if(args[i].equals("cheatmode"))
 				ch = true;
+			else if(args[i].equals("gelb"))
+				g = true;
 			else
 				selected = new File(args[i]);
 		}

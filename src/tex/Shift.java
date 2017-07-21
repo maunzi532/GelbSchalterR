@@ -1,5 +1,6 @@
 package tex;
 
+import area.*;
 import java.awt.*;
 
 public class Shift
@@ -61,17 +62,19 @@ public class Shift
 		targetTile = basetile / divisor;
 	}
 
-	public static void moveTarget(int inputT, int input2, int ticks)
+	public static void moveTarget(int ticks)
 	{
-		if(inputT != -2 || input2 < 37 || input2 > 40)
+		int mlr = TA.take[39] - TA.take[37];
+		int mou = TA.take[40] - TA.take[38];
+		if(mlr == 0 && mou == 0)
 			return;
 		tick = 0;
 		maxtick = ticks;
 		startX = shiftX;
 		startY = shiftY;
 		startTile = tile;
-		targetX = targetX + basetile / 2 * (input2 == 39 ? 1 : input2 == 37 ? -1 : 0);
-		targetY = targetY + basetile / 2 * (input2 == 40 ? 1 : input2 == 38 ? -1 : 0);
+		targetX = targetX + basetile / 5 * mlr;
+		targetY = targetY + basetile / 5 * mou;
 	}
 
 	public static void moveToTarget()

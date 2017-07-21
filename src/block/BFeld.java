@@ -143,7 +143,7 @@ public class BFeld extends Feld
 			else
 				area.addw("Einhauwand" + einhauwand);
 		if(dia)
-			area.add3(DiaRender.gib(0.1, 0.9, 4, SIN.t / (double) SIN.tm, 0.8, new Color(0, 0, benutzt ? 0 : 200, 127)));
+			area.add3(DiaRender.gib(0.1, 0.9, 4, (SIN.t % 640) / 640d, 0.8, new Color(0, 0, benutzt ? 0 : 200, 127)));
 		if(diaTuer > 0)
 			if(diaTuer > blockLab.dias)
 				area.addw("DiaTür", "  " + diaTuer);

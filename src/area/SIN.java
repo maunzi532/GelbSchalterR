@@ -1,7 +1,6 @@
 package area;
 
 import java.awt.*;
-import java.awt.event.*;
 import java.awt.image.*;
 import javax.swing.*;
 import tex.*;
@@ -19,11 +18,14 @@ public class SIN
 	static int mapview;
 	static int kamZoom = 8;
 	static int mapKamZoom = 16;
-	static int fokusX, fokusY;
-	static int mfokusX, mfokusY;
-	private static int inputDataT = -1;
-	private static int inputData2 = -1;
-	private static int inputData3 = -1;
+	public static int fokusX;
+	public static int fokusY;
+	public static int mfokusX;
+	public static int mfokusY;
+	//private static int inputDataT = -1;
+	//private static int inputData2 = -1;
+	//private static int inputData3 = -1;
+	public static int t;
 
 	static void start(Area area1, Texturen tex1, boolean ch)
 	{
@@ -32,64 +34,19 @@ public class SIN
 		tex = tex1;
 		fr = new JFrame();
 		fr.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		fr.addKeyListener(new KeyAdapter()
-		{
-			public void keyPressed(KeyEvent e)
-			{
-				if((e.getKeyCode() <= 40 && e.getKeyCode() > 36) || (e.getKeyCode() >= 75 && e.getKeyCode() <= 83))
-				{
-					inputDataT = -2;
-					inputData2 = e.getKeyCode();
-					inputData3 = 1;
-				}
-				else if(e.getKeyCode() == 69)
-				{
-					inputDataT = -5;
-					inputData2 = fokusX;
-					inputData3 = fokusY;
-				}
-			}
-		});
-		fr.addMouseListener(new MouseAdapter()
-		{
-			public void mousePressed(MouseEvent e)
-			{
-				if(mfokusX >= 0)
-				{
-					inputDataT = -3;
-					inputData2 = mfokusX;
-					inputData3 = mfokusY;
-				}
-				else
-				{
-					inputDataT = -4;
-					inputData2 = fokusX;
-					inputData3 = fokusY;
-				}
-			}
-		});
-		fr.addMouseWheelListener(new MouseAdapter()
-		{
-			public void mouseWheelMoved(MouseWheelEvent e)
-			{
-				inputDataT = -2;
-				inputData2 = e.getUnitsToScroll() < 0 ? 77 : 78;
-				inputData3 = 1;
-			}
-		});
+		TA.einbau(fr);
 		fr.pack();
 		size2 = new Dimension(800, 800);
 		size = new Dimension(size2.width + size2.height / 10 * 3, size2.height);
 		fr.setSize(size);
 		resizeImg();
-		gd.setColor(Color.WHITE);
+		gd.setColor(Color.BLACK);
 		gd.fillRect(0, 0, size.width, size.height);
 		if(tex.bilder2D.containsKey("Logo"))
 		{
 			BufferedImage logo = tex.bilder2D.get("Logo");
-			gd.drawImage(logo, (size.width - logo.getWidth()) / 2, (size.height - logo.getHeight()) / 2, Color.white, null);
+			gd.drawImage(logo, (size.width - logo.getWidth()) / 2, (size.height - logo.getHeight()) / 2, Color.BLACK, null);
 		}
-		gd.setColor(Color.BLACK);
 		fr.setVisible(true);
 		while(!fr.hasFocus())
 			U.warte(100);
@@ -165,50 +122,53 @@ public class SIN
 			mfokusX = -1;
 			mfokusY = -1;
 		}
-		if(inputDataT == -2 && inputData2 == 83)
-		{
+		t++;
+		TA.bereit();
+		if(TA.take[83] == 2)
 			area.speichern();
-		}
-		else if(inputDataT == -2 && inputData2 == 82)
+		else if(TA.take[82] == 2)
 		{
 			area.reset();
 			mapview = 0;
 			Shift.selectTarget(area.xp, area.yp, area.feld(area.yp, area.xp).visualH(), kamZoom, 6);
 		}
-		else if(inputDataT == -2 && inputData2 == 75 && mapview < 2)
+		else if(TA.take[75] == 2 && mapview < 2)
 		{
 			mapview = 1 - mapview;
 			Shift.selectTarget(area.xp, area.yp, area.feld(area.yp, area.xp).visualH(), mapview == 1 ? mapKamZoom : kamZoom, 6);
 		}
-		else if(inputDataT == -2 && (inputData2 == 77 || inputData2 == 78))
+		else
 		{
-			if(mapview == 1)
+			boolean sc1 = TA.take[77] == 2 || TA.take[210] == 2;
+			boolean sc2 = TA.take[78] == 2 || TA.take[211] == 2;
+			if(sc1 != sc2)
 			{
-				mapKamZoom += inputData2 * 2 - 155;
-				if(mapKamZoom < 1)
-					mapKamZoom = 1;
+				if(mapview == 1)
+				{
+					mapKamZoom += (sc1 ? 1 : -1);
+					if(mapKamZoom < 1)
+						mapKamZoom = 1;
+				}
+				else
+				{
+					kamZoom += (sc1 ? 1 : -1);
+					if(kamZoom < 4)
+						kamZoom = 4;
+				}
+				Shift.selectTarget(area.xp, area.yp, area.feld(area.yp, area.xp).visualH(),
+						mapview == 1 ? mapKamZoom : kamZoom, 1);
 			}
-			else
+			else if(mapview != 1 && area.moveX(mfokusX > 0))
 			{
-				kamZoom += inputData2 * 2 - 155;
-				if(kamZoom < 4)
-					kamZoom = 4;
+				if(area.mapview && mapview != 2)
+					mapview = 2;
+				if(!area.mapview && mapview == 2)
+					mapview = 0;
+				Shift.selectTarget(area.xp, area.yp, area.feld(area.yp, area.xp).visualH(), kamZoom, 6);
 			}
-			Shift.selectTarget(area.xp, area.yp, area.feld(area.yp, area.xp).visualH(), mapview == 1 ? mapKamZoom : kamZoom, 1);
+			else if(mapview > 0)
+				Shift.moveTarget(6);
 		}
-		else if(mapview != 1 && area.moveX(inputDataT, inputData2, inputData3))
-		{
-			if(area.mapview && mapview != 2)
-				mapview = 2;
-			if(!area.mapview && mapview == 2)
-				mapview = 0;
-			Shift.selectTarget(area.xp, area.yp, area.feld(area.yp, area.xp).visualH(), kamZoom, 6);
-		}
-		else if(mapview > 0)
-			Shift.moveTarget(inputDataT, inputData2, 6);
-		inputDataT = -1;
-		inputData2 = -1;
-		inputData3 = -1;
 	}
 
 	static void drawX()
@@ -227,19 +187,15 @@ public class SIN
 		gd.fillRect(0, 0, size.width, size.height);
 	}
 
-	public static int t;
-	public static int tm;
-
 	static void hintergrund()
 	{
-		if(tex.bilder2D.containsKey("Logo"))
+		if(tex.bilder2D.containsKey("Hintergrund"))
 		{
 			BufferedImage hintergrund = tex.bilder2D.get("Hintergrund");
 			int hw = hintergrund.getWidth();
 			int hh = hintergrund.getHeight();
 			//int aw = size.width - size.height / 10 * 3;
 			//int ah = size.height;
-			tm = hw;
 			int shtx = Shift.tile * 20;
 			int shty = Shift.tile * 20;
 			int shx = Shift.shiftX / 2/* + shtx * t / tm*/;
@@ -247,14 +203,11 @@ public class SIN
 			for(int i1 = 0; i1 < 3; i1++)
 				for(int i2 = 0; i2 < 3; i2++)
 					gd.drawImage(hintergrund, shtx * i1 - shx, shty * i2 - shy, shtx * (i1 + 1) - shx, shty * (i2 + 1) - shy, 0, 0, hw, hh, null);
-			t++;
-			if(t > tm)
-				t = 0;
 		}
 	}
 
 	private static void rahmen()
 	{
-		area.rahmen(gd, tex, size2.width, size.width, size.height);
+		area.rahmen(gd, tex, size2.width, size2.height);
 	}
 }
