@@ -56,7 +56,7 @@ public class Movement extends Item
 		return SIN.cheatmode ? 1 : 0;
 	}
 
-	public boolean benutze(int xp, int yp, int hoeheA, int[][] gehtT, int r)
+	public boolean benutze(int[][] gehtT, int r)
 	{
 		if(gehtT[r][0] <= 0)
 			return false;

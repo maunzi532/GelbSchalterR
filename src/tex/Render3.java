@@ -9,9 +9,9 @@ public abstract class Render3 extends Render
 	public double minh;
 	public double maxh;
 
-	public Render3(int height)
+	public Render3()
 	{
-		super(null, height);
+		super(null, 0);
 	}
 
 	public void teile(Graphics2D gd, int i, int th, int mh, int tw)

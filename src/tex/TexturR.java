@@ -4,8 +4,8 @@ import java.awt.image.*;
 
 public class TexturR
 {
-	public BufferedImage img;
-	public int shift;
+	public final BufferedImage img;
+	public final int shift;
 
 	public TexturR(BufferedImage img, int shift)
 	{

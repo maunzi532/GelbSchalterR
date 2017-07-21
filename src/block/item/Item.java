@@ -37,12 +37,12 @@ public abstract class Item
 
 	public void setzeOptionen(int xp, int yp, int hoeheA, int[][] geht, int[][] gehtT){}
 
-	public boolean benutze(int xp, int yp, int hoeheA, int[][] gehtT, int r)
+	public boolean benutze(int[][] gehtT, int r)
 	{
 		return false;
 	}
 
-	public boolean benutze(int xp, int yp, int hoeheA, int[][] geht, int x, int y)
+	public boolean benutze(int[][] geht, int x, int y)
 	{
 		if(x < 0 || y < 0 || x >= blockLab.xw || y >= blockLab.yw || geht[y][x] <= 0)
 			return false;
@@ -62,13 +62,14 @@ public abstract class Item
 
 	private static final KXS IKL2 = new KXS(false, false, true, true, false);
 
-	public void lies(String build, int errStart, int errEnd, ErrorVial vial)
+	public void lies(String build, int errStart, ErrorVial vial)
 	{
 		level = 1;
 		build = LC2.removeKlammernVllt(build);
 		LC2.superwaguh(build, errStart, vial, IKL2, this, "lies2");
 	}
 
+	@SuppressWarnings("unused")
 	public void lies2(String value, Integer errStart, Integer errEnd, ErrorVial vial, String textKey)
 	{
 		try

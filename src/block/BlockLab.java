@@ -13,7 +13,7 @@ import tex.*;
 
 public class BlockLab extends Area
 {
-	public static Color[] farben = new Color[]
+	public static final Color[] farben = new Color[]
 			{
 					new Color(191, 31, 31, 127),
 					new Color(31, 191, 31, 127),
@@ -22,17 +22,17 @@ public class BlockLab extends Area
 					new Color(255, 191, 63, 127),
 					new Color(255, 191, 63, 127)
 			};
-	public static int limit = 6;
+	public static final int limit = 6;
 
 	public BFeld[][] feld;
-	ArrayList<int[][]> geht2 = new ArrayList<>();
-	ArrayList<int[][]> gehtTasten = new ArrayList<>();
+	final ArrayList<int[][]> geht2 = new ArrayList<>();
+	final ArrayList<int[][]> gehtTasten = new ArrayList<>();
 	BlockLies bl;
 	public char farbeAktuell = 'A';
 	int dias;
 	public int hoeheA;
 	int akItem;
-	ArrayList<Item> items = new ArrayList<>();
+	final ArrayList<Item> items = new ArrayList<>();
 	int lrm;
 	int oum;
 
@@ -42,7 +42,7 @@ public class BlockLab extends Area
 		if(c1.charAt(0) == '{')
 		{
 			ErrorVial vial = bl.lies(c1);
-			if(!vial.worked())
+			if(vial.errors())
 				System.out.println(vial.errors);
 		}
 		else try
@@ -188,7 +188,7 @@ public class BlockLab extends Area
 					i2 = i - 1;
 				else
 					i2 = i;
-				if(items.get(i2).benutze(xp, yp, hoeheA, gehtTasten.get(i2), code))
+				if(items.get(i2).benutze(gehtTasten.get(i2), code))
 					break;
 			}
 			return i < items.size();
@@ -205,7 +205,7 @@ public class BlockLab extends Area
 					i2 = i - 1;
 				else
 					i2 = i;
-				if(items.get(i2).benutze(xp, yp, hoeheA, geht2.get(i2), SIN.fokusX, SIN.fokusY))
+				if(items.get(i2).benutze(geht2.get(i2), SIN.fokusX, SIN.fokusY))
 					break;
 			}
 			return i < items.size();

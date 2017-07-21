@@ -8,7 +8,6 @@ public class DiaRender extends Render3
 {
 	public DiaRender(double minh, double maxh, ArrayList<R3t> teile)
 	{
-		super(0);
 		this.minh = minh;
 		this.maxh = maxh;
 		this.teile = teile;

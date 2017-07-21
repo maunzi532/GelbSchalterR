@@ -31,9 +31,9 @@ public class ErrorVial
 		errors.add(error);
 	}
 
-	public boolean worked()
+	public boolean errors()
 	{
-		return errors.isEmpty();
+		return !errors.isEmpty();
 	}
 
 	public int[] mark(CError e, int xm)

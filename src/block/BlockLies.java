@@ -6,7 +6,7 @@ import java.util.*;
 public class BlockLies
 {
 	BFeld[][] feld;
-	int[][] se = new int[2][2];
+	final int[][] se = new int[2][2];
 
 	public ErrorVial lies(String build)
 	{
@@ -14,18 +14,19 @@ public class BlockLies
 		ArrayList<Integer> ends = new ArrayList<>();
 		ArrayList<String> buildSpl = LC2.klaSplit2(vial.prep(build), false, 0, ends);
 		Object[] werte = LC2.verifyTypes(buildSpl, 0, vial.end(), vial, LC2.TFV.KLAMMERN, LC2.TFV.KLAMMERN);
-		readInSettings((String) werte[0], ends.get(0), ends.get(1), vial);
+		readInSettings((String) werte[0], ends.get(0), vial);
 		readInFeld((String) werte[1], ends.get(1), ends.get(2), vial);
 		return vial;
 	}
 
 	private static final KXS forReadInSettings = new KXS(true, false, true, true, false);
 
-	public void readInSettings(String build, int errStart, int errEnd, ErrorVial vial)
+	public void readInSettings(String build, int errStart, ErrorVial vial)
 	{
 		LC2.superwaguh(build, errStart, vial, forReadInSettings, new ArrayList(), this, "readInSettings2");
 	}
 
+	@SuppressWarnings("unused")
 	public void readInSettings2(String value, Integer errStart, Integer errEnd, ErrorVial vial, String textKey)
 	{
 		int setN = -1;
@@ -64,6 +65,7 @@ public class BlockLies
 
 	private static final KXS forReadInFeld2 = new KXS(false, false);
 
+	@SuppressWarnings("unused")
 	public void readInFeld2(String value, Integer errStart, Integer errEnd, ErrorVial vial, ArrayList<BFeld[]> feld1)
 	{
 		ArrayList<BFeld> feld2 = new ArrayList<>();
@@ -74,6 +76,7 @@ public class BlockLies
 			vial.add(new CError("Reihe mit unpassender Länge: " + feld2.size() + " != " + se[0][0], errStart, errEnd));
 	}
 
+	@SuppressWarnings("unused")
 	public void readInFeld3(String value, Integer errStart, Integer errEnd, ErrorVial vial, ArrayList<BFeld> feld2)
 	{
 		BFeld f = new BFeld();

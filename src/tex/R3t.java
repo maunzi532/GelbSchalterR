@@ -5,9 +5,9 @@ import java.util.*;
 
 public class R3t
 {
-	R3p[] p;
-	boolean flach;
-	Color farbe;
+	final R3p[] p;
+	final boolean flach;
+	final Color farbe;
 
 	public R3t(boolean flach, Color farbe, R3p... p)
 	{

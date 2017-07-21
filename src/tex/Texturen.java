@@ -12,7 +12,8 @@ public class Texturen
 {
 	protected int accuracy;
 	protected final HashMap<String, Textur> lk2 = new HashMap<>();
-	public HashMap<String, BufferedImage> bilder2D = new HashMap<>();
+	public final HashMap<String, BufferedImage> bilder2D = new HashMap<>();
+	private final HashMap<String, TexturR> lk3 = new HashMap<>();
 
 	public Texturen(String pack, String texOrdnerName)
 	{
@@ -73,8 +74,6 @@ public class Texturen
 		}
 		lk2.put(dir.getName(), new Textur(kmax, kmin, im));
 	}
-
-	private HashMap<String, TexturR> lk3 = new HashMap<>();
 
 	public void placeAll2(Graphics2D gd, ArrayList<Render>[][] renders, int xw, int yw)
 	{

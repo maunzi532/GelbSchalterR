@@ -4,9 +4,9 @@ import java.awt.image.*;
 
 public class Textur
 {
-	public int h_up;
-	public int h_down;
-	public BufferedImage[] look;
+	public final int h_up;
+	public final int h_down;
+	public final BufferedImage[] look;
 
 	public Textur(int h_up, int h_down, BufferedImage[] look)
 	{

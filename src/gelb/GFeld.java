@@ -7,7 +7,7 @@ class GFeld implements Feld
 	int hoehe;
 	boolean gelb;
 	boolean lift;
-	boolean[] darauf;
+	final boolean[] darauf;
 	boolean aktiviert;
 	int treppe;
 	boolean nTyp;
@@ -70,12 +70,6 @@ class GFeld implements Feld
 	{
 		if(treppe == side)
 			return hoehe + 1;
-		return hoehe;
-	}
-
-	@Override
-	public int bodenH()
-	{
 		return hoehe;
 	}
 

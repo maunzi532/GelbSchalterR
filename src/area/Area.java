@@ -36,6 +36,7 @@ public abstract class Area
 
 	public void render(int mouseFx, int mouseFy)
 	{
+		//noinspection unchecked
 		renders2 = new ArrayList[yw][xw];
 		for(ycp = 0; ycp < yw; ycp++)
 			for(xcp = 0; xcp < xw; xcp++)

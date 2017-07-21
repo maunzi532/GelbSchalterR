@@ -108,7 +108,6 @@ public class BFeld implements Feld
 			blockLab.gewonnen = true;
 	}
 
-	@Override
 	public int bodenH()
 	{
 		if(blockFarbe != 'n' && blockFarbe != blockLab.farbeAktuell)
@@ -176,7 +175,7 @@ public class BFeld implements Feld
 		ErrorVial vial = new ErrorVial();
 		build = vial.prep(build);
 		lies(build, 0, vial.end(), vial);
-		if(!vial.worked())
+		if(vial.errors())
 			JOptionPane.showMessageDialog(null, vial.toString(), null, JOptionPane.ERROR_MESSAGE);
 	}
 
@@ -197,6 +196,7 @@ public class BFeld implements Feld
 		}
 	}
 
+	@SuppressWarnings("unused")
 	public void lies2(String value, Integer errStart, Integer errEnd, ErrorVial vial, String textKey)
 	{
 		try
@@ -260,7 +260,7 @@ public class BFeld implements Feld
 					vial.add(new CError("Unbekannter Wert: " + textKey, errStart, errEnd));
 			}
 			if(textKey.toLowerCase().startsWith("item"))
-				item.lies(value, errStart, errEnd, vial);
+				item.lies(value, errStart, vial);
 		}catch(Exception e)
 		{
 			vial.add(new CError("Invalides Setzen eines Werts", errStart, errEnd));

@@ -9,11 +9,11 @@ public class Gelb extends Area
 	GFeld[][] feld;
 	public int xz;
 	public int yz;
-	private final int gelbmax = 10;
+	private static final int gelbmax = 10;
 	private int gelbn;
-	private final int sprmax = 10;
+	private static final int sprmax = 10;
 	private int sprn;
-	private final int lifmax = 10;
+	private static final int lifmax = 10;
 	private int lif;
 	boolean teleport;
 
@@ -212,10 +212,7 @@ public class Gelb extends Area
 		{
 			int xt = xv + (TA.take[39] == 2 ? 1 : 0) - (TA.take[37] == 2 ? 1 : 0);
 			int yt = yv + (TA.take[40] == 2 ? 1 : 0) - (TA.take[38] == 2 ? 1 : 0);
-			if(tryDirection(xt, yt))
-				moved = !tryDirection(xt * 2 - xv, yt * 2 - yv);
-			else
-				moved = true;
+			moved = tryDirection(xt, yt) || tryDirection(xt * 2 - xv, yt * 2 - yv);
 		}
 		else if(TA.take[201] == 2 && geht[SIN.fokusY][SIN.fokusX] != 0)
 		{
@@ -235,11 +232,11 @@ public class Gelb extends Area
 	private boolean tryDirection(int xt, int yt)
 	{
 		if(xt < 0 || yt < 0 || xt >= xw || yt >= yw || geht[yt][xt] == 0)
-			return true;
+			return false;
 		xp = xt;
 		yp = yt;
 		gehen(geht[yp][xp]);
-		return false;
+		return true;
 	}
 
 	@Override

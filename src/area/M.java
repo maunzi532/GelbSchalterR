@@ -11,8 +11,7 @@ import tex.*;
 class M
 {
 	private static boolean g = false;
-	private static String texPack;
-	private static String texOrdnerName = "Texturen2";
+	private static final String texOrdnerName = "Texturen2";
 
 	public static void main(String[] args)
 	{
@@ -20,12 +19,17 @@ class M
 		boolean ch = false;
 		for(int i = 0; i < args.length; i++)
 		{
-			if(args[i].equals("cheatmode"))
-				ch = true;
-			else if(args[i].equals("gelb"))
-				g = true;
-			else
-				selected = new File(args[i]);
+			switch(args[i])
+			{
+				case "cheatmode":
+					ch = true;
+					break;
+				case "gelb":
+					g = true;
+					break;
+				default:
+					selected = new File(args[i]);
+			}
 		}
 		if(selected == null)
 		{
@@ -51,20 +55,18 @@ class M
 		}
 		if(g)
 		{
-			texPack = "Default";
 			Area area = new Gelb();
 			area.readFL(input);
 			area.reset();
-			Texturen tex = new GTex(texPack, texOrdnerName);
+			Texturen tex = new GTex("Default", texOrdnerName);
 			SIN.start(area, tex, ch);
 		}
 		else
 		{
-			texPack = "BlockLab";
 			Area area = new BlockLab();
 			area.readFL(input);
 			area.reset();
-			Texturen tex = new FTex(texPack, texOrdnerName);
+			Texturen tex = new FTex("BlockLab", texOrdnerName);
 			SIN.start(area, tex, ch);
 		}
 	}

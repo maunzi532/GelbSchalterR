@@ -2,14 +2,15 @@ package tex;
 
 public class Render
 {
-	String what;
-	String text;
+	final String what;
+	final String text;
 	public int height;
 	public boolean rerender;
 
 	public Render(String what, int height)
 	{
 		this.what = what;
+		text = null;
 		this.height = height;
 	}
 
