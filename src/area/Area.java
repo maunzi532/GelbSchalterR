@@ -21,7 +21,7 @@ public abstract class Area
 
 	public abstract boolean moveX(int inputT, int input2, int input3);
 
-	public abstract void rahmen(Graphics2D gd, Texturen tex, int w, int h);
+	public abstract void rahmen(Graphics2D gd, Texturen tex, int w1, int w, int h);
 
 	public void noMovement()
 	{

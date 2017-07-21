@@ -12,6 +12,7 @@ public class SIN
 	public static Texturen tex;
 	static JFrame fr;
 	static Dimension size;
+	static Dimension size2;
 	static BufferedImage img;
 	static Graphics2D gd;
 	static Area area;
@@ -77,7 +78,8 @@ public class SIN
 			}
 		});
 		fr.pack();
-		size = new Dimension(80 * 13, 800);
+		size2 = new Dimension(800, 800);
+		size = new Dimension(size2.width + size2.height / 10 * 3, size2.height);
 		fr.setSize(size);
 		resizeImg();
 		gd.setColor(Color.WHITE);
@@ -98,7 +100,8 @@ public class SIN
 
 	private static void resizeImg()
 	{
-		Shift.resize(size.width, size.height);
+		size2 = new Dimension(size.width - size.height / 10 * 3, size.height);
+		Shift.resize(size2.width, size2.height);
 		img = new BufferedImage(size.width, size.height, BufferedImage.TYPE_INT_ARGB);
 		gd = img.createGraphics();
 		Shift.selectTarget(area.xp, area.yp, area.feld(area.yp, area.xp).visualH(), mapview == 1 ? mapKamZoom : kamZoom, 1);
@@ -118,7 +121,7 @@ public class SIN
 			Shift.moveToTarget();
 		}
 		area.noMovement();
-		for(int i = 0; i < 20; i++)
+		for(int i = 0; i < 15; i++)
 		{
 			drawX();
 			U.warte(20 + i * 3);
@@ -152,10 +155,10 @@ public class SIN
 		fokusY = fokusY1;
 		int mx2 = m.x - f.x;
 		int my2 = m.y - f.y;
-		if(mx2 >= size.width - size.height / 10 * 3 && mx2 < size.width && my2 >= 0 && my2 < size.height)
+		if(mx2 >= size2.width && mx2 < size.width && my2 >= 0 && my2 < size2.height)
 		{
-			mfokusX = (mx2 - size.width + size.height / 10 * 3) / (size.height / 10);
-			mfokusY = my2 / (size.height / 10);
+			mfokusX = (mx2 - size2.width) / (size2.height / 10);
+			mfokusY = my2 / (size2.height / 10);
 		}
 		else
 		{
@@ -239,8 +242,8 @@ public class SIN
 			tm = hw;
 			int shtx = Shift.tile * 20;
 			int shty = Shift.tile * 20;
-			int shx = Shift.shiftX / 2 + shtx * t / tm;
-			int shy = Shift.shiftY / 2 + (int)(shty / 20 * Math.sin(2 * Math.PI * t / tm));
+			int shx = Shift.shiftX / 2/* + shtx * t / tm*/;
+			int shy = Shift.shiftY / 2/* + (int)(shty / 20 * Math.sin(2 * Math.PI * t / tm))*/;
 			for(int i1 = 0; i1 < 3; i1++)
 				for(int i2 = 0; i2 < 3; i2++)
 					gd.drawImage(hintergrund, shtx * i1 - shx, shty * i2 - shy, shtx * (i1 + 1) - shx, shty * (i2 + 1) - shy, 0, 0, hw, hh, null);
@@ -252,6 +255,6 @@ public class SIN
 
 	private static void rahmen()
 	{
-		area.rahmen(gd, tex, size.width, size.height);
+		area.rahmen(gd, tex, size2.width, size.width, size.height);
 	}
 }

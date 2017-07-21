@@ -15,25 +15,12 @@ public class Shift
 	public static int shiftX;
 	public static int shiftY;
 
-	public static void resize(int fw, int fh)
+	public static void resize(int fw1, int fh)
 	{
-		xd2 = fw / 13 * 5;
+		xd2 = fw1 / 2;
 		yd2 = fh / 2;
 		basetile = fh / 2;
 		baseth = basetile / 3;
-	}
-
-	static void place3(Graphics2D gd, Image im, int xf, int yf, int h)
-	{
-		gd.drawImage(im, xf * tile - h - shiftX + xd2, yf * tile - h - shiftY + yd2, tile, tile, null);
-	}
-
-	static void placeErsatzText(Graphics2D gd, String s, int xf, int yf, int h)
-	{
-		gd.setFont(new Font("Consolas", Font.PLAIN, (int)(tile * 1.5f / s.length())));
-		int fh2 = gd.getFontMetrics().getHeight() / 2;
-		gd.setColor(Color.WHITE);
-		gd.drawString(s, xf * tile - h - shiftX + xd2, yf * tile - h - shiftY + yd2 + tile / 2 + fh2);
 	}
 
 	public static void place3Vor(Graphics2D gd, Image im, int sh, int h)
@@ -94,7 +81,7 @@ public class Shift
 		tick++;
 		shiftX = (startX * (maxtick - tick) + targetX * tick) / maxtick;
 		shiftY = (startY * (maxtick - tick) + targetY * tick) / maxtick;
-		tile = (startTile * (maxtick - tick) + targetTile * tick) / maxtick;
+		tile = basetile / (basetile / ((startTile * (maxtick - tick) + targetTile * tick) / maxtick));
 		th = tile * baseth / basetile;
 	}
 }

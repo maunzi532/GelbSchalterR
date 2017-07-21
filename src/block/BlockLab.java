@@ -172,14 +172,15 @@ public class BlockLab extends Area
 	}
 
 	@Override
-	public void rahmen(Graphics2D gd, Texturen tex, int w, int h)
+	public void rahmen(Graphics2D gd, Texturen tex, int w1, int w, int h)
 	{
+		int ht = h / 10;
 		gd.setColor(Color.BLACK);
-		gd.fillRect(w - h / 10 * 3, 0, h / 10 * 3, h);
+		gd.fillRect(w1, 0, ht * 3, h);
 		gd.setColor(new Color(BlockLab.farben[farbeAktuell - 'A'].getRGB()));
-		gd.fillRect(w - h / 10 * 3, 0, h / 10, h);
+		gd.fillRect(w1, 0, ht, h);
 		gd.setColor(Color.BLUE);
-		gd.fillRect(w - h / 10 * 3, h * (10 - dias) / 10, h / 10, h);
+		gd.fillRect(w1, ht * (10 - dias), ht, h);
 		//gd.setColor(Color.BLUE);
 		//gd.fillRect(w - h / 10, 0, h / 10, h / 10 * lab.dias);
 		gd.setColor(Color.WHITE);
@@ -187,8 +188,8 @@ public class BlockLab extends Area
 		//gd.drawRect(w - h / 10 * 2, 0, h / 10 - 1, h - 1);
 		//gd.drawRect(w - h / 10, 0, h / 10 - 1, h - 1);
 		gd.setColor(Color.RED);
-		gd.drawRect(w - h / 10 * 2, h / 5 * akItem, h / 5 - 1, h / 5 - 1);
+		gd.drawRect(w1 + ht, ht * 2 * akItem, ht * 2 - 1, ht * 2 - 1);
 		for(int i = 0; i < items.size(); i++)
-			gd.drawImage(tex.bilder2D.get(items.get(i).bildname()), w - h / 10 * 2, h / 5 * i, h / 5, h / 5, null);
+			gd.drawImage(tex.bilder2D.get(items.get(i).bildname()), w1 + ht, ht * 2 * i, ht * 2, ht * 2, null);
 	}
 }

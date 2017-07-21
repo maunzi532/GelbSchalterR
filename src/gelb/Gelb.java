@@ -241,19 +241,20 @@ public class Gelb extends Area
 	}
 
 	@Override
-	public void rahmen(Graphics2D gd, Texturen tex, int w, int h)
+	public void rahmen(Graphics2D gd, Texturen tex, int w1, int w, int h)
 	{
+		int ht = h / 10;
 		gd.setColor(Color.RED);
-		gd.fillRect(w - h / 10 * 3, 0, h / 10 * 3, h);
+		gd.fillRect(w1, 0, ht * 3, h);
 		gd.setColor(Color.YELLOW);
-		gd.fillRect(w - h / 10 * 3, 0, h / 10, h / 10 * gelbn);
+		gd.fillRect(w1, 0, ht, ht * gelbn);
 		gd.setColor(Color.BLUE);
-		gd.fillRect(w - h / 10 * 2, 0, h / 10, h / 10 * sprn);
+		gd.fillRect(w1 + ht, 0, ht, ht * sprn);
 		gd.setColor(Color.DARK_GRAY);
-		gd.fillRect(w - h / 10, 0, h / 10, h / 10 * lif);
+		gd.fillRect(w1 + ht * 2, 0, ht, ht * lif);
 		gd.setColor(Color.WHITE);
-		gd.drawRect(w - h / 10 * 3, 0, h / 10 - 1, h - 1);
-		gd.drawRect(w - h / 10 * 2, 0, h / 10 - 1, h - 1);
-		gd.drawRect(w - h / 10, 0, h / 10 - 1, h - 1);
+		gd.drawRect(w1, 0, ht - 1, h - 1);
+		gd.drawRect(w1 + ht, 0, ht - 1, h - 1);
+		gd.drawRect(w1 + ht * 2, 0, ht - 1, h - 1);
 	}
 }
