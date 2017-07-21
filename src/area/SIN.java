@@ -22,9 +22,6 @@ public class SIN
 	public static int fokusY;
 	public static int mfokusX;
 	public static int mfokusY;
-	//private static int inputDataT = -1;
-	//private static int inputData2 = -1;
-	//private static int inputData3 = -1;
 	public static int t;
 
 	static void start(Area area1, Texturen tex1, boolean ch)

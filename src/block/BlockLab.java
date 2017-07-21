@@ -21,6 +21,7 @@ public class BlockLab extends Area
 					new Color(255, 191, 63, 127),
 					new Color(255, 191, 63, 127)
 			};
+	public static int limit = 6;
 
 	BFeld[][] feld;
 	ArrayList<int[][]> geht2 = new ArrayList<>();
@@ -31,7 +32,8 @@ public class BlockLab extends Area
 	int hoeheA;
 	int akItem;
 	ArrayList<Item> items = new ArrayList<>();
-	boolean ntou;
+	int lrm;
+	int oum;
 
 	public void readFL(String c1)
 	{
@@ -126,9 +128,54 @@ public class BlockLab extends Area
 			}
 			return false;
 		}
-		int mlr = (TA.take[39] == 2 ? 1 : 0) - (TA.take[37] == 2 ? 1 : 0);
-		int mou = (TA.take[40] == 2 ? 1 : 0) - (TA.take[38] == 2 ? 1 : 0);
-		if(mlr != 0 || mou != 0)
+		if(TA.take[37] <= 0 || TA.take[39] <= 0)
+		{
+			if(TA.take[37] > 0 && lrm > -limit)
+				lrm--;
+			if(TA.take[39] > 0 && lrm < limit)
+				lrm++;
+		}
+		if(TA.take[37] == 2 && TA.take[39] == 2)
+			lrm = 0;
+		else if(TA.take[37] == 2)
+			lrm = -limit;
+		else if(TA.take[39] == 2)
+			lrm = limit;
+		if(TA.take[38] <= 0 || TA.take[40] <= 0)
+		{
+			if(TA.take[38] > 0 && oum > -limit)
+				oum--;
+			if(TA.take[40] > 0 && oum < limit)
+				oum++;
+		}
+		if(TA.take[38] == 2 && TA.take[40] == 2)
+			oum = 0;
+		else if(TA.take[38] == 2)
+			oum = -limit;
+		else if(TA.take[40] == 2)
+			oum = limit;
+		int code = 0;
+		if(TA.take[37] > 0 && lrm <= -limit)
+		{
+			code = 1;
+			lrm = -1;
+		}
+		else if(TA.take[38] > 0 && oum <= -limit)
+		{
+			code = 2;
+			oum = -1;
+		}
+		else if(TA.take[39] > 0 && lrm >= limit)
+		{
+			code = 3;
+			lrm = 1;
+		}
+		else if(TA.take[40] > 0 && oum >= limit)
+		{
+			code = 4;
+			oum = 1;
+		}
+		if(code > 0)
 		{
 			int i;
 			for(i = 0; i < items.size(); i++)
@@ -140,21 +187,6 @@ public class BlockLab extends Area
 					i2 = i - 1;
 				else
 					i2 = i;
-				int code;
-				if(ntou)
-				{
-					if(mou != 0)
-						code = mou + 3;
-					else
-						code = mlr + 2;
-				}
-				else
-				{
-					if(mlr != 0)
-						code = mlr + 2;
-					else
-						code = mou + 3;
-				}
 				if(items.get(i2).benutze(xp, yp, hoeheA, gehtTasten.get(i2), code))
 					break;
 			}
