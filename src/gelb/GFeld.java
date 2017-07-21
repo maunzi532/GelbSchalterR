@@ -2,8 +2,9 @@ package gelb;
 
 import area.*;
 
-class GFeld extends Feld
+class GFeld implements Feld
 {
+	int hoehe;
 	boolean gelb;
 	boolean lift;
 	boolean[] darauf;
@@ -69,6 +70,12 @@ class GFeld extends Feld
 	{
 		if(treppe == side)
 			return hoehe + 1;
+		return hoehe;
+	}
+
+	@Override
+	public int bodenH()
+	{
 		return hoehe;
 	}
 

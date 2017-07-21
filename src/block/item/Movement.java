@@ -1,6 +1,7 @@
-package block;
+package block.item;
 
 import area.*;
+import block.*;
 import java.util.*;
 
 public class Movement extends Item
@@ -45,7 +46,7 @@ public class Movement extends Item
 	private int feldBegehbar(int xp, int yp, int xf, int yf, int hoeheA, int richtung)
 	{
 		Integer ph = blockLab.feld[yp][xp].getH(richtung, false);
-		if(blockLab.feld[yp][xp].hoehe != hoeheA)
+		if(blockLab.feld[yp][xp].bodenH() != hoeheA)
 			ph = hoeheA;
 		Integer fh = blockLab.feld[yf][xf].getH((richtung + 2) % 4, true);
 		if(ph == null || fh == null)

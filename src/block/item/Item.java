@@ -1,5 +1,6 @@
-package block;
+package block.item;
 
+import block.*;
 import laderLC.*;
 
 public abstract class Item

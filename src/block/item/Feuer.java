@@ -1,4 +1,6 @@
-package block;
+package block.item;
+
+import block.*;
 
 public class Feuer extends Item
 {

@@ -1,6 +1,7 @@
 package block;
 
 import area.*;
+import block.item.*;
 import java.awt.*;
 import java.io.*;
 import java.nio.charset.*;
@@ -23,13 +24,13 @@ public class BlockLab extends Area
 			};
 	public static int limit = 6;
 
-	BFeld[][] feld;
+	public BFeld[][] feld;
 	ArrayList<int[][]> geht2 = new ArrayList<>();
 	ArrayList<int[][]> gehtTasten = new ArrayList<>();
 	BlockLies bl;
-	char farbeAktuell = 'A';
+	public char farbeAktuell = 'A';
 	int dias;
-	int hoeheA;
+	public int hoeheA;
 	int akItem;
 	ArrayList<Item> items = new ArrayList<>();
 	int lrm;

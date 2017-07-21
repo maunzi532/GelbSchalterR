@@ -1,4 +1,6 @@
-package block;
+package block.item;
+
+import block.*;
 
 public class Schalterpistole extends LaengeItem
 {
@@ -33,7 +35,7 @@ public class Schalterpistole extends LaengeItem
 				BFeld f = blockLab.feld[yp + i * ym][xp + i * xm];
 				if(f.getAH() > hoeheA)
 					break;
-				if(f.schalter != 'n' && f.hoehe == hoeheA)
+				if(f.schalter != 'n' && f.bodenH() == hoeheA)
 				{
 					geht[yp + i * ym][xp + i * xm] = hoeheA;
 					gehtT[r + 1][0] = hoeheA;

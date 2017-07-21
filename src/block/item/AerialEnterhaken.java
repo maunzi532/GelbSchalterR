@@ -1,5 +1,6 @@
-package block;
+package block.item;
 
+import block.*;
 import laderLC.*;
 
 public class AerialEnterhaken extends Item
@@ -45,7 +46,7 @@ public class AerialEnterhaken extends Item
 		BFeld zf = blockLab.feld[iy][ix];
 		if(zf.enterstange < 0)
 			return 0;
-		if(zf.enterstange != zf.hoehe && !doppelt)
+		if(zf.enterstange != zf.bodenH() && !doppelt)
 			return 0;
 		int xd = (ix - xp) * (ix - xp);
 		int yd = (iy - yp) * (iy - yp);

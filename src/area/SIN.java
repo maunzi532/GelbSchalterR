@@ -99,7 +99,7 @@ public class SIN
 		boolean fertig = false;
 		for(int iy = area.yw - 1; iy >= 0 && !fertig; iy--)
 			for(int ix = area.xw - 1; ix >= 0 && !fertig; ix--)
-				if(Shift.checkObDarauf(mx, my, ix, iy, area.feld(iy, ix).hoehe))
+				if(Shift.checkObDarauf(mx, my, ix, iy, area.feld(iy, ix).visualH()))
 				{
 					fokusX1 = ix;
 					fokusY1 = iy;

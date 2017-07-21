@@ -1,14 +1,16 @@
-package block;
+package block.item;
 
-public class Sprungfeder extends LaengeItem
+import block.*;
+
+public class Fluegel extends LaengeItem
 {
-	public Sprungfeder()
+	public Fluegel()
 	{
-		level = 1;
-		laenge = 2;
+		level = 2;
+		laenge = 5;
 	}
 
-	public Sprungfeder(int level, int laenge)
+	public Fluegel(int level, int laenge)
 	{
 		super(level, laenge);
 	}
@@ -16,7 +18,7 @@ public class Sprungfeder extends LaengeItem
 	@Override
 	public Item kopie(BlockLab blockLab)
 	{
-		Sprungfeder i1 = new Sprungfeder(level, laenge);
+		Fluegel i1 = new Fluegel(level, laenge);
 		i1.blockLab = blockLab;
 		return i1;
 	}
@@ -34,20 +36,30 @@ public class Sprungfeder extends LaengeItem
 				BFeld f = blockLab.feld[yp + i * ym][xp + i * xm];
 				if(f.getAH() > hoeheA)
 					break;
-				if(i == laenge && f.getH() == hoeheA)
+				if(f.bodenH() == hoeheA)
 				{
-					geht[yp + i * ym][xp + i * xm] = hoeheA;
-					gehtT[r + 1][0] = hoeheA;
-					gehtT[r + 1][1] = xp + i * xm;
-					gehtT[r + 1][2] = yp + i * ym;
+					if(i > 1)
+					{
+						geht[yp + i * ym][xp + i * xm] = hoeheA;
+						gehtT[r + 1][0] = hoeheA;
+						gehtT[r + 1][1] = xp + i * xm;
+						gehtT[r + 1][2] = yp + i * ym;
+					}
+					break;
 				}
 			}
 		}
 	}
 
 	@Override
+	public String speichername()
+	{
+		return "flügel";
+	}
+
+	@Override
 	public String bildname()
 	{
-		return "Sprungfeder";
+		return "Flügel";
 	}
 }

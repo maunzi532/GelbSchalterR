@@ -1,24 +1,26 @@
 package block;
 
 import area.*;
+import block.item.*;
 import java.awt.*;
 import javax.swing.*;
 import laderLC.*;
 
-public class BFeld extends Feld
+public class BFeld implements Feld
 {
 	BlockLab blockLab;
+	int hoehe;
 	boolean ziel;
 	char blockFarbe = 'n';
 	int sonstH = -1;
-	char schalter = 'n';
+	public char schalter = 'n';
 	int pfeil = -1;
 	int einhauwand = -1;
 	boolean dia = false;
 	int diaTuer = 0;
 	boolean eis;
 	boolean loescher;
-	int enterstange = -1;
+	public int enterstange = -1;
 	Item item;
 
 	boolean benutzt = false;
@@ -43,13 +45,6 @@ public class BFeld extends Feld
 		copy.enterstange = enterstange;
 		copy.item = item;
 		return copy;
-	}
-
-	public int getH()
-	{
-		if(blockFarbe != 'n' && blockFarbe != blockLab.farbeAktuell)
-			return sonstH >= 0 ? sonstH : -1;
-		return hoehe;
 	}
 
 	public Integer getH(int side, boolean enter)
@@ -111,6 +106,20 @@ public class BFeld extends Feld
 			benutzt = true;
 		if(ziel)
 			blockLab.gewonnen = true;
+	}
+
+	@Override
+	public int bodenH()
+	{
+		if(blockFarbe != 'n' && blockFarbe != blockLab.farbeAktuell)
+			return sonstH >= 0 ? sonstH : -1;
+		return hoehe;
+	}
+
+	@Override
+	public int visualH()
+	{
+		return hoehe;
 	}
 
 	@Override

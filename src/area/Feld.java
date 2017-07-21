@@ -1,13 +1,10 @@
 package area;
 
-public abstract class Feld
+public interface Feld
 {
-	public int hoehe;
+	int bodenH();
 
-	public int visualH()
-	{
-		return hoehe;
-	}
+	int visualH();
 
-	public abstract void addToRender(Area area, boolean darauf);
+	void addToRender(Area area, boolean darauf);
 }
