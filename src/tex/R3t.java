@@ -29,7 +29,8 @@ public class R3t
 					xp[i] = (int)(p[i].n[0] * tw) + sh;
 					yp[i] = (int)(p[i].n[1] * tw) + sh;
 				}
-				gd.setColor(farbe);
+				double shd = 4;
+				gd.setColor(new Color(shd(farbe.getRed(), shd), shd(farbe.getGreen(), shd), shd(farbe.getBlue(), shd), farbe.getAlpha()));
 				gd.fillPolygon(xp, yp, p.length);
 			}
 			return;
@@ -85,7 +86,7 @@ public class R3t
 
 	private int shd(int vor, double shd)
 	{
-		int v2 = vor + (int)(shd * 20);
+		int v2 = vor + (int)(shd * 10);
 		if(v2 > 255)
 			return 255;
 		if(v2 < 0)

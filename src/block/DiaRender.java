@@ -6,13 +6,12 @@ import tex.*;
 
 public class DiaRender extends Render3
 {
-	public DiaRender(int fh, double minh, double maxh, ArrayList<R3t> teile)
+	public DiaRender(int height, double minh, double maxh, ArrayList<R3t> teile)
 	{
-		height = fh;
+		super(height, true);
 		this.minh = minh;
 		this.maxh = maxh;
 		this.teile = teile;
-		rerender = true;
 	}
 
 	public static DiaRender gib(double minh, double maxh, int edg, double start, double scale, Color dia, int fh)
