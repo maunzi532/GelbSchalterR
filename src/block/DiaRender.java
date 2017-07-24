@@ -23,8 +23,8 @@ public class DiaRender extends Render3
 		for(int i = 1; i <= edg; i++)
 		{
 			R3p neu = dreh(start + i / (double) edg, scale, (minh + maxh) / 2);
-			teile1.add(new R3t(false, dia, oben, last, neu));
 			teile1.add(new R3t(false, dia, unten, last, neu));
+			teile1.add(new R3t(false, dia, oben, last, neu));
 			last = neu;
 		}
 		return new DiaRender(fh, minh, maxh, teile1);
