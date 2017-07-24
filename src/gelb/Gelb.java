@@ -22,6 +22,12 @@ public class Gelb extends Area
 		return feld[y][x];
 	}
 
+	@Override
+	public int spielerHoehe()
+	{
+		return feld[xp][yp].visualH();
+	}
+
 	public void checkFields()
 	{
 		if(teleport)

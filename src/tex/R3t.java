@@ -20,7 +20,7 @@ public class R3t
 	{
 		if(flach)
 		{
-			if(p[0].n[2] * th == hi)
+			if((int)(p[0].n[2] * th) == hi)
 			{
 				int[] xp = new int[p.length];
 				int[] yp = new int[p.length];
@@ -49,34 +49,26 @@ public class R3t
 		if(unten.size() == 0 || oben.size() == 0 || end == 0)
 			return;
 		R3p m;
-		R3p a1;
-		R3p a2;
+		R3p[] a = new R3p[2];
 		if(unten.size() == 2)
 		{
 			m = oben.get(0);
-			a1 = unten.get(0);
-			a2 = unten.get(1);
+			a[0] = unten.get(0);
+			a[1] = unten.get(1);
 		}
 		else
 		{
 			m = unten.get(0);
-			a1 = oben.get(0);
-			a2 = oben.get(1);
+			a[0] = oben.get(0);
+			a[1] = oben.get(1);
 		}
-		if(m.n[2] - a1.n[2] == 0 || m.n[2] - a2.n[2] == 0)
+		if(m.n[2] - a[0].n[2] == 0 || m.n[2] - a[1].n[2] == 0)
 			return;
-		double h = hi / (double) th;
-		double ha = (hi + 1) / (double) th;
+		double[] h = new double[]{hi / (double) th, (hi + 1) / (double) th};
 		//x1, y1, x2, y2, x1a, y1a, x2a, y2a
 		double[] fl = new double[8];
-		fl[0] = ((m.n[2] - h) * a1.n[0] + (h - a1.n[2]) * m.n[0]) / (m.n[2] - a1.n[2]) * tw + sh;
-		fl[1] = ((m.n[2] - h) * a1.n[1] + (h - a1.n[2]) * m.n[1]) / (m.n[2] - a1.n[2]) * tw + sh;
-		fl[2] = ((m.n[2] - h) * a2.n[0] + (h - a2.n[2]) * m.n[0]) / (m.n[2] - a2.n[2]) * tw + sh;
-		fl[3] = ((m.n[2] - h) * a2.n[1] + (h - a2.n[2]) * m.n[1]) / (m.n[2] - a2.n[2]) * tw + sh;
-		fl[4] = ((m.n[2] - ha) * a1.n[0] + (ha - a1.n[2]) * m.n[0]) / (m.n[2] - a1.n[2]) * tw + sh;
-		fl[5] = ((m.n[2] - ha) * a1.n[1] + (ha - a1.n[2]) * m.n[1]) / (m.n[2] - a1.n[2]) * tw + sh;
-		fl[6] = ((m.n[2] - ha) * a2.n[0] + (ha - a2.n[2]) * m.n[0]) / (m.n[2] - a2.n[2]) * tw + sh;
-		fl[7] = ((m.n[2] - ha) * a2.n[1] + (ha - a2.n[2]) * m.n[1]) / (m.n[2] - a2.n[2]) * tw + sh;
+		for(int i = 0; i < 8; i++)
+			fl[i] = ((m.n[2] - h[i / 4]) * a[(i / 2) % 2].n[i % 2] + (h[i / 4] - a[(i / 2) % 2].n[2]) * m.n[i % 2]) / (m.n[2] - a[(i / 2) % 2].n[2]) * tw + sh;
 		double shdx = fl[0] - fl[4] + fl[2] - fl[6] + 2;
 		double shdy = fl[1] - fl[5] + fl[3] - fl[7] - 2;
 		double shd = Math.sqrt(shdx * shdx + shdy * shdy);

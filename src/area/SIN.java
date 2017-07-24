@@ -58,7 +58,7 @@ public class SIN
 		Shift.resize(size2.width, size2.height);
 		img = new BufferedImage(size.width, size.height, BufferedImage.TYPE_INT_ARGB);
 		gd = img.createGraphics();
-		Shift.selectTarget(area.xp, area.yp, area.feld(area.yp, area.xp).visualH(), mapview == 1 ? mapKamZoom : kamZoom, 1);
+		Shift.selectTarget(area.xp, area.yp, area.spielerHoehe(), mapview == 1 ? mapKamZoom : kamZoom, 1);
 	}
 
 	public static void run()
@@ -127,12 +127,12 @@ public class SIN
 		{
 			area.reset();
 			mapview = 0;
-			Shift.selectTarget(area.xp, area.yp, area.feld(area.yp, area.xp).visualH(), kamZoom, 6);
+			Shift.selectTarget(area.xp, area.yp, area.spielerHoehe(), kamZoom, 6);
 		}
 		else if(TA.take[75] == 2 && mapview < 2)
 		{
 			mapview = 1 - mapview;
-			Shift.selectTarget(area.xp, area.yp, area.feld(area.yp, area.xp).visualH(), mapview == 1 ? mapKamZoom : kamZoom, 6);
+			Shift.selectTarget(area.xp, area.yp, area.spielerHoehe(), mapview == 1 ? mapKamZoom : kamZoom, 6);
 		}
 		else
 		{
@@ -152,8 +152,7 @@ public class SIN
 					if(kamZoom < 4)
 						kamZoom = 4;
 				}
-				Shift.selectTarget(area.xp, area.yp, area.feld(area.yp, area.xp).visualH(),
-						mapview == 1 ? mapKamZoom : kamZoom, 1);
+				Shift.selectTarget(area.xp, area.yp, area.spielerHoehe(), mapview == 1 ? mapKamZoom : kamZoom, 1);
 			}
 			else if(mapview != 1 && area.moveX(mfokusX > 0))
 			{
@@ -161,7 +160,7 @@ public class SIN
 					mapview = 2;
 				if(!area.mapview && mapview == 2)
 					mapview = 0;
-				Shift.selectTarget(area.xp, area.yp, area.feld(area.yp, area.xp).visualH(), kamZoom, 6);
+				Shift.selectTarget(area.xp, area.yp, area.spielerHoehe(), kamZoom, 6);
 			}
 			else if(mapview > 0)
 				Shift.moveTarget(6);

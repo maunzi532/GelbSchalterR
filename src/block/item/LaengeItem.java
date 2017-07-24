@@ -16,10 +16,10 @@ public abstract class LaengeItem extends Item
 
 	public boolean benutze(int[][] gehtT, int r)
 	{
-		if(gehtT[r][0] <= 0)
-			return false;
 		if(r > 0)
 			blockLab.richtung = (r - 1) / 4d;
+		if(gehtT[r][0] <= 0)
+			return false;
 		blockLab.xp = gehtT[r][1];
 		blockLab.yp = gehtT[r][2];
 		blockLab.hoeheA = gehtT[r][0];

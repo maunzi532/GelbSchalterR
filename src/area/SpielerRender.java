@@ -9,32 +9,40 @@ public class SpielerRender extends Render3
 	public static Color w = Color.GRAY;
 	public static Color w1 = Color.RED;
 
-	public SpielerRender(double minh, double maxh, ArrayList<R3t> teile)
+	public SpielerRender(int hoeheA, double minh, double maxh, ArrayList<R3t> teile)
 	{
+		height = hoeheA;
 		this.minh = minh;
 		this.maxh = maxh;
 		this.teile = teile;
 		rerender = true;
 	}
 
-	public static SpielerRender gib(double minh, double maxh, int edg, double dreh, double scale)
+	public static SpielerRender gib(double dreh, int hoeheA)
 	{
 		ArrayList<R3t> teile1 = new ArrayList<>();
-		R3p oben = new R3p(0.5, 0.5, maxh);
-		R3p unten = new R3p(0.5, 0.5, minh);
-		R3p last = dreh(dreh, scale, (minh + maxh) / 2);
-		for(int i = 1; i <= edg; i++)
-		{
-			R3p neu = dreh(dreh + i / (double) edg, scale, (minh + maxh) / 2);
-			teile1.add(new R3t(false, i == 1 ? w1 : w, oben, last, neu));
-			teile1.add(new R3t(false, w, unten, last, neu));
-			last = neu;
-		}
-		return new SpielerRender(minh, maxh, teile1);
+		R3p[] punkte = new R3p[8];
+		double maxh = 1.8;
+		for(int i = 0; i < 4; i++)
+			punkte[i] = dreh(dreh + (i + 0.5) / 4, 0.6, maxh);
+		for(int i = 0; i < 4; i++)
+			punkte[i + 4] = dreh(dreh + (i + 0.5) / 4, 0.6, maxh - 0.5);
+
+		teile1.add(new R3t(true, w, punkte[0], punkte[1], punkte[2], punkte[3]));
+		teile1.add(new R3t(false, w, punkte[0], punkte[1], punkte[5]));
+		teile1.add(new R3t(false, w, punkte[0], punkte[4], punkte[5]));
+		teile1.add(new R3t(false, w1, punkte[1], punkte[2], punkte[6]));
+		teile1.add(new R3t(false, w1, punkte[1], punkte[5], punkte[6]));
+		teile1.add(new R3t(false, w, punkte[2], punkte[3], punkte[7]));
+		teile1.add(new R3t(false, w, punkte[2], punkte[6], punkte[7]));
+		teile1.add(new R3t(false, w, punkte[3], punkte[0], punkte[4]));
+		teile1.add(new R3t(false, w, punkte[3], punkte[7], punkte[4]));
+
+		return new SpielerRender(hoeheA, 0, maxh, teile1);
 	}
 
-	private static R3p dreh(double dreh, double scale, double mh)
+	private static R3p dreh(double dreh, double scale, double h)
 	{
-		return new R3p(Math.cos(dreh * Math.PI * 2) / 2 * scale + 0.5, Math.sin(dreh * Math.PI * 2) / 2 * scale + 0.5, mh);
+		return new R3p(Math.cos(dreh * Math.PI * 2) / 2 * scale + 0.5, Math.sin(dreh * Math.PI * 2) / 2 * scale + 0.5, h);
 	}
 }

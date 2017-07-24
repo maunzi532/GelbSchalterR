@@ -6,15 +6,16 @@ import tex.*;
 
 public class DiaRender extends Render3
 {
-	public DiaRender(double minh, double maxh, ArrayList<R3t> teile)
+	public DiaRender(int fh, double minh, double maxh, ArrayList<R3t> teile)
 	{
+		height = fh;
 		this.minh = minh;
 		this.maxh = maxh;
 		this.teile = teile;
 		rerender = true;
 	}
 
-	public static DiaRender gib(double minh, double maxh, int edg, double start, double scale, Color dia)
+	public static DiaRender gib(double minh, double maxh, int edg, double start, double scale, Color dia, int fh)
 	{
 		ArrayList<R3t> teile1 = new ArrayList<>();
 		R3p oben = new R3p(0.5, 0.5, maxh);
@@ -27,7 +28,7 @@ public class DiaRender extends Render3
 			teile1.add(new R3t(false, dia, unten, last, neu));
 			last = neu;
 		}
-		return new DiaRender(minh, maxh, teile1);
+		return new DiaRender(fh, minh, maxh, teile1);
 	}
 
 	private static R3p dreh(double dreh, double scale, double mh)

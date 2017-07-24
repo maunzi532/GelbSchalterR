@@ -94,6 +94,12 @@ public class BlockLab extends Area
 	}
 
 	@Override
+	public int spielerHoehe()
+	{
+		return hoeheA;
+	}
+
+	@Override
 	public void checkFields()
 	{
 		geht = new int[yw][xw];
@@ -225,16 +231,6 @@ public class BlockLab extends Area
 			}
 		}
 		return false;
-	}
-
-	@Override
-	public void render(int mouseFx, int mouseFy)
-	{
-		super.render(mouseFx, mouseFy);
-		SpielerRender sr = SpielerRender.gib(0.1, 0.9, 4, richtung, 0.8);
-		sr.height = hoeheA;
-		renders2[yp][xp].remove(renders2[yp][xp].size() - 1);
-		renders2[yp][xp].add(sr);
 	}
 
 	@Override

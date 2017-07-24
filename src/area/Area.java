@@ -17,6 +17,8 @@ public abstract class Area
 
 	public abstract Feld feld(int y, int x);
 
+	public abstract int spielerHoehe();
+
 	public abstract void checkFields();
 
 	public abstract boolean moveX(boolean nichtMap);
@@ -47,8 +49,6 @@ public abstract class Area
 					addw("Möglich");
 				if(mouseFx == xcp && mouseFy == ycp)
 					addw("Auswahl");
-				if(xp == xcp && yp == ycp)
-					addw("Spieler");
 				renders2[ycp][xcp] = renders;
 			}
 	}
@@ -77,7 +77,6 @@ public abstract class Area
 
 	public void add3(Render3 r3)
 	{
-		r3.height = feld(ycp, xcp).visualH();
 		renders.add(r3);
 	}
 }

@@ -113,5 +113,7 @@ class GFeld implements Feld
 				area.addw("TeleI");
 		if(da[3])
 			area.addw("Liftfahrer");
+		if(hier)
+			area.addw("Spieler");
 	}
 }

@@ -124,8 +124,6 @@ public class BFeld implements Feld
 	@Override
 	public void addToRender(Area area, boolean darauf)
 	{
-		if(hoehe <= 0)
-			return;
 		StringBuilder sb = new StringBuilder();
 		sb.append("Höhe").append(hoehe);
 		if(blockFarbe != 'n')
@@ -138,7 +136,8 @@ public class BFeld implements Feld
 			}
 			sb.append(blockFarbe);
 		}
-		area.addw(sb.toString());
+		if(hoehe > 0)
+			area.addw(sb.toString());
 		if(ziel)
 			area.addw("Ziel");
 		if(schalter != 'n')
@@ -151,7 +150,7 @@ public class BFeld implements Feld
 			else
 				area.addw("Einhauwand" + einhauwand);
 		if(dia)
-			area.add3(DiaRender.gib(0.1, 0.9, 4, (SIN.t % 100) / 100d, 0.8, new Color(0, 0, benutzt ? 0 : 200, 127)));
+			area.add3(DiaRender.gib(0.1, 0.9, 4, (SIN.t % 100) / 100d, 0.8, new Color(0, 0, benutzt ? 0 : 200, 127), visualH()));
 		if(diaTuer > 0)
 			if(diaTuer > blockLab.dias)
 				area.addw("DiaTür", "  " + diaTuer);
@@ -168,6 +167,8 @@ public class BFeld implements Feld
 			area.addm("Stange" + (darauf ? "B" : ""), enterstange);
 		if(item != null && !darauf)
 			area.addw(item.bildname());
+		if(darauf)
+			area.add3(SpielerRender.gib(blockLab.richtung, blockLab.hoeheA));
 	}
 
 	public void liesDirekt(String build)
