@@ -35,7 +35,6 @@ public class BlockLab extends Area
 	final ArrayList<Item> items = new ArrayList<>();
 	int lrm;
 	int oum;
-	public double richtung;
 
 	public void readFL(String c1)
 	{
@@ -84,7 +83,7 @@ public class BlockLab extends Area
 			for(int xi = 0; xi < xw; xi++)
 				feld[yi][xi] = bl.feld[yi][xi].copy(this);
 		hoeheA = feld[yp][xp].hoehe;
-		richtung = 0.75;
+		SRD.reset(this);
 	}
 
 	@Override
@@ -233,6 +232,7 @@ public class BlockLab extends Area
 		return false;
 	}
 
+
 	@Override
 	public void rahmen(Graphics2D gd, Texturen tex, int w1, int h)
 	{
@@ -249,5 +249,6 @@ public class BlockLab extends Area
 		gd.drawRect(w1 + ht, ht * 2 * akItem, ht * 2 - 1, ht * 2 - 1);
 		for(int i = 0; i < items.size(); i++)
 			gd.drawImage(tex.bilder2D.get(items.get(i).bildname()), w1 + ht, ht * 2 * i, ht * 2, ht * 2, null);
+		SRD.tick(this);
 	}
 }

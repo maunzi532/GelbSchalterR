@@ -20,4 +20,9 @@ public class R3p
 		return new R3p(Math.cos(dreh2) / 2 * original.n[1 - inv] - Math.sin(dreh2) / 2 * original.n[inv] + 0.5,
 				Math.sin(dreh2) / 2 * original.n[1 - inv] + Math.cos(dreh2) / 2 * original.n[inv] + 0.5, original.n[2]);
 	}
+
+	public static R3p shift(R3p original, double xs, double ys, double zs)
+	{
+		return new R3p(original.n[0] + xs, original.n[1] + ys, original.n[2] + zs);
+	}
 }

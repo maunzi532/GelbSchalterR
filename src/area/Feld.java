@@ -4,5 +4,5 @@ public interface Feld
 {
 	int visualH();
 
-	void addToRender(Area area, boolean darauf);
+	void addToRender(Area area, boolean darauf, int xcp, int ycp);
 }

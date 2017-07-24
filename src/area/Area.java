@@ -32,7 +32,8 @@ public abstract class Area
 
 	public void readFL(String c1){}
 
-	private int ycp, xcp;
+	private int ycp;
+	private int xcp;
 	private ArrayList<Render> renders;
 	protected ArrayList<Render>[][] renders2;
 
@@ -44,7 +45,7 @@ public abstract class Area
 			for(xcp = 0; xcp < xw; xcp++)
 			{
 				renders = new ArrayList<>();
-				feld(ycp, xcp).addToRender(this, xcp == xp && ycp == yp);
+				feld(ycp, xcp).addToRender(this, xcp == xp && ycp == yp, xcp, ycp);
 				if(geht[ycp][xcp] != 0)
 					addw("Möglich");
 				if(mouseFx == xcp && mouseFy == ycp)

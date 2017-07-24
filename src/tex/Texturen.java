@@ -132,6 +132,8 @@ public class Texturen
 		Graphics2D gd = vor.createGraphics();
 		TexturR tR = new TexturR(vor, maxH);
 		for(int i = minH; i < maxH; i++)
+		{
+			gd.setClip(maxH - i, maxH - i, maxH - i + Shift.tile, maxH - i + Shift.tile);
 			for(Render re : renders)
 			{
 				if(re instanceof Render3)
@@ -158,6 +160,7 @@ public class Texturen
 						Shift.placeErsatzTextVor(gd, key, maxH, i);
 				}
 			}
+		}
 		return tR;
 	}
 

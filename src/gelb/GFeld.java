@@ -85,7 +85,7 @@ class GFeld implements Feld
 		return hoehe;
 	}
 
-	public void addToRender(Area area, boolean hier)
+	public void addToRender(Area area, boolean hier, int xcp, int ycp)
 	{
 		boolean[] da = darauf;
 		String dire = "Höhe" + hoehe;

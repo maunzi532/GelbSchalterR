@@ -105,7 +105,10 @@ public class BFeld implements Feld
 		if(eis)
 			benutzt = true;
 		if(ziel)
+		{
+			SRD.setRichtung(0.75);
 			blockLab.gewonnen = true;
+		}
 	}
 
 	public int bodenH()
@@ -122,7 +125,7 @@ public class BFeld implements Feld
 	}
 
 	@Override
-	public void addToRender(Area area, boolean darauf)
+	public void addToRender(Area area, boolean darauf, int xcp, int ycp)
 	{
 		StringBuilder sb = new StringBuilder();
 		sb.append("Höhe").append(hoehe);
@@ -167,8 +170,8 @@ public class BFeld implements Feld
 			area.addm("Stange" + (darauf ? "B" : ""), enterstange);
 		if(item != null && !darauf)
 			area.addw(item.bildname());
-		if(darauf)
-			area.add3(SpielerRender.gib(blockLab.richtung, blockLab.hoeheA));
+		if((xcp == Math.floor(SRD.x) || xcp == Math.ceil(SRD.x)) && (ycp == Math.floor(SRD.y) || ycp == Math.ceil(SRD.y)))
+			area.add3(SpielerRender.gib(SRD.richtung, SRD.z, SRD.x - xcp, SRD.y - ycp));
 	}
 
 	public void liesDirekt(String build)

@@ -17,7 +17,7 @@ public class SpielerRender extends Render3
 		this.teile = teile;
 	}
 
-	public static SpielerRender gib(double dreh, int hoeheA)
+	public static SpielerRender gib(double dreh, double z, double xs, double ys)
 	{
 		ArrayList<R3t> teile1 = new ArrayList<>();
 		R3p[] punkte = new R3p[46];
@@ -59,6 +59,9 @@ public class SpielerRender extends Render3
 		for(int i = 0; i < 8; i++)
 			punkte[38 + i] = R3p.dreh(dreh, new R3p((i % 4 > 1 ? 0.3 : 0.15) * (i / 4 * 2 - 1), -kw1, maxh - (i % 2 == 0 ? 0.2 : 0.1)));
 
+		for(int i = 0; i < punkte.length; i++)
+			punkte[i] = R3p.shift(punkte[i], xs, ys, z - (int) z);
+
 		r4(teile1, w, punkte[16], punkte[17], punkte[12], punkte[13], punkte[22], punkte[23], punkte[18], punkte[19]);
 		r4(teile1, w, punkte[17], punkte[16], punkte[14], punkte[15], punkte[24], punkte[25], punkte[20], punkte[21]);
 
@@ -77,7 +80,7 @@ public class SpielerRender extends Render3
 
 		teile1.add(new R3t(true, w, Arrays.copyOfRange(punkte, 0, 4)));
 
-		return new SpielerRender(hoeheA, 0, maxh, teile1);
+		return new SpielerRender((int) z, 0, maxh, teile1);
 	}
 
 	private static void q(ArrayList<R3t> teile1, Color f, R3p... ecken)
