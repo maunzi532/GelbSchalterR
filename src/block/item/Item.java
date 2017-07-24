@@ -46,11 +46,24 @@ public abstract class Item
 	{
 		if(x < 0 || y < 0 || x >= blockLab.xw || y >= blockLab.yw || geht[y][x] <= 0)
 			return false;
+		setzeR(blockLab.xp, blockLab.yp, x, y);
 		blockLab.xp = x;
 		blockLab.yp = y;
 		blockLab.hoeheA = geht[y][x];
 		blockLab.feld[y][x].gehen();
 		return true;
+	}
+
+	public void setzeR(int xa, int ya, int xn, int yn)
+	{
+		if(xn < xa)
+			blockLab.richtung = 0;
+		else if(yn < ya)
+			blockLab.richtung = 0.25;
+		else if(xn > xa)
+			blockLab.richtung = 0.5;
+		else if(yn > ya)
+			blockLab.richtung = 0.75;
 	}
 
 	public String speichername()

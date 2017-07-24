@@ -35,6 +35,7 @@ public class BlockLab extends Area
 	final ArrayList<Item> items = new ArrayList<>();
 	int lrm;
 	int oum;
+	public double richtung;
 
 	public void readFL(String c1)
 	{
@@ -83,6 +84,7 @@ public class BlockLab extends Area
 			for(int xi = 0; xi < xw; xi++)
 				feld[yi][xi] = bl.feld[yi][xi].copy(this);
 		hoeheA = feld[yp][xp].hoehe;
+		richtung = 0.75;
 	}
 
 	@Override
@@ -223,6 +225,16 @@ public class BlockLab extends Area
 			}
 		}
 		return false;
+	}
+
+	@Override
+	public void render(int mouseFx, int mouseFy)
+	{
+		super.render(mouseFx, mouseFy);
+		SpielerRender sr = SpielerRender.gib(0.1, 0.9, 4, richtung, 0.8);
+		sr.height = hoeheA;
+		renders2[yp][xp].remove(renders2[yp][xp].size() - 1);
+		renders2[yp][xp].add(sr);
 	}
 
 	@Override

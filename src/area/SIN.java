@@ -172,7 +172,7 @@ public class SIN
 	{
 		area.render(fokusX, fokusY);
 		clear();
-		hintergrund();
+		//hintergrund();
 		tex.placeAll2(gd, area.renders2, area.xw, area.yw);
 		rahmen();
 		fr.getGraphics().drawImage(img, 0, 0, null);

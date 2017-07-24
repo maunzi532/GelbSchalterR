@@ -32,7 +32,7 @@ public abstract class Area
 
 	private int ycp, xcp;
 	private ArrayList<Render> renders;
-	ArrayList<Render>[][] renders2;
+	protected ArrayList<Render>[][] renders2;
 
 	public void render(int mouseFx, int mouseFy)
 	{
@@ -45,10 +45,10 @@ public abstract class Area
 				feld(ycp, xcp).addToRender(this, xcp == xp && ycp == yp);
 				if(geht[ycp][xcp] != 0)
 					addw("Möglich");
-				if(xp == xcp && yp == ycp)
-					addw("Spieler");
 				if(mouseFx == xcp && mouseFy == ycp)
 					addw("Auswahl");
+				if(xp == xcp && yp == ycp)
+					addw("Spieler");
 				renders2[ycp][xcp] = renders;
 			}
 	}

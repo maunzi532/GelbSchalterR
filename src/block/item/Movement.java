@@ -60,6 +60,8 @@ public class Movement extends Item
 	{
 		if(gehtT[r][0] <= 0)
 			return false;
+		if(r > 0)
+			blockLab.richtung = (r - 1) / 4d;
 		blockLab.xp = gehtT[r][1];
 		blockLab.yp = gehtT[r][2];
 		blockLab.hoeheA = gehtT[r][0];

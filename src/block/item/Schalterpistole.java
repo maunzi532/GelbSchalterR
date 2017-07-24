@@ -52,6 +52,8 @@ public class Schalterpistole extends LaengeItem
 	{
 		if(gehtT[r][0] <= 0)
 			return false;
+		if(r > 0)
+			blockLab.richtung = (r - 1) / 4d;
 		blockLab.farbeAktuell = blockLab.feld[gehtT[r][2]][gehtT[r][1]].schalter;
 		return true;
 	}
@@ -61,6 +63,7 @@ public class Schalterpistole extends LaengeItem
 	{
 		if(x < 0 || y < 0 || x >= blockLab.xw || y >= blockLab.yw || geht[y][x] <= 0)
 			return false;
+		setzeR(blockLab.xp, blockLab.yp, x, y);
 		blockLab.farbeAktuell = blockLab.feld[y][x].schalter;
 		return true;
 	}

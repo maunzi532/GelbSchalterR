@@ -18,6 +18,8 @@ public abstract class LaengeItem extends Item
 	{
 		if(gehtT[r][0] <= 0)
 			return false;
+		if(r > 0)
+			blockLab.richtung = (r - 1) / 4d;
 		blockLab.xp = gehtT[r][1];
 		blockLab.yp = gehtT[r][2];
 		blockLab.hoeheA = gehtT[r][0];
@@ -31,6 +33,7 @@ public abstract class LaengeItem extends Item
 	{
 		if(x < 0 || y < 0 || x >= blockLab.xw || y >= blockLab.yw || geht[y][x] <= 0)
 			return false;
+		setzeR(blockLab.xp, blockLab.yp, x, y);
 		blockLab.xp = x;
 		blockLab.yp = y;
 		blockLab.hoeheA = geht[y][x];

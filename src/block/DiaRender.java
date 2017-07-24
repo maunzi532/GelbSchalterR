@@ -19,11 +19,10 @@ public class DiaRender extends Render3
 		ArrayList<R3t> teile1 = new ArrayList<>();
 		R3p oben = new R3p(0.5, 0.5, maxh);
 		R3p unten = new R3p(0.5, 0.5, minh);
-		double dp = start * Math.PI * 2;
-		R3p last = dreh(dp, scale, (minh + maxh) / 2);
+		R3p last = dreh(start, scale, (minh + maxh) / 2);
 		for(int i = 1; i <= edg; i++)
 		{
-			R3p neu = dreh(dp + i / (double) edg, scale, (minh + maxh) / 2);
+			R3p neu = dreh(start + i / (double) edg, scale, (minh + maxh) / 2);
 			teile1.add(new R3t(false, dia, oben, last, neu));
 			teile1.add(new R3t(false, dia, unten, last, neu));
 			last = neu;
