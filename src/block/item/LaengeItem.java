@@ -1,6 +1,5 @@
 package block.item;
 
-import block.*;
 import laderLC.*;
 
 public abstract class LaengeItem extends Item
@@ -20,7 +19,7 @@ public abstract class LaengeItem extends Item
 		if(gehtT[r][0] <= 0)
 			return false;
 		if(r > 0)
-			SRD.setRichtung((r - 1) / 4d);
+			blockLab.setRichtung(r - 1);
 		blockLab.xp = gehtT[r][1];
 		blockLab.yp = gehtT[r][2];
 		blockLab.hoeheA = gehtT[r][0];

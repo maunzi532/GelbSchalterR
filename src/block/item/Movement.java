@@ -53,19 +53,36 @@ public class Movement extends Item
 			return 0;
 		if(Objects.equals(ph, fh))
 			return fh;
-		return SIN.cheatmode ? 1 : 0;
+		return SIN.cheatmode ? blockLab.hoeheA : 0;
 	}
 
 	public boolean benutze(int[][] gehtT, int r)
 	{
+		if(blockLab.pfadmodus)
+		{
+			if(r > 0)
+			{
+				blockLab.setRichtung(r - 1);
+				if(r == 1)
+					blockLab.xp--;
+				else if(r == 2)
+					blockLab.yp--;
+				else if(r == 3)
+					blockLab.xp++;
+				else if(r == 4)
+					blockLab.yp++;
+			}
+			blockLab.angleichen();
+			return true;
+		}
 		if(gehtT[r][0] <= 0)
 		{
 			if(r > 0 && TA.take[r + 36] == 2)
-				SRD.setRichtung((r - 1) / 4d);
+				blockLab.setRichtung(r - 1);
 			return false;
 		}
 		if(r > 0)
-			SRD.setRichtung((r - 1) / 4d);
+			blockLab.setRichtung(r - 1);
 		blockLab.xp = gehtT[r][1];
 		blockLab.yp = gehtT[r][2];
 		blockLab.hoeheA = gehtT[r][0];

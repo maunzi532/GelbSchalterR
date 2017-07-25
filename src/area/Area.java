@@ -32,9 +32,9 @@ public abstract class Area
 
 	public void readFL(String c1){}
 
-	private int ycp;
-	private int xcp;
-	private ArrayList<Render> renders;
+	protected int ycp;
+	protected int xcp;
+	protected ArrayList<Render> renders;
 	protected ArrayList<Render>[][] renders2;
 
 	public void render(int mouseFx, int mouseFy)

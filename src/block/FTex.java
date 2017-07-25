@@ -10,10 +10,8 @@ public class FTex extends Texturen
 	{
 		super(pack, texOrdnerName);
 		for(int i = 0; i < 10; i++)
-		{
-			farbTex1(i, false);
-			farbTex1(i, true);
-		}
+			farbTex1(String.valueOf(i), false);
+		farbTex1("I", true);
 		farbTexS(false);
 		farbTexS(true);
 		drehTex1("Pfeil");
@@ -34,9 +32,9 @@ public class FTex extends Texturen
 		}
 	}
 
-	private void farbTex1(int i, boolean in)
+	private void farbTex1(String i, boolean in)
 	{
-		String vonname = "Höhe" + i + (in ? "I" : "");
+		String vonname = "Höhe" + i;
 		if(!lk2.containsKey(vonname))
 			return;
 		Textur von = lk2.get(vonname);

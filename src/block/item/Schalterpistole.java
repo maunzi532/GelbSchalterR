@@ -53,7 +53,7 @@ public class Schalterpistole extends LaengeItem
 		if(gehtT[r][0] <= 0)
 			return false;
 		if(r > 0)
-			SRD.setRichtung((r - 1) / 4d);
+			blockLab.setRichtung(r - 1);
 		blockLab.farbeAktuell = blockLab.feld[gehtT[r][2]][gehtT[r][1]].schalter;
 		return true;
 	}

@@ -6,6 +6,7 @@ public class SRD
 	private static double richtung2;
 	public static double x, y, z;
 	public static boolean gelandet;
+	public static double deep;
 
 	public static void reset(BlockLab blockLab)
 	{
@@ -15,6 +16,11 @@ public class SRD
 		y = blockLab.yp;
 		z = blockLab.hoeheA + 20;
 		gelandet = false;
+	}
+
+	public static void setRichtung(int r2)
+	{
+		setRichtung(r2 / 4d);
 	}
 
 	public static void setRichtung(double r2)

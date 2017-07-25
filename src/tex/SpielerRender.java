@@ -16,7 +16,7 @@ public class SpielerRender extends Render3
 		this.teile = teile;
 	}
 
-	public static SpielerRender gib(double dreh, double z, double xs, double ys)
+	public static SpielerRender gib(double dreh, double z, double xs, double ys, double deep)
 	{
 		double maxh = 1.8;
 		double h1 = 1.4;
@@ -63,7 +63,7 @@ public class SpielerRender extends Render3
 			punkte[cs2b + i] = new R3p(i * hb3 / ct1 * cwb, ca, 0);
 
 		for(int i = 0; i < punkte.length; i++)
-			punkte[i] = R3p.shift(R3p.dreh(dreh, punkte[i]), xs, ys, z - (int) z);
+			punkte[i] = R3p.shift(R3p.dreh(dreh, punkte[i]), xs, ys, z - (int) z - deep);
 
 		r4(teile1, w, punkte[16], punkte[17], punkte[12], punkte[14], punkte[22], punkte[24], punkte[18], punkte[20]);
 		r4(teile1, w, punkte[16], punkte[17], punkte[13], punkte[15], punkte[23], punkte[25], punkte[19], punkte[21]);

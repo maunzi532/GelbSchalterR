@@ -9,6 +9,8 @@ import tex.*;
 
 public class BFeld implements Feld
 {
+	public static final int maxenh = 11;
+
 	BlockLab blockLab;
 	int hoehe;
 	boolean ziel;
@@ -27,6 +29,11 @@ public class BFeld implements Feld
 	boolean benutzt = false;
 
 	public BFeld(){}
+
+	public BFeld(int hoehe)
+	{
+		this.hoehe = hoehe;
+	}
 
 	public BFeld copy(BlockLab blockLab)
 	{
@@ -107,7 +114,7 @@ public class BFeld implements Feld
 			benutzt = true;
 		if(ziel)
 		{
-			SRD.setRichtung(0.75);
+			blockLab.setRichtung(3);
 			blockLab.gewonnen = true;
 		}
 	}
@@ -134,16 +141,19 @@ public class BFeld implements Feld
 		{
 			if(((BlockLab) area).farbeAktuell != blockFarbe)
 			{
-				sb.append('I');
+				sb = new StringBuilder("HöheI");
 				if(sonstH >= 0)
-					area.addw("Höhe" + sonstH);
+					area.addm("Höhe" + sonstH, sonstH);
 			}
 			sb.append(blockFarbe);
 		}
 		if(hoehe > 0)
 			area.addw(sb.toString());
 		if(ziel)
-			area.addw("Ziel");
+		{
+			area.addw("Ziel2");
+			area.addw("Ziel1");
+		}
 		if(schalter != 'n')
 			area.addw("Schalter" + (blockLab.farbeAktuell == schalter ? "1" : "") + schalter);
 		if(pfeil >= 0)
@@ -156,7 +166,7 @@ public class BFeld implements Feld
 		if(dia)
 			area.add3(DiaRender.gib(0.1, 0.9, 4, (SIN.t % 100) / 100d, 0.8, new Color(0, 0, benutzt ? 0 : 200, 127), visualH()));
 		if(diaTuer > 0)
-			if(diaTuer > blockLab.dias)
+			if(diaTuer > blockLab.dias || xcp < 0)
 				area.addw("DiaTür", "  " + diaTuer);
 			else
 				area.addw("DiaTürOffen");
@@ -171,8 +181,55 @@ public class BFeld implements Feld
 			area.addm("Stange" + (darauf ? "B" : ""), enterstange);
 		if(item != null && !darauf)
 			area.addw(item.bildname());
-		if((xcp == Math.floor(SRD.x) || xcp == Math.ceil(SRD.x)) && (ycp == Math.floor(SRD.y) || ycp == Math.ceil(SRD.y)))
-			area.add3(SpielerRender.gib(SRD.richtung, SRD.z, SRD.x - xcp, SRD.y - ycp));
+		if(xcp >= 0 && (xcp == Math.floor(SRD.x) || xcp == Math.ceil(SRD.x)) && (ycp == Math.floor(SRD.y) || ycp == Math.ceil(SRD.y)))
+			area.add3(SpielerRender.gib(SRD.richtung, SRD.z, SRD.x - xcp, SRD.y - ycp, SRD.deep));
+	}
+
+	public void enhance(BlockLab mit, int wie)
+	{
+		switch(wie)
+		{
+			case 1:
+				blockFarbe = mit.farbeAktuell;
+				break;
+			case 2:
+				schalter = mit.farbeAktuell;
+				break;
+			case 3:
+				if(blockFarbe != 'n')
+				{
+					if(sonstH >= 0)
+						sonstH = -1;
+					else
+						sonstH = mit.hoeheA;
+				}
+				break;
+			case 4:
+				pfeil = mit.richtung;
+				break;
+			case 5:
+				einhauwand = (mit.richtung + 2) % 4;
+				break;
+			case 6:
+				dia = true;
+				break;
+			case 7:
+				if(mit.dias > 0)
+					diaTuer = mit.dias;
+				break;
+			case 8:
+				eis = true;
+				break;
+			case 9:
+				loescher = true;
+				break;
+			case 10:
+				enterstange = mit.hoeheA;
+				break;
+			case 11:
+				ziel = true;
+				break;
+		}
 	}
 
 	public void liesDirekt(String build)

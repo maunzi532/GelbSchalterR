@@ -1,5 +1,6 @@
 package area;
 
+import block.*;
 import java.awt.*;
 import java.awt.image.*;
 import javax.swing.*;
@@ -75,10 +76,11 @@ public class SIN
 			Shift.moveToTarget();
 		}
 		area.noMovement();
-		for(int i = 0; i < 15; i++)
+		for(int i = 0; i < 25; i++)
 		{
+			SRD.deep += 0.1;
 			drawX();
-			U.warte(20 + i * 3);
+			U.warte(20);
 			Shift.moveToTarget();
 		}
 	}

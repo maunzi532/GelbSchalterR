@@ -19,8 +19,8 @@ public class BlockLab extends Area
 					new Color(31, 191, 31, 127),
 					new Color(31, 31, 191, 127),
 					new Color(255, 191, 63, 127),
-					new Color(255, 191, 63, 127),
-					new Color(255, 191, 63, 127)
+					new Color(159, 159, 159, 127),
+					new Color(191, 31, 191, 127)
 			};
 	public static final int limit = 6;
 
@@ -35,6 +35,9 @@ public class BlockLab extends Area
 	final ArrayList<Item> items = new ArrayList<>();
 	int lrm;
 	int oum;
+	public int richtung;
+	public boolean pfadmodus;
+	public int enhkey;
 
 	public void readFL(String c1)
 	{
@@ -83,6 +86,7 @@ public class BlockLab extends Area
 			for(int xi = 0; xi < xw; xi++)
 				feld[yi][xi] = bl.feld[yi][xi].copy(this);
 		hoeheA = feld[yp][xp].hoehe;
+		richtung = 3;
 		SRD.reset(this);
 	}
 
@@ -96,6 +100,12 @@ public class BlockLab extends Area
 	public int spielerHoehe()
 	{
 		return hoeheA;
+	}
+
+	public void setRichtung(int r1)
+	{
+		richtung = r1;
+		SRD.setRichtung(r1);
 	}
 
 	@Override
@@ -128,11 +138,20 @@ public class BlockLab extends Area
 	{
 		if(nichtMap)
 		{
-			if(SIN.mfokusX >= 1)
+			if(SIN.mfokusX >= 1 && TA.take[201] == 2)
 			{
-				int y1 = SIN.mfokusY / 2;
-				if(y1 < items.size())
-					akItem = y1;
+				if(items.size() > 4)
+				{
+					int y1 = SIN.mfokusY * 2 + SIN.mfokusX - 1;
+					if(y1 < items.size())
+						akItem = y1;
+				}
+				else
+				{
+					int y1 = SIN.mfokusY / 2;
+					if(y1 < items.size())
+						akItem = y1;
+				}
 			}
 			return false;
 		}
@@ -162,8 +181,10 @@ public class BlockLab extends Area
 			oum = -limit;
 		else if(TA.take[40] == 2)
 			oum = limit;
-		int code = 0;
-		if(TA.take[37] > 0 && lrm <= -limit)
+		int code = -1;
+		if(TA.take[32] > 0)
+			code = 0;
+		else if(TA.take[37] > 0 && lrm <= -limit)
 		{
 			code = 1;
 			lrm = -1;
@@ -183,7 +204,7 @@ public class BlockLab extends Area
 			code = 4;
 			oum = 1;
 		}
-		if(code > 0)
+		if(code >= 0)
 		{
 			int i;
 			for(i = 0; i < items.size(); i++)
@@ -217,21 +238,118 @@ public class BlockLab extends Area
 			}
 			return i < items.size();
 		}
-		else if(TA.take[69] == 2 && SIN.cheatmode)
+		else if(SIN.cheatmode)
 		{
-			String alt = feld[SIN.fokusY][SIN.fokusX].speichern();
-			Object neu = JOptionPane.showInputDialog(null, null, null, JOptionPane.QUESTION_MESSAGE, null, null, alt);
-			if(neu instanceof String)
+			if(TA.take[112] == 2 && SIN.fokusX >= 0)
 			{
-				BFeld nf = new BFeld();
-				nf.liesDirekt((String) neu);
-				bl.feld[SIN.fokusY][SIN.fokusX] = nf;
-				feld[SIN.fokusY][SIN.fokusX] = nf.copy(this);
+				String alt = feld[SIN.fokusY][SIN.fokusX].speichern();
+				Object neu = JOptionPane.showInputDialog(null, null, null, JOptionPane.QUESTION_MESSAGE, null, null, alt);
+				if(neu instanceof String)
+				{
+					BFeld nf = new BFeld();
+					nf.liesDirekt((String) neu);
+					bl.feld[SIN.fokusY][SIN.fokusX] = nf;
+					feld[SIN.fokusY][SIN.fokusX] = nf.copy(this);
+				}
+			}
+			if(TA.take[113] == 2 || TA.take[114] == 2)
+			{
+				int p = 0;
+				if(TA.take[113] == 2)
+					p--;
+				if(TA.take[114] == 2)
+					p++;
+				if(p != 0)
+				{
+					if(TA.take[16] > 0 || pfadmodus)
+					{
+						hoeheA += p;
+						if(hoeheA < 0)
+							hoeheA = 0;
+						if(pfadmodus)
+							angleichen();
+					}
+					else if(SIN.fokusX >= 0)
+					{
+						BFeld f1 = bl.feld[SIN.fokusY][SIN.fokusX];
+						f1.hoehe += p;
+						if(f1.hoehe < 0)
+							f1.hoehe = 0;
+						feld[SIN.fokusY][SIN.fokusX] = f1.copy(this);
+					}
+				}
+			}
+			if(TA.take[115] == 2)
+			{
+				pfadmodus = !pfadmodus;
+				if(pfadmodus)
+					angleichen();
+			}
+			if(TA.take[116] == 2 && SIN.fokusX >= 0)
+			{
+				BFeld f1 = bl.feld[SIN.fokusY][SIN.fokusX];
+				if(f1.schalter != 'n')
+				{
+					f1.schalter = plusfarbe(f1.schalter);
+					feld[SIN.fokusY][SIN.fokusX] = f1.copy(this);
+				}
+				else if(f1.blockFarbe != 'n')
+				{
+					f1.blockFarbe = plusfarbe(f1.blockFarbe);
+					feld[SIN.fokusY][SIN.fokusX] = f1.copy(this);
+				}
+				else
+					farbeAktuell = plusfarbe(farbeAktuell);
+			}
+			if(TA.take[117] == 2)
+			{
+				if(TA.take[16] > 0)
+					dias--;
+				else
+				{
+					enhkey--;
+					if(enhkey < 0)
+						enhkey = BFeld.maxenh;
+				}
+			}
+			if(TA.take[118] == 2)
+			{
+				if(TA.take[16] > 0)
+					dias++;
+				else
+				{
+					enhkey++;
+					if(enhkey > BFeld.maxenh)
+						enhkey = 0;
+				}
+			}
+			if(TA.take[119] == 2 && SIN.fokusX >= 0)
+			{
+				BFeld f1 = bl.feld[SIN.fokusY][SIN.fokusX];
+				if(enhkey == 0)
+				{
+					f1 = new BFeld(f1.hoehe);
+					bl.feld[SIN.fokusY][SIN.fokusX] = f1;
+				}
+				f1.enhance(this, enhkey);
+				feld[SIN.fokusY][SIN.fokusX] = f1.copy(this);
 			}
 		}
 		return false;
 	}
 
+	public void angleichen()
+	{
+		bl.feld[yp][xp].hoehe = hoeheA;
+		feld[yp][xp] = bl.feld[yp][xp].copy(this);
+	}
+
+	public static char plusfarbe(char farbe)
+	{
+		if(farbe == 'F')
+			return 'A';
+		return (char)(farbe + 1);
+	}
 
 	@Override
 	public void rahmen(Graphics2D gd, Texturen tex, int w1, int h)
@@ -246,9 +364,30 @@ public class BlockLab extends Area
 		gd.setColor(Color.WHITE);
 		gd.drawRect(w1, 0, ht - 1, h - 1);
 		gd.setColor(Color.RED);
-		gd.drawRect(w1 + ht, ht * 2 * akItem, ht * 2 - 1, ht * 2 - 1);
-		for(int i = 0; i < items.size(); i++)
-			gd.drawImage(tex.bilder2D.get(items.get(i).bildname()), w1 + ht, ht * 2 * i, ht * 2, ht * 2, null);
+		if(items.size() <= 4)
+		{
+			for(int i = 0; i < items.size(); i++)
+				gd.drawImage(tex.bilder2D.get(items.get(i).bildname()), w1 + ht, ht * 2 * i, ht * 2, ht * 2, null);
+			gd.drawRect(w1 + ht, ht * 2 * akItem, ht * 2 - 1, ht * 2 - 1);
+		}
+		else
+		{
+			for(int i = 0; i < items.size(); i++)
+				gd.drawImage(tex.bilder2D.get(items.get(i).bildname()), w1 + ht + (i % 2) * ht, ht * (i / 2), ht, ht, null);
+			gd.drawRect(w1 + ht + (akItem % 2) * ht, ht * (akItem / 2), ht - 1, ht - 1);
+		}
+		if(SIN.cheatmode && SIN.fokusX >= 0)
+		{
+			renders = new ArrayList<>();
+			xcp = SIN.fokusX;
+			ycp = SIN.fokusY;
+			BFeld fn = bl.feld[SIN.fokusY][SIN.fokusX].copy(this);
+			if(enhkey == 0)
+				fn = new BFeld(fn.hoehe);
+			fn.enhance(this, enhkey);
+			fn.addToRender(this, false, -1, -1);
+			gd.drawImage(tex.placeThese(renders).img, w1 + ht, ht * 2 * 4, ht * 2, ht * 2, null);
+		}
 		SRD.tick(this);
 	}
 }

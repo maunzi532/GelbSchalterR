@@ -57,13 +57,13 @@ public abstract class Item
 	public void setzeR(int xa, int ya, int xn, int yn)
 	{
 		if(xn < xa)
-			SRD.setRichtung(0);
+			blockLab.setRichtung(0);
 		else if(yn < ya)
-			SRD.setRichtung(0.25);
+			blockLab.setRichtung(1);
 		else if(xn > xa)
-			SRD.setRichtung(0.5);
+			blockLab.setRichtung(2);
 		else if(yn > ya)
-			SRD.setRichtung(0.75);
+			blockLab.setRichtung(3);
 	}
 
 	public String speichername()
