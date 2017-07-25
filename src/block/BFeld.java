@@ -5,6 +5,7 @@ import block.item.*;
 import java.awt.*;
 import javax.swing.*;
 import laderLC.*;
+import tex.*;
 
 public class BFeld implements Feld
 {
