@@ -24,7 +24,8 @@ public class Fluegel extends LaengeItem
 		return i1;
 	}
 
-	public void setzeOptionen(int xp, int yp, int hoeheA, int[][] geht, int[][] gehtT)
+	@Override
+	public void setzeOptionen(int xp, int yp, int hoeheA)
 	{
 		for(int r = 0; r <= 3; r++)
 		{
@@ -40,12 +41,7 @@ public class Fluegel extends LaengeItem
 				if(f.bodenH() == hoeheA)
 				{
 					if(i > 1)
-					{
-						geht[yp + i * ym][xp + i * xm] = hoeheA;
-						gehtT[r + 1][0] = hoeheA;
-						gehtT[r + 1][1] = xp + i * xm;
-						gehtT[r + 1][2] = yp + i * ym;
-					}
+						option(xp + i * xm, yp + i * ym, hoeheA, r + 1);
 					break;
 				}
 			}

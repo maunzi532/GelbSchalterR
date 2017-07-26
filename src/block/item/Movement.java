@@ -20,13 +20,16 @@ public class Movement extends Item
 		return i1;
 	}
 
+	@Override
 	public boolean weg()
 	{
 		return false;
 	}
 
-	public void setzeOptionen(int xp, int yp, int hoeheA, int[][] geht, int[][] gehtT)
+	@Override
+	public void setzeOptionen(int xp, int yp, int hoeheA)
 	{
+		ArrayList<int[]> re = new ArrayList<>();
 		for(int r = 0; r <= 3; r++)
 		{
 			int xm = r != 3 ? r - 1 : 0;
@@ -34,12 +37,13 @@ public class Movement extends Item
 			if(xp + xm < 0 || yp + ym < 0 || xp + xm >= blockLab.xw || yp + ym >= blockLab.yw)
 				continue;
 			int b = feldBegehbar(xp, yp, xp + xm, yp + ym, hoeheA, r);
-			if(b > 0)
+			if(b >= 0)
 			{
-				geht[yp + ym][xp + xm] = b;
+				option(xp + xm, yp + ym, b, r + 1);
+				/*geht[yp + ym][xp + xm] = b;
 				gehtT[r + 1][0] = b;
 				gehtT[r + 1][1] = xp + xm;
-				gehtT[r + 1][2] = yp + ym;
+				gehtT[r + 1][2] = yp + ym;*/
 			}
 		}
 	}
@@ -51,13 +55,14 @@ public class Movement extends Item
 			ph = hoeheA;
 		Integer fh = blockLab.feld[yf][xf].getH((richtung + 2) % 4, true);
 		if(ph == null || fh == null)
-			return 0;
+			return -1;
 		if(Objects.equals(ph, fh))
 			return fh;
-		return SIN.cheatmode ? blockLab.hoeheA : 0;
+		return SIN.cheatmode ? blockLab.hoeheA : -1;
 	}
 
-	public boolean benutze(int[][] gehtT, int r, boolean main)
+	@Override
+	public boolean benutze(int r, boolean main, boolean lvm)
 	{
 		if(blockLab.pfadmodus)
 		{
@@ -76,19 +81,13 @@ public class Movement extends Item
 			blockLab.angleichen();
 			return true;
 		}
-		if(gehtT[r][0] <= 0)
+		if(g3[r] <= 0)
 		{
 			if(r > 0 && TA.take[r + 36] == 2)
 				blockLab.setRichtung(r - 1);
 			return false;
 		}
-		if(r > 0)
-			blockLab.setRichtung(r - 1);
-		blockLab.xp = gehtT[r][1];
-		blockLab.yp = gehtT[r][2];
-		blockLab.hoeheA = gehtT[r][0];
-		blockLab.feld[gehtT[r][2]][gehtT[r][1]].gehen();
-		return true;
+		return super.benutze(r, main, false);
 	}
 
 	@Override

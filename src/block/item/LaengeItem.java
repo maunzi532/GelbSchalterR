@@ -15,34 +15,18 @@ public abstract class LaengeItem extends Item
 		this.laenge = laenge;
 	}
 
-	public boolean benutze(int[][] gehtT, int r, boolean main)
+	@Override
+	public boolean benutze(int r, boolean main, boolean lvm)
 	{
 		if(!main && TA.take[16] <= 0 && level >= 0)
 			return false;
-		if(gehtT[r][0] <= 0)
-			return false;
-		if(r > 0)
-			blockLab.setRichtung(r - 1);
-		blockLab.xp = gehtT[r][1];
-		blockLab.yp = gehtT[r][2];
-		blockLab.hoeheA = gehtT[r][0];
-		level--;
-		blockLab.feld[gehtT[r][2]][gehtT[r][1]].gehen();
-		return true;
+		return super.benutze(r, main, true);
 	}
 
 	@Override
-	public boolean benutze(int[][] geht, int x, int y, boolean main)
+	public boolean benutze(int x, int y, boolean main, boolean lvm)
 	{
-		if(x < 0 || y < 0 || x >= blockLab.xw || y >= blockLab.yw || geht[y][x] <= 0)
-			return false;
-		setzeR(blockLab.xp, blockLab.yp, x, y);
-		blockLab.xp = x;
-		blockLab.yp = y;
-		blockLab.hoeheA = geht[y][x];
-		level--;
-		blockLab.feld[y][x].gehen();
-		return true;
+		return super.benutze(x, y, main, true);
 	}
 
 	public void lies2(String value, Integer errStart, Integer errEnd, ErrorVial vial, String textKey)

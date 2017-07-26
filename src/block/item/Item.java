@@ -2,6 +2,7 @@ package block.item;
 
 import block.*;
 import block.state.*;
+import java.util.*;
 import laderLC.*;
 
 public abstract class Item
@@ -39,23 +40,57 @@ public abstract class Item
 		return true;
 	}
 
-	public void setzeOptionen(int xp, int yp, int hoeheA, int[][] geht, int[][] gehtT){}
+	public ArrayList<int[]> g1;
+	public int[][] g2;
+	public int[] g3;
 
-	public boolean benutze(int[][] gehtT, int r, boolean main)
+	public void setzeOptionen1(int xp, int yp, int hoeheA, int xw, int yw)
 	{
-		return false;
+		g1 = new ArrayList<>();
+		g2 = new int[yw][xw];
+		g3 = new int[5];
+		setzeOptionen(xp, yp, hoeheA);
 	}
 
-	public boolean benutze(int[][] geht, int x, int y, boolean main)
+	public void setzeOptionen(int xp, int yp, int hoeheA){}
+
+	public void option(int x, int y, int z, int key)
 	{
-		if(x < 0 || y < 0 || x >= blockLab.xw || y >= blockLab.yw || geht[y][x] <= 0)
+		g1.add(new int[]{x, y, z});
+		g2[y][x] = g1.size();
+		if(key >= 0)
+			g3[key] = g1.size();
+	}
+
+	public boolean benutze(int r, boolean main, boolean lvm)
+	{
+		if(g3[r] <= 0)
+			return false;
+		if(r > 0)
+			blockLab.setRichtung(r - 1);
+		if(lvm && level > 0)
+			level--;
+		gzo(g1.get(g3[r] - 1));
+		return true;
+	}
+
+	public boolean benutze(int x, int y, boolean main, boolean lvm)
+	{
+		if(x < 0 || y < 0 || x >= blockLab.xw || y >= blockLab.yw || g2[y][x] <= 0)
 			return false;
 		setzeR(blockLab.xp, blockLab.yp, x, y);
-		blockLab.xp = x;
-		blockLab.yp = y;
-		blockLab.hoeheA = geht[y][x];
-		blockLab.feld[y][x].gehen();
+		if(lvm && level > 0)
+			level--;
+		gzo(g1.get(g2[y][x] - 1));
 		return true;
+	}
+
+	private void gzo(int[] zo)
+	{
+		blockLab.xp = zo[0];
+		blockLab.yp = zo[1];
+		blockLab.hoeheA = zo[2];
+		blockLab.feld[zo[1]][zo[0]].gehen();
 	}
 
 	void setzeR(int xa, int ya, int xn, int yn)

@@ -26,8 +26,6 @@ public class BlockLab extends Area
 	public static final int limit = 6;
 
 	public BFeld[][] feld;
-	final ArrayList<int[][]> geht2 = new ArrayList<>();
-	final ArrayList<int[][]> gehtTasten = new ArrayList<>();
 	BlockLies bl;
 
 	public char farbeAktuell = 'A';
@@ -118,24 +116,20 @@ public class BlockLab extends Area
 	public void checkFields()
 	{
 		geht = new int[yw][xw];
-		geht2.clear();
-		gehtTasten.clear();
 		int disable = 0;
 		for(Item item : items)
 			if(item.disable > disable)
 				disable = item.disable;
 		for(int i = 0; i < items.size(); i++)
 		{
-			int[][] geht3 = new int[yw][xw];
-			int[][] gehtT3 = new int[5][3];
 			if(items.get(i).enabled(disable))
-				items.get(i).setzeOptionen(xp, yp, hoeheA, geht3, gehtT3);
-			geht2.add(geht3);
-			gehtTasten.add(gehtT3);
-			for(int iy = 0; iy < geht.length; iy++)
-				for(int ix = 0; ix < geht[iy].length; ix++)
-					if(geht3[iy][ix] > 0)
-						geht[iy][ix] = 1;
+			{
+				items.get(i).setzeOptionen1(xp, yp, hoeheA, xw, yw);
+				for(int iy = 0; iy < geht.length; iy++)
+					for(int ix = 0; ix < geht[iy].length; ix++)
+						if(items.get(i).g2[iy][ix] > 0)
+							geht[iy][ix] = 1;
+			}
 		}
 	}
 
@@ -232,7 +226,7 @@ public class BlockLab extends Area
 					i2 = i - 1;
 				else
 					i2 = i;
-				if(items.get(i2).benutze(gehtTasten.get(i2), code, i2 == akItem))
+				if(items.get(i2).benutze(code, i2 == akItem, false))
 					break;
 			}
 			return i < items.size();
@@ -249,7 +243,7 @@ public class BlockLab extends Area
 					i2 = i - 1;
 				else
 					i2 = i;
-				if(items.get(i2).benutze(geht2.get(i2), SIN.fokusX, SIN.fokusY, i2 == akItem))
+				if(items.get(i2).benutze(SIN.fokusX, SIN.fokusY, i2 == akItem, false))
 					break;
 			}
 			return i < items.size();

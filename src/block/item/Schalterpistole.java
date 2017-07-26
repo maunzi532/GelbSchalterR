@@ -23,7 +23,8 @@ public class Schalterpistole extends LaengeItem
 		return i1;
 	}
 
-	public void setzeOptionen(int xp, int yp, int hoeheA, int[][] geht, int[][] gehtT)
+	@Override
+	public void setzeOptionen(int xp, int yp, int hoeheA)
 	{
 		for(int r = 0; r <= 3; r++)
 		{
@@ -38,10 +39,7 @@ public class Schalterpistole extends LaengeItem
 					break;
 				if(f.schalter != 'n' && f.bodenH() == hoeheA)
 				{
-					geht[yp + i * ym][xp + i * xm] = hoeheA;
-					gehtT[r + 1][0] = hoeheA;
-					gehtT[r + 1][1] = xp + i * xm;
-					gehtT[r + 1][2] = yp + i * ym;
+					option(xp + i * xm, yp + i * ym, hoeheA, r + 1);
 					break;
 				}
 			}
@@ -49,23 +47,25 @@ public class Schalterpistole extends LaengeItem
 	}
 
 	@Override
-	public boolean benutze(int[][] gehtT, int r, boolean main)
+	public boolean benutze(int r, boolean main, boolean lvm)
 	{
-		if(gehtT[r][0] <= 0)
+		if(g3[r] <= 0)
 			return false;
 		if(r > 0)
 			blockLab.setRichtung(r - 1);
-		blockLab.farbeAktuell = blockLab.feld[gehtT[r][2]][gehtT[r][1]].schalter;
+		int[] zo = g1.get(g3[r] - 1);
+		blockLab.farbeAktuell = blockLab.feld[zo[1]][zo[0]].schalter;
 		return true;
 	}
 
 	@Override
-	public boolean benutze(int[][] geht, int x, int y, boolean main)
+	public boolean benutze(int x, int y, boolean main, boolean lvm)
 	{
-		if(x < 0 || y < 0 || x >= blockLab.xw || y >= blockLab.yw || geht[y][x] <= 0)
+		if(x < 0 || y < 0 || x >= blockLab.xw || y >= blockLab.yw || g2[y][x] <= 0)
 			return false;
 		setzeR(blockLab.xp, blockLab.yp, x, y);
-		blockLab.farbeAktuell = blockLab.feld[y][x].schalter;
+		int[] zo = g1.get(g2[y][x] - 1);
+		blockLab.farbeAktuell = blockLab.feld[zo[1]][zo[0]].schalter;
 		return true;
 	}
 

@@ -24,7 +24,8 @@ public class Sprungfeder extends LaengeItem
 		return i1;
 	}
 
-	public void setzeOptionen(int xp, int yp, int hoeheA, int[][] geht, int[][] gehtT)
+	@Override
+	public void setzeOptionen(int xp, int yp, int hoeheA)
 	{
 		for(int r = 0; r <= 3; r++)
 		{
@@ -38,12 +39,7 @@ public class Sprungfeder extends LaengeItem
 				if(f.getAH() > hoeheA)
 					break;
 				if(i == laenge && f.bodenH() == hoeheA)
-				{
-					geht[yp + i * ym][xp + i * xm] = hoeheA;
-					gehtT[r + 1][0] = hoeheA;
-					gehtT[r + 1][1] = xp + i * xm;
-					gehtT[r + 1][2] = yp + i * ym;
-				}
+					option(xp + i * xm, yp + i * ym, hoeheA, r + 1);
 			}
 		}
 	}
