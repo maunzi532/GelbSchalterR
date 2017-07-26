@@ -15,6 +15,8 @@ public abstract class Area
 	public int xp;
 	public int yp;
 
+	public abstract void start(String input, String texOrdnerName, boolean chs, boolean chm);
+
 	public abstract Feld feld(int y, int x);
 
 	public abstract int spielerHoehe();
@@ -55,6 +57,8 @@ public abstract class Area
 	}
 
 	public abstract void reset();
+
+	public void victoryTick(){}
 
 	public void speichern()
 	{

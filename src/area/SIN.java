@@ -1,6 +1,5 @@
 package area;
 
-import block.*;
 import java.awt.*;
 import java.awt.image.*;
 import javax.swing.*;
@@ -9,6 +8,7 @@ import tex.*;
 public class SIN
 {
 	public static boolean cheatmode;
+	public static boolean ende;
 	public static Texturen tex;
 	static JFrame fr;
 	static Dimension size;
@@ -25,8 +25,9 @@ public class SIN
 	public static int mfokusY;
 	public static int t;
 
-	static void start(Area area1, Texturen tex1, boolean ch)
+	public static void start(Area area1, Texturen tex1, boolean ch)
 	{
+		ende = false;
 		cheatmode = ch;
 		area = area1;
 		tex = tex1;
@@ -64,7 +65,7 @@ public class SIN
 
 	public static void run()
 	{
-		while(!area.gewonnen)
+		while(!ende)
 		{
 			if(mapview == 1)
 				area.noMovement();
@@ -74,14 +75,19 @@ public class SIN
 			U.warte(20);
 			updatePosition();
 			Shift.moveToTarget();
+			if(area.gewonnen)
+				ende = true;
 		}
-		area.noMovement();
-		for(int i = 0; i < 25; i++)
+		if(area.gewonnen)
 		{
-			SRD.deep += 0.1;
-			drawX();
-			U.warte(20);
-			Shift.moveToTarget();
+			area.noMovement();
+			for(int i = 0; i < 25; i++)
+			{
+				area.victoryTick();
+				drawX();
+				U.warte(20);
+				Shift.moveToTarget();
+			}
 		}
 	}
 
@@ -127,9 +133,17 @@ public class SIN
 			area.speichern();
 		else if(TA.take[82] == 2)
 		{
-			area.reset();
-			mapview = 0;
-			Shift.selectTarget(area.xp, area.yp, area.spielerHoehe(), kamZoom, 6);
+			if(TA.take[16] > 0)
+			{
+				M.reload = true;
+				ende = true;
+			}
+			else
+			{
+				area.reset();
+				mapview = 0;
+				Shift.selectTarget(area.xp, area.yp, area.spielerHoehe(), kamZoom, 6);
+			}
 		}
 		else if(TA.take[75] == 2 && mapview < 2)
 		{

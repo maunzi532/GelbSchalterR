@@ -6,46 +6,52 @@ import java.io.*;
 import java.nio.charset.*;
 import java.nio.file.*;
 import javax.swing.*;
-import tex.*;
 
 class M
 {
 	private static boolean g = false;
-	private static boolean chs = false;
+	private static boolean changesize = false;
 	private static final String texOrdnerName = "Texturen2";
+	private static File selected;
+	public static boolean reload = true;
 
 	public static void main(String[] args)
 	{
-		File selected = null;
-		boolean ch = false;
+		boolean cheatmode = false;
 		for(int i = 0; i < args.length; i++)
 		{
 			switch(args[i])
 			{
 				case "cheatmode":
-					ch = true;
+					cheatmode = true;
 					break;
 				case "gelb":
 					g = true;
 					break;
-				case "chs":
-					chs = true;
+				case "changesize":
+					changesize = true;
 					break;
 				default:
 					selected = new File(args[i]);
 			}
 		}
-		if(selected == null)
+		while(reload)
 		{
-			JFileChooser fc = new JFileChooser(new File("saves"));
-			fc.showOpenDialog(null);
-			selected = fc.getSelectedFile();
+			reload = false;
+			if(selected == null)
+			{
+				JFileChooser fc = new JFileChooser(new File("saves"));
+				if(fc.showOpenDialog(null) == JFileChooser.APPROVE_OPTION)
+					selected = fc.getSelectedFile();
+			}
+			if(selected != null)
+				start(selected, cheatmode);
+			selected = null;
 		}
-		start(selected, ch);
 		System.exit(0);
 	}
 
-	private static void start(File lv, boolean ch)
+	private static void start(File lv, boolean cheatmode)
 	{
 		String input = null;
 		try
@@ -57,21 +63,11 @@ class M
 			System.out.println("Nicht gefunden");
 			System.exit(1);
 		}
+		Area area;
 		if(g)
-		{
-			Area area = new Gelb();
-			area.readFL(input, false);
-			area.reset();
-			Texturen tex = new GTex("Default", texOrdnerName);
-			SIN.start(area, tex, ch);
-		}
+			area = new Gelb();
 		else
-		{
-			Area area = new BlockLab();
-			area.readFL(input, chs);
-			area.reset();
-			Texturen tex = new FTex("BlockLab", texOrdnerName);
-			SIN.start(area, tex, ch);
-		}
+			area = new BlockLab();
+		area.start(input, texOrdnerName, changesize, cheatmode);
 	}
 }

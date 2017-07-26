@@ -17,6 +17,15 @@ public class Gelb extends Area
 	private int lif;
 	boolean teleport;
 
+	@Override
+	public void start(String input, String texOrdnerName, boolean chs, boolean chm)
+	{
+		readFL(input, chs);
+		reset();
+		Texturen tex = new GTex("Default", texOrdnerName);
+		SIN.start(this, tex, chm);
+	}
+
 	public Feld feld(int y, int x)
 	{
 		return feld[y][x];

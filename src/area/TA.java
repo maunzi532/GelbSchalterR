@@ -5,6 +5,7 @@ import javax.swing.*;
 
 public class TA
 {
+	public static final int KL = 300;
 	public static final int MP = 200;
 	public static final int MRP = 10;
 	public static boolean[] keys;
@@ -12,7 +13,7 @@ public class TA
 
 	public static void einbau(JFrame fenster)
 	{
-		keys = new boolean[300];
+		keys = new boolean[KL];
 		take = new int[keys.length];
 		fenster.addKeyListener(new KeyAdapter()
 		{
@@ -70,6 +71,11 @@ public class TA
 			n += MP;
 		if(n >= 0 && n < keys.length)
 			keys[n] = set;
+	}
+
+	public static void fix()
+	{
+		keys = new boolean[keys.length];
 	}
 
 	public static void bereit()

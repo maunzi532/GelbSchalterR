@@ -35,9 +35,20 @@ public class BlockLab extends Area
 	final ArrayList<Item> items = new ArrayList<>();
 	int lrm;
 	int oum;
+	public SRD srd;
 	public int richtung;
 	public boolean pfadmodus;
 	public int enhkey;
+
+	@Override
+	public void start(String input, String texOrdnerName, boolean chs, boolean chm)
+	{
+		readFL(input, chs);
+		srd = new SRD(this);
+		reset();
+		Texturen tex = new FTex("BlockLab", texOrdnerName);
+		SIN.start(this, tex, chm);
+	}
 
 	@Override
 	public void readFL(String c1, boolean se2n)
@@ -72,10 +83,10 @@ public class BlockLab extends Area
 		feld = new BFeld[yw][xw];
 		for(int yi = 0; yi < yw; yi++)
 			for(int xi = 0; xi < xw; xi++)
-				feld[yi][xi] = bl.feld[yi][xi].copy(this);
+				feld[yi][xi] = BFeld.copy(bl.feld[yi][xi], this);
 		hoeheA = feld[yp][xp].hoehe;
 		richtung = 3;
-		SRD.reset(this);
+		srd.reset(this);
 	}
 
 	@Override
@@ -93,7 +104,7 @@ public class BlockLab extends Area
 	public void setRichtung(int r1)
 	{
 		richtung = r1;
-		SRD.setRichtung(r1);
+		srd.setRichtung(r1);
 	}
 
 	@Override
@@ -237,7 +248,7 @@ public class BlockLab extends Area
 					BFeld nf = new BFeld();
 					nf.liesDirekt((String) neu);
 					bl.feld[SIN.fokusY][SIN.fokusX] = nf;
-					feld[SIN.fokusY][SIN.fokusX] = nf.copy(this);
+					feld[SIN.fokusY][SIN.fokusX] = BFeld.copy(nf, this);
 				}
 			}
 			if(TA.take[113] == 2 || TA.take[114] == 2)
@@ -259,11 +270,11 @@ public class BlockLab extends Area
 					}
 					else if(SIN.fokusX >= 0)
 					{
-						BFeld f1 = bl.feld[SIN.fokusY][SIN.fokusX];
+						LFeld f1 = bl.feld[SIN.fokusY][SIN.fokusX];
 						f1.hoehe += p;
 						if(f1.hoehe < 0)
 							f1.hoehe = 0;
-						feld[SIN.fokusY][SIN.fokusX] = f1.copy(this);
+						feld[SIN.fokusY][SIN.fokusX] = BFeld.copy(f1, this);
 					}
 				}
 			}
@@ -275,16 +286,16 @@ public class BlockLab extends Area
 			}
 			if(TA.take[116] == 2 && SIN.fokusX >= 0)
 			{
-				BFeld f1 = bl.feld[SIN.fokusY][SIN.fokusX];
+				LFeld f1 = bl.feld[SIN.fokusY][SIN.fokusX];
 				if(f1.schalter != 'n')
 				{
 					f1.schalter = plusfarbe(f1.schalter);
-					feld[SIN.fokusY][SIN.fokusX] = f1.copy(this);
+					feld[SIN.fokusY][SIN.fokusX] = BFeld.copy(f1, this);
 				}
 				else if(f1.blockFarbe != 'n')
 				{
 					f1.blockFarbe = plusfarbe(f1.blockFarbe);
-					feld[SIN.fokusY][SIN.fokusX] = f1.copy(this);
+					feld[SIN.fokusY][SIN.fokusX] = BFeld.copy(f1, this);
 				}
 				else
 					farbeAktuell = plusfarbe(farbeAktuell);
@@ -313,14 +324,14 @@ public class BlockLab extends Area
 			}
 			if(TA.take[119] == 2 && SIN.fokusX >= 0)
 			{
-				BFeld f1 = bl.feld[SIN.fokusY][SIN.fokusX];
+				LFeld f1 = bl.feld[SIN.fokusY][SIN.fokusX];
 				if(enhkey == 0)
 				{
 					f1 = new BFeld(f1.hoehe);
 					bl.feld[SIN.fokusY][SIN.fokusX] = f1;
 				}
 				f1.enhance(this, enhkey);
-				feld[SIN.fokusY][SIN.fokusX] = f1.copy(this);
+				feld[SIN.fokusY][SIN.fokusX] = BFeld.copy(f1, this);
 			}
 		}
 		return false;
@@ -329,7 +340,7 @@ public class BlockLab extends Area
 	public void angleichen()
 	{
 		bl.feld[yp][xp].hoehe = hoeheA;
-		feld[yp][xp] = bl.feld[yp][xp].copy(this);
+		feld[yp][xp] = BFeld.copy(bl.feld[yp][xp], this);
 	}
 
 	public static char plusfarbe(char farbe)
@@ -358,6 +369,12 @@ public class BlockLab extends Area
 				throw new RuntimeException(e);
 			}
 		}
+	}
+
+	@Override
+	public void victoryTick()
+	{
+		srd.deep += 0.1;
 	}
 
 	@Override
@@ -398,12 +415,12 @@ public class BlockLab extends Area
 			{
 				xcp = SIN.fokusX;
 				ycp = SIN.fokusY;
-				BFeld fn = bl.feld[SIN.fokusY][SIN.fokusX].copy(this);
+				BFeld fn = BFeld.copy(bl.feld[SIN.fokusY][SIN.fokusX], this);
 				fn.enhance(this, enhkey);
 				fn.addToRender(this, false, -1, -1);
 			}
 			gd.drawImage(tex.placeThese(renders).img, w1 + ht, ht * 2 * 4, ht * 2, ht * 2, null);
 		}
-		SRD.tick(this);
+		srd.tick(this);
 	}
 }

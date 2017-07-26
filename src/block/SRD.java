@@ -1,29 +1,45 @@
 package block;
 
+import area.*;
+import tex.*;
+
 public class SRD
 {
-	public static double richtung;
-	private static double richtung2;
-	public static double x, y, z;
-	public static boolean gelandet;
-	public static double deep;
+	public double richtung;
+	private double richtung2;
+	public double x, y, z;
+	public boolean gelandet;
+	public double deep;
 
-	public static void reset(BlockLab blockLab)
+	public SRD(BlockLab blockLab)
+	{
+		reset(blockLab);
+	}
+
+	public void reset(BlockLab blockLab)
 	{
 		richtung2 = 0.75;
 		richtung = richtung2;
 		x = blockLab.xp;
 		y = blockLab.yp;
 		z = blockLab.hoeheA + 20;
+		deep = 0;
 		gelandet = false;
 	}
 
-	public static void setRichtung(int r2)
+	public void addSpieler(Area area, int xcp, int ycp)
+	{
+		if(xcp >= 0 && (xcp == Math.floor(x) || xcp == Math.ceil(x)) && (ycp == Math.floor(y) || ycp == Math.ceil(y)))
+			area.add3(SpielerRender.gib(richtung, z, x - xcp, y - ycp, deep));
+	}
+
+
+	public void setRichtung(int r2)
 	{
 		setRichtung(r2 / 4d);
 	}
 
-	public static void setRichtung(double r2)
+	public void setRichtung(double r2)
 	{
 		richtung2 = r2;
 		if(richtung < richtung2)
@@ -43,7 +59,7 @@ public class SRD
 		}
 	}
 
-	private static void rr()
+	private void rr()
 	{
 		if(richtung >= 1)
 		{
@@ -57,7 +73,7 @@ public class SRD
 		}
 	}
 
-	public static void tick(BlockLab blockLab)
+	public void tick(BlockLab blockLab)
 	{
 		if(richtung < richtung2)
 		{

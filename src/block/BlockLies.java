@@ -6,7 +6,7 @@ import laderLC.*;
 
 public class BlockLies
 {
-	BFeld[][] feld;
+	LFeld[][] feld;
 	final int[][] se = new int[2][2];
 	int[] se2 = new int[]{0, 0};
 
@@ -41,7 +41,7 @@ public class BlockLies
 		}
 		se[1][0] = se[1][0] - se2[0];
 		se[1][1] = se[1][1] - se2[1];
-		feld = new BFeld[se[0][1]][];
+		feld = new LFeld[se[0][1]][];
 		readInFeld((String) werte[1], ends.get(1), ends.get(2), vial);
 		return vial;
 	}
@@ -83,7 +83,7 @@ public class BlockLies
 
 	public void readInFeld(String build, int errStart, int errEnd, ErrorVial vial)
 	{
-		ArrayList<BFeld[]> feld1 = new ArrayList<>();
+		ArrayList<LFeld[]> feld1 = new ArrayList<>();
 		LC2.superwaguh(build, errStart, vial, forReadInFeld, this, "readInFeld2", feld1);
 		if(se2.length <= 2 && feld1.size() != se[0][1])
 			vial.add(new CError("Unpassende Anzahl Reihen: " + feld1.size() + " != " + se[0][1], errStart, errEnd));
@@ -94,36 +94,36 @@ public class BlockLies
 				feld[i] = leerreihe(se[0][0]);
 	}
 
-	private static BFeld[] leerreihe(int len)
+	private static LFeld[] leerreihe(int len)
 	{
-		BFeld[] reihe = new BFeld[len];
+		LFeld[] reihe = new LFeld[len];
 		for(int i = 0; i < reihe.length; i++)
-			reihe[i] = new BFeld();
+			reihe[i] = new LFeld();
 		return reihe;
 	}
 
 	private static final KXS forReadInFeld2 = new KXS(false, false);
 
 	@SuppressWarnings("unused")
-	public void readInFeld2(String value, Integer errStart, Integer errEnd, ErrorVial vial, ArrayList<BFeld[]> feld1)
+	public void readInFeld2(String value, Integer errStart, Integer errEnd, ErrorVial vial, ArrayList<LFeld[]> feld1)
 	{
-		ArrayList<BFeld> feld2 = new ArrayList<>();
+		ArrayList<LFeld> feld2 = new ArrayList<>();
 		LC2.superwaguh(value, errStart, vial, forReadInFeld2, this, "readInFeld3", feld2);
 		if(se2.length <= 2 && feld2.size() != se[0][0])
 			vial.add(new CError("Reihe mit unpassender Länge: " + feld2.size() + " != " + se[0][0], errStart, errEnd));
-		BFeld[] reihe = new BFeld[se[0][0]];
+		LFeld[] reihe = new LFeld[se[0][0]];
 		for(int i = 0; i < se[0][0]; i++)
 			if(i + se2[0] >= 0 && i + se2[0] < feld2.size())
 				reihe[i] = feld2.get(i + se2[0]);
 			else
-				reihe[i] = new BFeld();
+				reihe[i] = new LFeld();
 		feld1.add(reihe);
 	}
 
 	@SuppressWarnings("unused")
-	public void readInFeld3(String value, Integer errStart, Integer errEnd, ErrorVial vial, ArrayList<BFeld> feld2)
+	public void readInFeld3(String value, Integer errStart, Integer errEnd, ErrorVial vial, ArrayList<LFeld> feld2)
 	{
-		BFeld f = new BFeld();
+		LFeld f = new LFeld();
 		f.lies(value, errStart, errEnd, vial);
 		feld2.add(f);
 	}
@@ -167,11 +167,11 @@ public class BlockLies
 			{
 				se[0][0] = xs.length;
 				se[0][1] = ys.length;
-				feld = new BFeld[ys.length][xs.length];
+				feld = new LFeld[ys.length][xs.length];
 			}
 			for(int yi = 0; yi < ys.length; yi++)
 			{
-				BFeld f = new BFeld();
+				LFeld f = new LFeld();
 				f.liesA(ys[yi]);
 				feld[yi][xi] = f;
 				if(ys[yi].equals("a"))
