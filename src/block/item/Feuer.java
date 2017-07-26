@@ -1,6 +1,7 @@
 package block.item;
 
 import block.*;
+import block.state.*;
 
 public class Feuer extends Item
 {
@@ -23,5 +24,11 @@ public class Feuer extends Item
 	public String bildname()
 	{
 		return "Feuer";
+	}
+
+	@Override
+	public ItemD saveState()
+	{
+		return new ItemD(1, level);
 	}
 }

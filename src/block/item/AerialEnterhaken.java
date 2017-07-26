@@ -1,6 +1,7 @@
 package block.item;
 
 import block.*;
+import block.state.*;
 import laderLC.*;
 
 public class AerialEnterhaken extends Item
@@ -13,7 +14,7 @@ public class AerialEnterhaken extends Item
 		laenge = 5;
 	}
 
-	public AerialEnterhaken(int level, boolean doppelt, int laenge)
+	public AerialEnterhaken(int level, int laenge, boolean doppelt)
 	{
 		super(level);
 		this.doppelt = doppelt;
@@ -23,7 +24,7 @@ public class AerialEnterhaken extends Item
 	@Override
 	public Item kopie(BlockLab blockLab)
 	{
-		AerialEnterhaken i1 = new AerialEnterhaken(level, doppelt, laenge);
+		AerialEnterhaken i1 = new AerialEnterhaken(level, laenge, doppelt);
 		i1.blockLab = blockLab;
 		return i1;
 	}
@@ -100,5 +101,11 @@ public class AerialEnterhaken extends Item
 		if(doppelt)
 			speichernZ(sb, "doppelt", null);
 		speichernZ(sb, "länge", String.valueOf(laenge));
+	}
+
+	@Override
+	public ItemD saveState()
+	{
+		return new ItemD(2, level, laenge, doppelt ? 2 : 1);
 	}
 }

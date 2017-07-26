@@ -1,6 +1,7 @@
 package block.item;
 
 import block.*;
+import block.state.*;
 
 public class Sprungfeder extends LaengeItem
 {
@@ -51,5 +52,11 @@ public class Sprungfeder extends LaengeItem
 	public String bildname()
 	{
 		return "Sprungfeder";
+	}
+
+	@Override
+	public ItemD saveState()
+	{
+		return new ItemD(4, level, laenge);
 	}
 }

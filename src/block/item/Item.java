@@ -1,6 +1,7 @@
 package block.item;
 
 import block.*;
+import block.state.*;
 import laderLC.*;
 
 public abstract class Item
@@ -9,7 +10,10 @@ public abstract class Item
 	public int level;
 	public int disable;
 
-	public Item(){}
+	public Item()
+	{
+		level = 1;
+	}
 
 	public Item(int level)
 	{
@@ -37,12 +41,12 @@ public abstract class Item
 
 	public void setzeOptionen(int xp, int yp, int hoeheA, int[][] geht, int[][] gehtT){}
 
-	public boolean benutze(int[][] gehtT, int r)
+	public boolean benutze(int[][] gehtT, int r, boolean main)
 	{
 		return false;
 	}
 
-	public boolean benutze(int[][] geht, int x, int y)
+	public boolean benutze(int[][] geht, int x, int y, boolean main)
 	{
 		if(x < 0 || y < 0 || x >= blockLab.xw || y >= blockLab.yw || geht[y][x] <= 0)
 			return false;
@@ -54,7 +58,7 @@ public abstract class Item
 		return true;
 	}
 
-	public void setzeR(int xa, int ya, int xn, int yn)
+	void setzeR(int xa, int ya, int xn, int yn)
 	{
 		if(xn < xa)
 			blockLab.setRichtung(0);
@@ -77,7 +81,6 @@ public abstract class Item
 
 	public void lies(String build, int errStart, ErrorVial vial)
 	{
-		level = 1;
 		build = LC2.removeKlammernVllt(build);
 		LC2.superwaguh(build, errStart, vial, IKL2, this, "lies2");
 	}
@@ -102,7 +105,7 @@ public abstract class Item
 		sb.append("level = ").append(String.valueOf(level));
 	}
 
-	public void speichernZ(StringBuilder sb, String key, String value)
+	void speichernZ(StringBuilder sb, String key, String value)
 	{
 		sb.append(", ").append(key);
 		if(value != null)
@@ -114,4 +117,6 @@ public abstract class Item
 	{
 		return o != null && getClass() == o.getClass();
 	}
+
+	public abstract ItemD saveState();
 }

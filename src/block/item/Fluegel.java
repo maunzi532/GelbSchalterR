@@ -1,6 +1,7 @@
 package block.item;
 
 import block.*;
+import block.state.*;
 
 public class Fluegel extends LaengeItem
 {
@@ -61,5 +62,11 @@ public class Fluegel extends LaengeItem
 	public String bildname()
 	{
 		return "Flügel";
+	}
+
+	@Override
+	public ItemD saveState()
+	{
+		return new ItemD(5, level, laenge);
 	}
 }

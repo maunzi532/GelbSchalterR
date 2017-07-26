@@ -1,5 +1,6 @@
 package block.item;
 
+import area.*;
 import laderLC.*;
 
 public abstract class LaengeItem extends Item
@@ -14,8 +15,10 @@ public abstract class LaengeItem extends Item
 		this.laenge = laenge;
 	}
 
-	public boolean benutze(int[][] gehtT, int r)
+	public boolean benutze(int[][] gehtT, int r, boolean main)
 	{
+		if(!main && TA.take[16] <= 0 && level >= 0)
+			return false;
 		if(gehtT[r][0] <= 0)
 			return false;
 		if(r > 0)
@@ -29,7 +32,7 @@ public abstract class LaengeItem extends Item
 	}
 
 	@Override
-	public boolean benutze(int[][] geht, int x, int y)
+	public boolean benutze(int[][] geht, int x, int y, boolean main)
 	{
 		if(x < 0 || y < 0 || x >= blockLab.xw || y >= blockLab.yw || geht[y][x] <= 0)
 			return false;

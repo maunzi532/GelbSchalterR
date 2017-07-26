@@ -9,7 +9,6 @@ import javax.swing.*;
 
 class M
 {
-	private static boolean g = false;
 	private static boolean changesize = false;
 	private static final String texOrdnerName = "Texturen2";
 	private static File selected;
@@ -24,9 +23,6 @@ class M
 			{
 				case "cheatmode":
 					cheatmode = true;
-					break;
-				case "gelb":
-					g = true;
 					break;
 				case "changesize":
 					changesize = true;
@@ -64,10 +60,18 @@ class M
 			System.exit(1);
 		}
 		Area area;
-		if(g)
-			area = new Gelb();
-		else
-			area = new BlockLab();
+		switch(input.charAt(0))
+		{
+			case '{':
+			case ' ':
+				area = new BlockLab();
+				break;
+			default:
+				if(input.contains(";;"))
+					area = new Gelb();
+				else
+					area = new BlockLab();
+		}
 		area.start(input, texOrdnerName, changesize, cheatmode);
 	}
 }

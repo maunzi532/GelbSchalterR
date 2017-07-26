@@ -16,8 +16,8 @@ public class SIN
 	static BufferedImage img;
 	static Graphics2D gd;
 	static Area area;
-	static int mapview;
-	static int kamZoom = 8;
+	public static int mapview;
+	public static int kamZoom = 8;
 	static int mapKamZoom = 16;
 	public static int fokusX;
 	public static int fokusY;

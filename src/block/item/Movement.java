@@ -2,6 +2,7 @@ package block.item;
 
 import area.*;
 import block.*;
+import block.state.*;
 import java.util.*;
 
 public class Movement extends Item
@@ -56,7 +57,7 @@ public class Movement extends Item
 		return SIN.cheatmode ? blockLab.hoeheA : 0;
 	}
 
-	public boolean benutze(int[][] gehtT, int r)
+	public boolean benutze(int[][] gehtT, int r, boolean main)
 	{
 		if(blockLab.pfadmodus)
 		{
@@ -94,5 +95,11 @@ public class Movement extends Item
 	public String bildname()
 	{
 		return "Spieler";
+	}
+
+	@Override
+	public ItemD saveState()
+	{
+		return new ItemD(0);
 	}
 }

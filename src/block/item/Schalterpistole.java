@@ -1,6 +1,7 @@
 package block.item;
 
 import block.*;
+import block.state.*;
 
 public class Schalterpistole extends LaengeItem
 {
@@ -48,7 +49,7 @@ public class Schalterpistole extends LaengeItem
 	}
 
 	@Override
-	public boolean benutze(int[][] gehtT, int r)
+	public boolean benutze(int[][] gehtT, int r, boolean main)
 	{
 		if(gehtT[r][0] <= 0)
 			return false;
@@ -59,7 +60,7 @@ public class Schalterpistole extends LaengeItem
 	}
 
 	@Override
-	public boolean benutze(int[][] geht, int x, int y)
+	public boolean benutze(int[][] geht, int x, int y, boolean main)
 	{
 		if(x < 0 || y < 0 || x >= blockLab.xw || y >= blockLab.yw || geht[y][x] <= 0)
 			return false;
@@ -72,5 +73,11 @@ public class Schalterpistole extends LaengeItem
 	public String bildname()
 	{
 		return "Schalterpistole";
+	}
+
+	@Override
+	public ItemD saveState()
+	{
+		return new ItemD(3, level, laenge);
 	}
 }

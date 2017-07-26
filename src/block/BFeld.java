@@ -10,7 +10,7 @@ public class BFeld extends LFeld implements Feld
 
 	BlockLab blockLab;
 
-	boolean benutzt = false;
+	public boolean benutzt = false;
 
 	public BFeld(){}
 
@@ -37,6 +37,11 @@ public class BFeld extends LFeld implements Feld
 		copy.enterstange = von.enterstange;
 		copy.item = von.item;
 		return copy;
+	}
+
+	public void reset()
+	{
+		benutzt = false;
 	}
 
 	public Integer getH(int side, boolean enter)

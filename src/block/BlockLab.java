@@ -2,6 +2,7 @@ package block;
 
 import area.*;
 import block.item.*;
+import block.state.*;
 import java.awt.*;
 import java.io.*;
 import java.nio.charset.*;
@@ -28,17 +29,22 @@ public class BlockLab extends Area
 	final ArrayList<int[][]> geht2 = new ArrayList<>();
 	final ArrayList<int[][]> gehtTasten = new ArrayList<>();
 	BlockLies bl;
+
 	public char farbeAktuell = 'A';
-	int dias;
+	public int dias;
 	public int hoeheA;
+
 	int akItem;
-	final ArrayList<Item> items = new ArrayList<>();
+	public final ArrayList<Item> items = new ArrayList<>();
+
 	int lrm;
 	int oum;
 	public SRD srd;
 	public int richtung;
 	public boolean pfadmodus;
 	public int enhkey;
+
+	public Stack<BState> states = new Stack<>();
 
 	@Override
 	public void start(String input, String texOrdnerName, boolean chs, boolean chm)
@@ -136,6 +142,16 @@ public class BlockLab extends Area
 	@Override
 	public boolean moveX(boolean nichtMap)
 	{
+		if(TA.take[120] == 2)
+			states.add(new BState(this));
+		if(TA.take[121] == 2)
+			if(!states.empty())
+			{
+				states.pop().charge(this);
+				srd.reset2(this);
+				SIN.mapview = 0;
+				Shift.selectTarget(xp, yp, hoeheA, SIN.kamZoom, 1);
+			}
 		if(nichtMap)
 		{
 			if(SIN.mfokusX >= 1 && TA.take[201] == 2)
@@ -216,7 +232,7 @@ public class BlockLab extends Area
 					i2 = i - 1;
 				else
 					i2 = i;
-				if(items.get(i2).benutze(gehtTasten.get(i2), code))
+				if(items.get(i2).benutze(gehtTasten.get(i2), code, i2 == akItem))
 					break;
 			}
 			return i < items.size();
@@ -233,7 +249,7 @@ public class BlockLab extends Area
 					i2 = i - 1;
 				else
 					i2 = i;
-				if(items.get(i2).benutze(geht2.get(i2), SIN.fokusX, SIN.fokusY))
+				if(items.get(i2).benutze(geht2.get(i2), SIN.fokusX, SIN.fokusY, i2 == akItem))
 					break;
 			}
 			return i < items.size();

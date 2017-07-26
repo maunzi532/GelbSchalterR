@@ -235,7 +235,7 @@ public class LFeld
 					break;
 				default:
 					if(build.toLowerCase().startsWith("enterhaken"))
-						item = new AerialEnterhaken(1, false, Integer.parseInt(build.substring(11, build.length() - 1)));
+						item = new AerialEnterhaken(1, Integer.parseInt(build.substring(11, build.length() - 1)), false);
 					if(build.toLowerCase().startsWith("schalterkanone"))
 						item = new Schalterpistole(1, Integer.parseInt(build.substring(15, build.length() - 1)));
 			}

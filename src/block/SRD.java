@@ -27,6 +27,17 @@ public class SRD
 		gelandet = false;
 	}
 
+	public void reset2(BlockLab blockLab)
+	{
+		richtung2 = 0.75;
+		richtung = richtung2;
+		x = blockLab.xp;
+		y = blockLab.yp;
+		z = blockLab.hoeheA;
+		deep = 0;
+		gelandet = true;
+	}
+
 	public void addSpieler(Area area, int xcp, int ycp)
 	{
 		if(xcp >= 0 && (xcp == Math.floor(x) || xcp == Math.ceil(x)) && (ycp == Math.floor(y) || ycp == Math.ceil(y)))
