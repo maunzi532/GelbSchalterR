@@ -30,7 +30,7 @@ public abstract class Area
 		geht = new int[yw][xw];
 	}
 
-	public void readFL(String c1){}
+	public abstract void readFL(String c1, boolean se2n);
 
 	protected int ycp;
 	protected int xcp;

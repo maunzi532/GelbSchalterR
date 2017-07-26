@@ -63,13 +63,13 @@ public class Movement extends Item
 			if(r > 0)
 			{
 				blockLab.setRichtung(r - 1);
-				if(r == 1)
+				if(r == 1 && blockLab.xp > 0)
 					blockLab.xp--;
-				else if(r == 2)
+				else if(r == 2 && blockLab.yp > 0)
 					blockLab.yp--;
-				else if(r == 3)
+				else if(r == 3 && blockLab.xp < blockLab.xw - 1)
 					blockLab.xp++;
-				else if(r == 4)
+				else if(r == 4 && blockLab.yp < blockLab.yw - 1)
 					blockLab.yp++;
 			}
 			blockLab.angleichen();

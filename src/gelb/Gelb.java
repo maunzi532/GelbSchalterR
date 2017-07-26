@@ -126,7 +126,8 @@ public class Gelb extends Area
 		return false;
 	}
 
-	public void readFL(String c1)
+	@Override
+	public void readFL(String c1, boolean se2n)
 	{
 		try
 		{

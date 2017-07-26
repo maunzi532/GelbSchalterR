@@ -39,12 +39,13 @@ public class BlockLab extends Area
 	public boolean pfadmodus;
 	public int enhkey;
 
-	public void readFL(String c1)
+	@Override
+	public void readFL(String c1, boolean se2n)
 	{
 		bl = new BlockLies();
 		if(c1.charAt(0) == '{')
 		{
-			ErrorVial vial = bl.lies(c1);
+			ErrorVial vial = bl.lies(c1, se2n);
 			if(vial.errors())
 				System.out.println(vial.errors);
 		}
@@ -56,19 +57,6 @@ public class BlockLab extends Area
 			e.printStackTrace();
 			System.exit(273);
 		}
-	}
-
-	public void speichern()
-	{
-		JFileChooser fc = new JFileChooser(new File("saves"));
-		if(fc.showSaveDialog(null) == JFileChooser.APPROVE_OPTION)
-			try
-			{
-				Files.write(fc.getSelectedFile().toPath(), bl.speichern().getBytes(Charset.forName("UTF-8")));
-			}catch(IOException e)
-			{
-				throw new RuntimeException(e);
-			}
 	}
 
 	public void reset()
@@ -351,6 +339,27 @@ public class BlockLab extends Area
 		return (char)(farbe + 1);
 	}
 
+	public void speichern()
+	{
+		JFileChooser fc = new JFileChooser(new File("saves"));
+		boolean sh = TA.take[16] > 0;
+		if(fc.showSaveDialog(null) == JFileChooser.APPROVE_OPTION)
+		{
+			String s;
+			if(sh)
+				s = bl.speichern(xp, yp);
+			else
+				s = bl.speichern();
+			try
+			{
+				Files.write(fc.getSelectedFile().toPath(), s.getBytes(Charset.forName("UTF-8")));
+			}catch(IOException e)
+			{
+				throw new RuntimeException(e);
+			}
+		}
+	}
+
 	@Override
 	public void rahmen(Graphics2D gd, Texturen tex, int w1, int h)
 	{
@@ -376,16 +385,23 @@ public class BlockLab extends Area
 				gd.drawImage(tex.bilder2D.get(items.get(i).bildname()), w1 + ht + (i % 2) * ht, ht * (i / 2), ht, ht, null);
 			gd.drawRect(w1 + ht + (akItem % 2) * ht, ht * (akItem / 2), ht - 1, ht - 1);
 		}
-		if(SIN.cheatmode && SIN.fokusX >= 0)
+		if(SIN.cheatmode && Shift.tile > 0)
 		{
 			renders = new ArrayList<>();
-			xcp = SIN.fokusX;
-			ycp = SIN.fokusY;
-			BFeld fn = bl.feld[SIN.fokusY][SIN.fokusX].copy(this);
 			if(enhkey == 0)
-				fn = new BFeld(fn.hoehe);
-			fn.enhance(this, enhkey);
-			fn.addToRender(this, false, -1, -1);
+			{
+				xcp = 0;
+				ycp = 0;
+				addw("Löscher");
+			}
+			else if(SIN.fokusX >= 0)
+			{
+				xcp = SIN.fokusX;
+				ycp = SIN.fokusY;
+				BFeld fn = bl.feld[SIN.fokusY][SIN.fokusX].copy(this);
+				fn.enhance(this, enhkey);
+				fn.addToRender(this, false, -1, -1);
+			}
 			gd.drawImage(tex.placeThese(renders).img, w1 + ht, ht * 2 * 4, ht * 2, ht * 2, null);
 		}
 		SRD.tick(this);

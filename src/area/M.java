@@ -11,6 +11,7 @@ import tex.*;
 class M
 {
 	private static boolean g = false;
+	private static boolean chs = false;
 	private static final String texOrdnerName = "Texturen2";
 
 	public static void main(String[] args)
@@ -26,6 +27,9 @@ class M
 					break;
 				case "gelb":
 					g = true;
+					break;
+				case "chs":
+					chs = true;
 					break;
 				default:
 					selected = new File(args[i]);
@@ -56,7 +60,7 @@ class M
 		if(g)
 		{
 			Area area = new Gelb();
-			area.readFL(input);
+			area.readFL(input, false);
 			area.reset();
 			Texturen tex = new GTex("Default", texOrdnerName);
 			SIN.start(area, tex, ch);
@@ -64,7 +68,7 @@ class M
 		else
 		{
 			Area area = new BlockLab();
-			area.readFL(input);
+			area.readFL(input, chs);
 			area.reset();
 			Texturen tex = new FTex("BlockLab", texOrdnerName);
 			SIN.start(area, tex, ch);
