@@ -23,32 +23,38 @@ public class SIN
 	public static int fokusY;
 	public static int mfokusX;
 	public static int mfokusY;
-	public static int t;
 
 	public static void start(Area area1, Texturen tex1, boolean ch)
 	{
 		ende = false;
+		mapview = 0;
 		cheatmode = ch;
 		area = area1;
 		tex = tex1;
-		fr = new JFrame();
-		fr.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		TA.einbau(fr);
-		fr.pack();
-		size2 = new Dimension(800, 800);
-		size = new Dimension(size2.width + size2.height / 10 * 3, size2.height);
-		fr.setSize(size);
-		resizeImg();
-		gd.setColor(Color.BLACK);
-		gd.fillRect(0, 0, size.width, size.height);
-		if(tex.bilder2D.containsKey("Logo"))
+		if(fr == null)
 		{
-			BufferedImage logo = tex.bilder2D.get("Logo");
-			gd.drawImage(logo, (size.width - logo.getWidth()) / 2, (size.height - logo.getHeight()) / 2, Color.BLACK, null);
+			fr = new JFrame();
+			fr.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+			TA.einbau(fr);
+			fr.pack();
+			size2 = new Dimension(800, 800);
+			size = new Dimension(size2.width + size2.height / 10 * 3, size2.height);
+			fr.setSize(size);
+			resizeImg();
+			gd.setColor(Color.BLACK);
+			gd.fillRect(0, 0, size.width, size.height);
+			if(tex.bilder2D.containsKey("Logo"))
+			{
+				BufferedImage logo = tex.bilder2D.get("Logo");
+				gd.drawImage(logo, (size.width - logo.getWidth()) / 2, (size.height - logo.getHeight()) / 2,
+						Color.BLACK, null);
+			}
+			fr.setVisible(true);
+			while(!fr.hasFocus())
+				U.warte(100);
 		}
-		fr.setVisible(true);
-		while(!fr.hasFocus())
-			U.warte(100);
+		else
+			resizeImg();
 		fr.getGraphics().drawImage(img, 0, 0, null);
 		U.warte(200);
 		run();
@@ -127,7 +133,7 @@ public class SIN
 			mfokusX = -1;
 			mfokusY = -1;
 		}
-		t++;
+		area.tick++;
 		TA.bereit();
 		if(TA.take[83] == 2)
 			area.speichern();

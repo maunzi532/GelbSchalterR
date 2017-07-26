@@ -14,6 +14,7 @@ public abstract class Area
 	public int yw;
 	public int xp;
 	public int yp;
+	public int tick;
 
 	public abstract void start(String input, String texOrdnerName, boolean chs, boolean chm);
 

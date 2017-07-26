@@ -148,7 +148,7 @@ public class BFeld extends LFeld implements Feld
 			else
 				area.addw("Einhauwand" + einhauwand);
 		if(dia)
-			area.add3(DiaRender.gib(0.1, 0.9, 4, (SIN.t % 100) / 100d, 0.8, new Color(0, 0, benutzt ? 0 : 200, 127), visualH()));
+			area.add3(DiaRender.gib(0.1, 0.9, 4, (area.tick % 100) / 100d, 0.8, new Color(0, 0, benutzt ? 0 : 200, 127), visualH()));
 		if(diaTuer > 0)
 			if(diaTuer > blockLab.dias || xcp < 0)
 				area.addw("DiaTür", "  " + diaTuer);
@@ -165,6 +165,6 @@ public class BFeld extends LFeld implements Feld
 			area.addm("Stange" + (darauf ? "B" : ""), enterstange);
 		if(item != null && !darauf)
 			area.addw(item.bildname());
-		((BlockLab) area).srd.addSpieler(area, xcp, ycp);
+		blockLab.srd.addSpieler(area, xcp, ycp);
 	}
 }

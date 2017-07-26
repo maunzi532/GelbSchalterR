@@ -72,6 +72,7 @@ public class BlockLab extends Area
 
 	public void reset()
 	{
+		tick = 0;
 		farbeAktuell = 'A';
 		dias = 0;
 		items.clear();
