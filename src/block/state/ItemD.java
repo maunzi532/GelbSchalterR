@@ -1,6 +1,7 @@
 package block.state;
 
 import block.item.*;
+import java.util.*;
 
 public class ItemD implements Comparable<ItemD>
 {
@@ -38,5 +39,22 @@ public class ItemD implements Comparable<ItemD>
 	public int compareTo(ItemD itemD)
 	{
 		return type - itemD.type;
+	}
+
+	@Override
+	public boolean equals(Object o)
+	{
+		if(this == o) return true;
+		if(!(o instanceof ItemD)) return false;
+		ItemD itemD = (ItemD) o;
+		return type == itemD.type && Arrays.equals(data, itemD.data);
+	}
+
+	@Override
+	public int hashCode()
+	{
+		int result = type;
+		result = 31 * result + Arrays.hashCode(data);
+		return result;
 	}
 }

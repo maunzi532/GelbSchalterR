@@ -18,12 +18,12 @@ public class Gelb extends Area
 	boolean teleport;
 
 	@Override
-	public void start(String input, String texOrdnerName, boolean chs, boolean chm)
+	public void start(String input, String texOrdnerName, boolean chm, boolean chs, int tem)
 	{
 		readFL(input, chs);
 		reset();
 		Texturen tex = new GTex("Default", texOrdnerName);
-		SIN.start(this, tex, chm);
+		SIN.start(this, tex, chm, tem);
 	}
 
 	public Feld feld(int y, int x)

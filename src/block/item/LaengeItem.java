@@ -16,6 +16,12 @@ public abstract class LaengeItem extends Item
 	}
 
 	@Override
+	public boolean benutze(int num, boolean lvm)
+	{
+		return super.benutze(num, true);
+	}
+
+	@Override
 	public boolean benutze(int r, boolean main, boolean lvm)
 	{
 		if(!main && TA.take[16] <= 0 && level >= 0)

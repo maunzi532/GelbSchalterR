@@ -7,6 +7,7 @@ import java.util.stream.*;
 
 public class BState
 {
+	boolean gewonnen;
 	int x, y, z;
 	char farbe;
 	int dias;
@@ -15,6 +16,7 @@ public class BState
 
 	public BState(BlockLab blockLab)
 	{
+		gewonnen = blockLab.gewonnen;
 		x = blockLab.xp;
 		y = blockLab.yp;
 		z = blockLab.hoeheA;
@@ -56,8 +58,17 @@ public class BState
 		if(this == o) return true;
 		if(!(o instanceof BState)) return false;
 		BState bState = (BState) o;
-		return x == bState.x && y == bState.y && z == bState.z && farbe == bState.farbe && dias == bState.dias &&
-				bd.equals(bState.bd) && items.equals(bState.items);
+		if(x != bState.x || y != bState.y || z != bState.z || farbe != bState.farbe || dias != bState.dias)
+			return false;
+		if(bd.size() != bState.bd.size() || items.size() != bState.items.size())
+			return false;
+		for(int i = 0; i < bd.size(); i++)
+			if(!bd.get(i).equals(bState.bd.get(i)))
+				return false;
+		for(int i = 0; i < items.size(); i++)
+			if(!items.get(i).equals(bState.items.get(i)))
+				return false;
+		return true;
 	}
 
 	@Override
@@ -71,5 +82,20 @@ public class BState
 		result = 31 * result + bd.hashCode();
 		result = 31 * result + items.hashCode();
 		return result;
+	}
+
+	@Override
+	public String toString()
+	{
+		return "BState{" +
+				"gewonnen=" + gewonnen +
+				", x=" + x +
+				", y=" + y +
+				", z=" + z +
+				", farbe=" + farbe +
+				", dias=" + dias +
+				", bd=" + bd +
+				", items=" + items +
+				'}';
 	}
 }

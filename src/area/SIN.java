@@ -1,5 +1,6 @@
 package area;
 
+import block.state.*;
 import java.awt.*;
 import java.awt.image.*;
 import javax.swing.*;
@@ -8,6 +9,7 @@ import tex.*;
 public class SIN
 {
 	public static boolean cheatmode;
+	public static int testmode;
 	public static boolean ende;
 	public static Texturen tex;
 	static JFrame fr;
@@ -15,7 +17,7 @@ public class SIN
 	static Dimension size2;
 	static BufferedImage img;
 	static Graphics2D gd;
-	static Area area;
+	public static Area area;
 	public static int mapview;
 	public static int kamZoom = 8;
 	static int mapKamZoom = 16;
@@ -24,11 +26,12 @@ public class SIN
 	public static int mfokusX;
 	public static int mfokusY;
 
-	public static void start(Area area1, Texturen tex1, boolean ch)
+	public static void start(Area area1, Texturen tex1, boolean chm, int tem)
 	{
 		ende = false;
 		mapview = 0;
-		cheatmode = ch;
+		cheatmode = chm;
+		testmode = tem;
 		area = area1;
 		tex = tex1;
 		if(fr == null)
@@ -57,7 +60,10 @@ public class SIN
 			resizeImg();
 		fr.getGraphics().drawImage(img, 0, 0, null);
 		U.warte(200);
-		run();
+		if(testmode > 0)
+			ASIN.run();
+		else
+			run();
 	}
 
 	private static void resizeImg()
@@ -97,7 +103,7 @@ public class SIN
 		}
 	}
 
-	static void updatePosition()
+	public static void updatePosition()
 	{
 		if(!fr.getContentPane().getSize().equals(size))
 		{
@@ -189,7 +195,7 @@ public class SIN
 		}
 	}
 
-	static void drawX()
+	public static void drawX()
 	{
 		area.render(fokusX, fokusY);
 		clear();

@@ -16,7 +16,7 @@ public abstract class Area
 	public int yp;
 	public int tick;
 
-	public abstract void start(String input, String texOrdnerName, boolean chs, boolean chm);
+	public abstract void start(String input, String texOrdnerName, boolean chm, boolean chs, int tem);
 
 	public abstract Feld feld(int y, int x);
 

@@ -45,13 +45,13 @@ public class BlockLab extends Area
 	public Stack<BState> states = new Stack<>();
 
 	@Override
-	public void start(String input, String texOrdnerName, boolean chs, boolean chm)
+	public void start(String input, String texOrdnerName, boolean chm, boolean chs, int tem)
 	{
 		readFL(input, chs);
 		srd = new SRD(this);
 		reset();
 		Texturen tex = new FTex("BlockLab", texOrdnerName);
-		SIN.start(this, tex, chm);
+		SIN.start(this, tex, chm, tem);
 	}
 
 	@Override
@@ -121,7 +121,6 @@ public class BlockLab extends Area
 			if(item.disable > disable)
 				disable = item.disable;
 		for(int i = 0; i < items.size(); i++)
-		{
 			if(items.get(i).enabled(disable))
 			{
 				items.get(i).setzeOptionen1(xp, yp, hoeheA, xw, yw);
@@ -130,7 +129,6 @@ public class BlockLab extends Area
 						if(items.get(i).g2[iy][ix] > 0)
 							geht[iy][ix] = 1;
 			}
-		}
 	}
 
 	@Override
@@ -348,6 +346,24 @@ public class BlockLab extends Area
 		return false;
 	}
 
+	public boolean moveR(int caret2)
+	{
+		int k = 0;
+		for(int i = 0; i < items.size(); i++)
+		{
+			for(int j = 0; j < items.get(i).g1.size(); j++)
+			{
+				if(k == caret2)
+				{
+					items.get(i).benutze(j, false);
+					return true;
+				}
+				k++;
+			}
+		}
+		return false;
+	}
+
 	public void angleichen()
 	{
 		bl.feld[yp][xp].hoehe = hoeheA;
@@ -417,11 +433,7 @@ public class BlockLab extends Area
 		{
 			renders = new ArrayList<>();
 			if(enhkey == 0)
-			{
-				xcp = 0;
-				ycp = 0;
-				addw("Löscher");
-			}
+				renders.add(new Render("Löscher", 1));
 			else if(SIN.fokusX >= 0)
 			{
 				xcp = SIN.fokusX;

@@ -6,9 +6,9 @@ import laderLC.*;
 
 public class LFeld
 {
-	int hoehe;
+	public int hoehe;
 	boolean ziel;
-	char blockFarbe = 'n';
+	public char blockFarbe = 'n';
 	int sonstH = -1;
 	public char schalter = 'n';
 	int pfeil = -1;

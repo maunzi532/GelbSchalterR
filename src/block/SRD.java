@@ -10,6 +10,8 @@ public class SRD
 	public double x, y, z;
 	public boolean gelandet;
 	public double deep;
+	public double dspeed = 0.05;
+	public double mspeed = 0.2;
 
 	public SRD(BlockLab blockLab)
 	{
@@ -88,50 +90,50 @@ public class SRD
 	{
 		if(richtung < richtung2)
 		{
-			richtung += 0.05;
+			richtung += dspeed;
 			if(richtung >= richtung2)
 				richtung = richtung2;
 		}
 		else
 		{
-			richtung -= 0.05;
+			richtung -= dspeed;
 			if(richtung <= richtung2)
 				richtung = richtung2;
 		}
 		rr();
 		if(x < blockLab.xp)
 		{
-			x += 0.2;
+			x += mspeed;
 			if(x >= blockLab.xp)
 				x = blockLab.xp;
 		}
 		if(x > blockLab.xp)
 		{
-			x -= 0.2;
+			x -= mspeed;
 			if(x <= blockLab.xp)
 				x = blockLab.xp;
 		}
 		if(y < blockLab.yp)
 		{
-			y += 0.2;
+			y += mspeed;
 			if(y >= blockLab.yp)
 				y = blockLab.yp;
 		}
 		if(y > blockLab.yp)
 		{
-			y -= 0.2;
+			y -= mspeed;
 			if(y <= blockLab.yp)
 				y = blockLab.yp;
 		}
 		if(z < blockLab.hoeheA)
 		{
-			z += 0.2;
+			z += mspeed;
 			if(z >= blockLab.hoeheA)
 				z = blockLab.hoeheA;
 		}
 		if(z > blockLab.hoeheA)
 		{
-			z -= 0.2;
+			z -= mspeed;
 			if(z <= blockLab.hoeheA)
 				z = blockLab.hoeheA;
 		}

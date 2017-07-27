@@ -62,6 +62,15 @@ public abstract class Item
 			g3[key] = g1.size();
 	}
 
+	public boolean benutze(int num, boolean lvm)
+	{
+		setzeR(blockLab.xp, blockLab.yp, g1.get(num)[0], g1.get(num)[1]);
+		if(lvm && level > 0)
+			level--;
+		gzo(g1.get(num));
+		return true;
+	}
+
 	public boolean benutze(int r, boolean main, boolean lvm)
 	{
 		if(g3[r] <= 0)

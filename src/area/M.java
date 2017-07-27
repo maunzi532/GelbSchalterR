@@ -9,14 +9,15 @@ import javax.swing.*;
 
 class M
 {
-	private static boolean changesize = false;
+	private static boolean cheatmode;
+	private static boolean changesize;
+	private static int testmode;
 	private static final String texOrdnerName = "Texturen2";
 	private static File selected;
 	public static boolean reload = true;
 
 	public static void main(String[] args)
 	{
-		boolean cheatmode = false;
 		for(int i = 0; i < args.length; i++)
 		{
 			switch(args[i])
@@ -26,6 +27,12 @@ class M
 					break;
 				case "changesize":
 					changesize = true;
+					break;
+				case "testmode":
+					testmode = 1;
+					break;
+				case "testmodevis":
+					testmode = 2;
 					break;
 				default:
 					selected = new File(args[i]);
@@ -72,6 +79,6 @@ class M
 				else
 					area = new BlockLab();
 		}
-		area.start(input, texOrdnerName, changesize, cheatmode);
+		area.start(input, texOrdnerName, cheatmode, changesize, testmode);
 	}
 }

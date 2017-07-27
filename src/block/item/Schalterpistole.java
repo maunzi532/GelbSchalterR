@@ -26,6 +26,12 @@ public class Schalterpistole extends LaengeItem
 	@Override
 	public void setzeOptionen(int xp, int yp, int hoeheA)
 	{
+		BFeld akf = blockLab.feld[yp][xp];
+		if(akf.blockFarbe == blockLab.farbeAktuell && akf.hoehe >= blockLab.hoeheA)
+			return;
+		char verboten = 'n';
+		if(akf.blockFarbe != 'n' && akf.hoehe > blockLab.hoeheA)
+			verboten = akf.blockFarbe;
 		for(int r = 0; r <= 3; r++)
 		{
 			int xm = r != 3 ? r - 1 : 0;
@@ -39,11 +45,20 @@ public class Schalterpistole extends LaengeItem
 					break;
 				if(f.schalter != 'n' && f.bodenH() == hoeheA)
 				{
-					option(xp + i * xm, yp + i * ym, hoeheA, r + 1);
+					if(f.schalter != verboten)
+						option(xp + i * xm, yp + i * ym, hoeheA, r + 1);
 					break;
 				}
 			}
 		}
+	}
+
+	public boolean benutze(int num, boolean lvm)
+	{
+		setzeR(blockLab.xp, blockLab.yp, g1.get(num)[0], g1.get(num)[1]);
+		int[] zo = g1.get(num);
+		blockLab.farbeAktuell = blockLab.feld[zo[1]][zo[0]].schalter;
+		return true;
 	}
 
 	@Override
