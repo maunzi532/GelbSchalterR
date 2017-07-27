@@ -413,7 +413,7 @@ public class BlockLab extends Area
 		gd.setColor(new Color(BlockLab.farben[farbeAktuell - 'A'].getRGB()));
 		gd.fillRect(w1, 0, ht, h);
 		gd.setColor(Color.BLUE);
-		gd.fillRect(w1, ht * (10 - dias), ht, h);
+		gd.fillRect(w1, h - ht * dias, ht, ht * dias);
 		gd.setColor(Color.WHITE);
 		gd.drawRect(w1, 0, ht - 1, h - 1);
 		gd.setColor(Color.RED);
