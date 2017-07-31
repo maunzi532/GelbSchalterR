@@ -34,7 +34,7 @@ public class SchalterR extends Area
 	public int richtung;
 	public Cheatmode cheatmode;
 
-	private Stack<BState> states = new Stack<>();
+	private final Stack<BState> states = new Stack<>();
 
 	@Override
 	public boolean start(String input, String texOrdnerName, boolean cheatmode, boolean changesize, int testmode)
@@ -48,8 +48,7 @@ public class SchalterR extends Area
 		return SIN.start(this, tex, cheatmode, testmode);
 	}
 
-	@Override
-	public void readFL(String c1, boolean se2n)
+	private void readFL(String c1, boolean se2n)
 	{
 		sl = new SchalterLies();
 		if(c1.charAt(0) == '{')

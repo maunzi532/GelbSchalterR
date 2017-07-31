@@ -5,10 +5,10 @@ import tex.*;
 
 public class SRD
 {
-	public double richtung;
+	private double richtung;
 	private double richtung2;
 	public double x, y, z;
-	public boolean gelandet;
+	private boolean gelandet;
 	public double deep;
 	public double dspeed = 0.05;
 	public double mspeed = 0.2;

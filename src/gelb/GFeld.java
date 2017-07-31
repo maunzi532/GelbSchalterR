@@ -12,6 +12,7 @@ class GFeld implements Feld
 	int treppe;
 	boolean nTyp;
 
+	@SuppressWarnings("ConstantConditions")
 	public GFeld(String f)
 	{
 		darauf = new boolean[4];

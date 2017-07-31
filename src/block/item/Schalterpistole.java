@@ -74,7 +74,7 @@ public class Schalterpistole extends LaengeItem
 		return true;
 	}
 
-	@Override
+	/*@Override
 	public boolean benutze(int x, int y, boolean main, boolean lvm)
 	{
 		if(x < 0 || y < 0 || x >= schalterR.xw || y >= schalterR.yw || g2[y][x] <= 0)
@@ -83,7 +83,7 @@ public class Schalterpistole extends LaengeItem
 		D3C zo = g1.get(g2[y][x] - 1);
 		schalterR.farbeAktuell = schalterR.feld[zo.y][zo.x].schalter;
 		return true;
-	}
+	}*/
 
 	@Override
 	public String bildname()

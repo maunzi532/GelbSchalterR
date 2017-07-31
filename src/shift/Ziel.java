@@ -3,7 +3,7 @@ package shift;
 public class Ziel extends D3C implements Comparable<Ziel>
 {
 	public final PreItem von;
-	public final int id;
+	private final int id;
 	public final int key;
 
 	public Ziel(int x, int y, int h, PreItem von, int id, int key)

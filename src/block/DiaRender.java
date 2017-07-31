@@ -6,7 +6,7 @@ import tex.*;
 
 public class DiaRender extends Render3
 {
-	public DiaRender(int height, double minh, double maxh, ArrayList<R3t> teile)
+	private DiaRender(int height, double minh, double maxh, ArrayList<R3t> teile)
 	{
 		super(height, true);
 		this.minh = minh;

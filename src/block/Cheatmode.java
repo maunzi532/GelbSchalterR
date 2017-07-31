@@ -9,10 +9,10 @@ import tex.*;
 
 public class Cheatmode
 {
-	SchalterR schalterR;
-	SchalterLies sl;
+	private final SchalterR schalterR;
+	private final SchalterLies sl;
 	public boolean pfadmodus;
-	public int enhkey;
+	private int enhkey;
 
 	public Cheatmode(SchalterR schalterR, SchalterLies sl)
 	{

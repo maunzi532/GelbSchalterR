@@ -5,10 +5,10 @@ import java.util.*;
 
 public class SpielerRender extends Render3
 {
-	public static Color w = Color.BLACK;
-	public static Color w1 = Color.RED;
+	private static final Color w = Color.BLACK;
+	private static final Color w1 = Color.RED;
 
-	public SpielerRender(int height, double minh, double maxh, ArrayList<R3t> teile)
+	private SpielerRender(int height, double minh, double maxh, ArrayList<R3t> teile)
 	{
 		super(height, true);
 		this.minh = minh;
@@ -98,7 +98,7 @@ public class SpielerRender extends Render3
 		teile1.add(new R3t(false, f, ecken[1], ecken[2], ecken[3]));
 	}
 
-	private static int[] rf = new int[]{0, 1, 3, 2, 0};
+	private static final int[] rf = new int[]{0, 1, 3, 2, 0};
 	private static void r4(ArrayList<R3t> teile1, Color f, R3p... ecken)
 	{
 		for(int i = 0; i < 4; i++)

@@ -9,21 +9,17 @@ public class ASIN
 {
 	private static ArrayList<BState> states;
 	private static int caret1;
-	private static boolean nca;
-	private static int caret2;
 	private static ArrayList<ArrayList<Integer>> pointers;
 	private static SchalterR schalterR;
 
 	private static int[] ws;
-	private static ArrayList<Integer> newws;
-	private static ArrayList<Integer> newws2;
 
 	public static void run()
 	{
 		states = new ArrayList<>();
 		caret1 = 0;
-		nca = true;
-		caret2 = 0;
+		boolean nca = true;
+		int caret2 = 0;
 		pointers = new ArrayList<>();
 		schalterR = (SchalterR) SIN.area;
 
@@ -31,7 +27,6 @@ public class ASIN
 		pointers.add(new ArrayList<>());
 		while(caret1 < states.size())
 		{
-			//System.out.println(caret1 + " " + states.size());
 			if(states.get(caret1).gewonnen)
 			{
 				nca = true;
@@ -67,7 +62,6 @@ public class ASIN
 				{
 					pointers.get(caret1).add(states.size());
 					states.add(nst);
-					//System.out.println(nst);
 				}
 			}
 			else
@@ -86,7 +80,7 @@ public class ASIN
 	{
 		ws = new int[states.size()];
 		int tcl = ws.length;
-		newws = new ArrayList<>();
+		ArrayList<Integer> newws = new ArrayList<>();
 
 		int weg = 0;
 		for(int i = 0; i < ws.length; i++)
@@ -99,7 +93,7 @@ public class ASIN
 				ws[i] = -1;
 		while(tcl > 0 && !newws.isEmpty())
 		{
-			newws2 = new ArrayList<>();
+			ArrayList<Integer> newws2 = new ArrayList<>();
 			weg++;
 			for(int i = 0; i < ws.length; i++)
 				if(ws[i] < 0)

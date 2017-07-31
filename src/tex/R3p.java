@@ -11,14 +11,9 @@ public class R3p
 
 	public static R3p dreh(double dreh, R3p original)
 	{
-		return dreh(dreh, original, 0);
-	}
-
-	public static R3p dreh(double dreh, R3p original, int inv)
-	{
 		double dreh2 = dreh * Math.PI * 2;
-		return new R3p(Math.cos(dreh2) / 2 * original.n[1 - inv] - Math.sin(dreh2) / 2 * original.n[inv] + 0.5,
-				Math.sin(dreh2) / 2 * original.n[1 - inv] + Math.cos(dreh2) / 2 * original.n[inv] + 0.5, original.n[2]);
+		return new R3p(Math.cos(dreh2) / 2 * original.n[1] - Math.sin(dreh2) / 2 * original.n[0] + 0.5,
+				Math.sin(dreh2) / 2 * original.n[1] + Math.cos(dreh2) / 2 * original.n[0] + 0.5, original.n[2]);
 	}
 
 	public static R3p shift(R3p original, double xs, double ys, double zs)

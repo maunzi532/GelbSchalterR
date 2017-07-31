@@ -5,8 +5,8 @@ import java.util.*;
 
 public class ItemD implements Comparable<ItemD>
 {
-	int type;
-	int[] data;
+	private final int type;
+	private final int[] data;
 
 	public ItemD(int type, int... data)
 	{

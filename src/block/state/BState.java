@@ -7,12 +7,12 @@ import java.util.stream.*;
 
 public class BState
 {
-	boolean gewonnen;
-	int x, y, z;
-	char farbe;
-	int dias;
-	List<BlockD> bd;
-	List<ItemD> items;
+	final boolean gewonnen;
+	private final int x, y, z;
+	private final char farbe;
+	private final int dias;
+	private final List<BlockD> bd;
+	private final List<ItemD> items;
 
 	public BState(SchalterR schalterR)
 	{

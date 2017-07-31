@@ -35,7 +35,7 @@ public abstract class Item implements PreItem
 		return level == 0;
 	}
 
-	public int id;
+	private int id;
 	public ArrayList<Ziel> g1;
 	public int[][] g2;
 	public int[] g3;
@@ -97,7 +97,7 @@ public abstract class Item implements PreItem
 		return true;
 	}
 
-	public boolean benutze(int x, int y, boolean main, boolean lvm)
+	/*public boolean benutze(int x, int y, boolean main, boolean lvm)
 	{
 		if(x < 0 || y < 0 || x >= schalterR.xw || y >= schalterR.yw || g2[y][x] <= 0)
 			return false;
@@ -106,7 +106,7 @@ public abstract class Item implements PreItem
 			level--;
 		gzo(g1.get(g2[y][x] - 1));
 		return true;
-	}
+	}*/
 
 	private void gzo(D3C zo)
 	{

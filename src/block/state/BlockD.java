@@ -2,7 +2,7 @@ package block.state;
 
 public class BlockD
 {
-	int x, y;
+	final int x, y;
 
 	public BlockD(int x, int y)
 	{

@@ -5,10 +5,10 @@ import javax.swing.*;
 
 public class TA
 {
-	public static final int KL = 300;
-	public static final int MP = 200;
-	public static final int MRP = 10;
-	public static boolean[] keys;
+	private static final int KL = 300;
+	private static final int MP = 200;
+	private static final int MRP = 10;
+	private static boolean[] keys;
 	public static int[] take;
 
 	public static void einbau(JFrame fenster)

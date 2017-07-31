@@ -6,8 +6,8 @@ import laderLC.*;
 
 public class AerialEnterhaken extends Item
 {
-	boolean doppelt;
-	int laenge;
+	private boolean doppelt;
+	private int laenge;
 
 	public AerialEnterhaken()
 	{
@@ -41,14 +41,13 @@ public class AerialEnterhaken extends Item
 		for(; ix <= xp + laenge && ix < g2[0].length; ix++)
 			for(int iy2 = iy; iy2 <= yp + laenge && iy2 < g2.length; iy2++)
 			{
-				//geht[iy2][ix] = erreichbar(xp, yp, hp, ix, iy2);
 				int err = erreichbar(xp, yp, hp, ix, iy2);
 				if(err >= 0)
 					option(ix, iy2, err, -1);
 			}
 	}
 
-	public int erreichbar(int xp, int yp, int hoeheA, int ix, int iy)
+	private int erreichbar(int xp, int yp, int hoeheA, int ix, int iy)
 	{
 		BFeld zf = schalterR.feld[iy][ix];
 		if(zf.enterstange < 0)

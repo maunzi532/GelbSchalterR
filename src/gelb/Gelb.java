@@ -23,7 +23,7 @@ public class Gelb extends Area implements PreItem
 	@Override
 	public boolean start(String input, String texOrdnerName, boolean chm, boolean chs, int tem)
 	{
-		readFL(input, chs);
+		readFL(input);
 		reset();
 		Texturen tex = new GTex("Default", texOrdnerName);
 		return SIN.start(this, tex, chm, tem);
@@ -160,8 +160,7 @@ public class Gelb extends Area implements PreItem
 		return false;
 	}
 
-	@Override
-	public void readFL(String c1, boolean se2n)
+	private void readFL(String c1)
 	{
 		try
 		{

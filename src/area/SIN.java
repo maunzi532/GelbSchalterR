@@ -11,16 +11,14 @@ public class SIN
 {
 	public static boolean cheatmode;
 	public static int testmode;
-	public static boolean ende;
-	public static Texturen tex;
-	static JFrame fr;
-	static Dimension size;
-	static Dimension size2;
-	static BufferedImage img;
-	static Graphics2D gd;
+	private static boolean ende;
+	private static Texturen tex;
+	private static JFrame fr;
+	private static Dimension size;
+	private static Dimension size2;
+	private static BufferedImage img;
+	private static Graphics2D gd;
 	public static Area area;
-	/*public static int fokusX;
-	public static int fokusY;*/
 	public static Ziel auswahl;
 	public static int mfokusX;
 	public static int mfokusY;
@@ -79,7 +77,7 @@ public class SIN
 		Shift.localReset(area.d3c());
 	}
 
-	public static void run()
+	private static void run()
 	{
 		while(!ende)
 		{
@@ -109,7 +107,7 @@ public class SIN
 		}
 	}
 
-	public static void updatePosition()
+	private static void updatePosition()
 	{
 		if(!fr.getContentPane().getSize().equals(size))
 		{
@@ -153,7 +151,6 @@ public class SIN
 	{
 		gd.setColor(Color.BLACK);
 		gd.fillRect(0, 0, size.width, size.height);
-		//hintergrund
 		tex.placeAll2(gd, area.renders2, area.xw, area.yw);
 		area.rahmen(gd, tex, size2.width, size2.height);
 		fr.getGraphics().drawImage(img, 0, 0, null);

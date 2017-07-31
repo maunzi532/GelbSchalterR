@@ -9,7 +9,7 @@ import javax.imageio.*;
 
 public class Lader4
 {
-	public static Map<String, Object> map = new HashMap<>();
+	private static final Map<String, Object> map = new HashMap<>();
 
 	public static String bauName(String... teile)
 	{
@@ -20,7 +20,7 @@ public class Lader4
 		return sb.toString();
 	}
 
-	public static String readR(String s)
+	private static String readR(String s)
 	{
 		try
 		{
@@ -32,7 +32,7 @@ public class Lader4
 		}
 	}
 
-	public static BufferedImage readR2(String s)
+	private static BufferedImage readR2(String s)
 	{
 		try
 		{

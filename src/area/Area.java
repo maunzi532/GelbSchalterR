@@ -8,7 +8,6 @@ import tex.*;
 
 public abstract class Area
 {
-	//public int[][] geht;
 	public boolean gewonnen;
 	public boolean mapview;
 	public int xw;
@@ -29,12 +28,7 @@ public abstract class Area
 
 	public abstract void rahmen(Graphics2D gd, Texturen tex, int w1, int h);
 
-	public void noMovement()
-	{
-		//geht = new int[yw][xw];
-	}
-
-	public abstract void readFL(String c1, boolean se2n);
+	public void noMovement(){}
 
 	public int ycp;
 	public int xcp;

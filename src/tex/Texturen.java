@@ -43,7 +43,7 @@ public class Texturen
 				bilder2D.put(ordner[i].getName().substring(0, ordner[i].getName().lastIndexOf('.')), U.readImage(ordner[i]));
 	}
 
-	protected void neueTextur(File[] files, File dir)
+	private void neueTextur(File[] files, File dir)
 	{
 		int kmin = Integer.MAX_VALUE;
 		int kmax = Integer.MIN_VALUE;
@@ -202,12 +202,12 @@ public class Texturen
 		return tex;
 	}
 
-	public static void place3Vor(Graphics2D gd, Image im, int sh, int h)
+	private static void place3Vor(Graphics2D gd, Image im, int sh, int h)
 	{
 		gd.drawImage(im, sh - h, sh - h, Shift.tile, Shift.tile, null);
 	}
 
-	public static void placeErsatzTextVor(Graphics2D gd, String s, int sh, int h)
+	private static void placeErsatzTextVor(Graphics2D gd, String s, int sh, int h)
 	{
 		gd.setFont(new Font("Consolas", Font.PLAIN, (int)(Shift.tile * 1.5f / s.length())));
 		int fh2 = gd.getFontMetrics().getHeight() / 2;

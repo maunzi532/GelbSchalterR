@@ -6,7 +6,7 @@ import java.awt.*;
 
 public class BFeld extends LFeld implements Feld
 {
-	SchalterR schalterR;
+	private SchalterR schalterR;
 
 	public boolean benutzt = false;
 

@@ -215,7 +215,7 @@ public class LFeld
 		return String.valueOf(hoehe);
 	}
 
-	public void speichernZ(StringBuilder sb, String key, String value)
+	private void speichernZ(StringBuilder sb, String key, String value)
 	{
 		sb.append(' ').append(key);
 		if(value != null)

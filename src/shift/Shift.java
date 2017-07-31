@@ -9,8 +9,8 @@ public class Shift
 {
 	private static final int delpix = 4;
 
-	public static int xd2;
-	public static int yd2;
+	private static int xd2;
+	private static int yd2;
 	private static int mapview;
 	private static int kamZoom = 8;
 	private static int mapKamZoom = 16;
@@ -21,8 +21,6 @@ public class Shift
 	public static int th;
 	private static int tshX;
 	private static int tshY;
-	private static int pixshX;
-	private static int pixshY;
 	private static int acpix;
 
 	public static void resize(int fw1, int fh)
@@ -111,8 +109,8 @@ public class Shift
 			curT++;
 		if(curT > newT)
 			curT--;
-		pixshX = (int)(realX * tile - curX * tile) * acpix / delpix;
-		pixshY = (int)(realY * tile - curY * tile) * acpix / delpix;
+		int pixshX = (int) (realX * tile - curX * tile) * acpix / delpix;
+		int pixshY = (int) (realY * tile - curY * tile) * acpix / delpix;
 		tile = basetile / curT;
 		tshX = curX * tile + pixshX;
 		tshY = curY * tile + pixshY;

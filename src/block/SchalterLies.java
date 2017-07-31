@@ -8,7 +8,7 @@ public class SchalterLies
 {
 	LFeld[][] feld;
 	final int[][] se = new int[2][2];
-	int[] se2 = new int[]{0, 0};
+	private int[] se2 = new int[]{0, 0};
 
 	public ErrorVial lies(String build, boolean se2n)
 	{
@@ -19,9 +19,8 @@ public class SchalterLies
 		readInSettings((String) werte[0], ends.get(0), vial);
 		if(se2n)
 		{
-			StringBuilder sb = new StringBuilder();
-			sb.append("0 0 ").append(se[0][0]).append(' ').append(se[0][1]);
-			Object neu = JOptionPane.showInputDialog(null, null, null, JOptionPane.QUESTION_MESSAGE, null, null, sb.toString());
+			Object neu = JOptionPane.showInputDialog(null, null, null, JOptionPane.QUESTION_MESSAGE, null, null,
+					"0 0 " + se[0][0] + ' ' + se[0][1]);
 			if(neu instanceof String)
 			{
 				String[] w = ((String) neu).split(" ");
@@ -48,7 +47,7 @@ public class SchalterLies
 
 	private static final KXS forReadInSettings = new KXS(true, false, true, true, false);
 
-	public void readInSettings(String build, int errStart, ErrorVial vial)
+	private void readInSettings(String build, int errStart, ErrorVial vial)
 	{
 		LC2.superwaguh(build, errStart, vial, forReadInSettings, new ArrayList(), this, "readInSettings2");
 	}
@@ -81,7 +80,7 @@ public class SchalterLies
 
 	private static final KXS forReadInFeld = new KXS(true, false);
 
-	public void readInFeld(String build, int errStart, int errEnd, ErrorVial vial)
+	private void readInFeld(String build, int errStart, int errEnd, ErrorVial vial)
 	{
 		ArrayList<LFeld[]> feld1 = new ArrayList<>();
 		LC2.superwaguh(build, errStart, vial, forReadInFeld, this, "readInFeld2", feld1);

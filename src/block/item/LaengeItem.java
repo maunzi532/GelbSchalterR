@@ -24,16 +24,17 @@ public abstract class LaengeItem extends Item
 	@Override
 	public boolean benutze(int r, boolean main, boolean lvm)
 	{
+		//noinspection SimplifiableIfStatement
 		if(!main && TA.take[16] <= 0 && level >= 0)
 			return false;
 		return super.benutze(r, main, true);
 	}
 
-	@Override
+	/*@Override
 	public boolean benutze(int x, int y, boolean main, boolean lvm)
 	{
 		return super.benutze(x, y, main, true);
-	}
+	}*/
 
 	public void lies2(String value, Integer errStart, Integer errEnd, ErrorVial vial, String textKey)
 	{
