@@ -272,4 +272,16 @@ public class Gelb extends Area
 		gd.drawRect(w1 + ht, 0, ht - 1, h - 1);
 		gd.drawRect(w1 + ht * 2, 0, ht - 1, h - 1);
 	}
+
+	@Override
+	public double realX()
+	{
+		return xp;
+	}
+
+	@Override
+	public double realY()
+	{
+		return yp;
+	}
 }

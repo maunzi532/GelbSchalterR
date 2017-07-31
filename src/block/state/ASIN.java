@@ -42,7 +42,7 @@ public class ASIN
 			}
 			states.get(caret1).charge(blockLab);
 			blockLab.srd.reset2(blockLab);
-			Shift.selectTarget(blockLab.xp, blockLab.yp, blockLab.hoeheA, SIN.kamZoom, 1);
+			Shift.selectTarget(blockLab.xp, blockLab.yp, blockLab.hoeheA, SIN.kamZoom);
 
 			SIN.area.checkFields();
 			if(nca)
@@ -50,7 +50,7 @@ public class ASIN
 				nca = false;
 				if(SIN.testmode == 2)
 				{
-					Shift.moveToTarget();
+					Shift.moveToTarget(0, 0, true);
 					SIN.drawX();
 				}
 				else
@@ -133,8 +133,8 @@ public class ASIN
 			{
 				states.get(i).charge(blockLab);
 				blockLab.srd.reset2(blockLab);
-				Shift.selectTarget(blockLab.xp, blockLab.yp, blockLab.hoeheA, SIN.kamZoom, 1);
-				Shift.moveToTarget();
+				Shift.selectTarget(blockLab.xp, blockLab.yp, blockLab.hoeheA, SIN.kamZoom);
+				Shift.moveToTarget(0, 0, true);
 				SIN.drawX();
 				System.out.println(i);
 				TA.bereit();
@@ -151,10 +151,10 @@ public class ASIN
 		caret1 = 0;
 		states.get(caret1).charge(blockLab);
 		blockLab.srd.reset(blockLab);
-		Shift.selectTarget(blockLab.xp, blockLab.yp, blockLab.hoeheA, SIN.kamZoom, 1);
+		Shift.selectTarget(blockLab.xp, blockLab.yp, blockLab.hoeheA, SIN.kamZoom);
 		for(int i = 0; i < 5; i++)
 		{
-			Shift.moveToTarget();
+			Shift.moveToTarget(blockLab.realX(), blockLab.realY(), true);
 			SIN.drawX();
 			U.warte(20);
 		}
@@ -163,7 +163,7 @@ public class ASIN
 		int noch = ws[0];
 		while(!states.get(caret1).gewonnen)
 		{
-			Shift.moveToTarget();
+			Shift.moveToTarget(blockLab.realX(), blockLab.realY(), true);
 			SIN.drawX();
 			U.warte(20);
 			blockLab.checkFields();
@@ -177,13 +177,13 @@ public class ASIN
 			caret1 = pointers.get(caret1).get(c2);
 			noch = ws[caret1];
 			blockLab.moveR(c2);
-			Shift.selectTarget(blockLab.xp, blockLab.yp, blockLab.hoeheA, SIN.kamZoom, 1);
+			Shift.selectTarget(blockLab.xp, blockLab.yp, blockLab.hoeheA, SIN.kamZoom);
 		}
 		for(int i = 0; i < 20; i++)
 		{
 			if(blockLab.gewonnen)
 				blockLab.victoryTick();
-			Shift.moveToTarget();
+			Shift.moveToTarget(blockLab.realX(), blockLab.realY(), true);
 			SIN.drawX();
 			U.warte(20);
 		}

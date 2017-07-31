@@ -5,16 +5,19 @@ import java.awt.*;
 
 public class Shift
 {
+	private static final int delpix = 4;
 	public static int xd2;
 	public static int yd2;
-	static int basetile, baseth;
-	static int startX, startY, startTile;
-	static int targetX, targetY, targetTile;
-	static int tick, maxtick;
+	private static int basetile, baseth;
+	private static int newX, newY, newH, newT;
+	private static int curX, curY, curH, curT;
 	public static int tile;
 	public static int th;
-	public static int shiftX;
-	public static int shiftY;
+	private static int tshX;
+	private static int tshY;
+	private static int pixshX;
+	private static int pixshY;
+	private static int acpix;
 
 	public static void resize(int fw1, int fh)
 	{
@@ -39,52 +42,78 @@ public class Shift
 
 	public static void place4(Graphics2D gd, TexturR tr, int xf, int yf)
 	{
-		gd.drawImage(tr.img, xf * tile - tr.shift - shiftX + xd2, yf * tile - tr.shift - shiftY + yd2, null);
+		gd.drawImage(tr.img, xf * tile - tr.shift - tshX - th * curH + xd2, yf * tile - tr.shift - tshY - th * curH + yd2, null);
 	}
 
 	public static boolean checkObDarauf(int mx, int my, int ix, int iy, int hoch)
 	{
-		return mx > ix * tile - shiftX - hoch * th &&
-				mx < (ix + 1) * tile - shiftX - hoch * th &&
-				my > iy * tile - shiftY - hoch * th &&
-				my < (iy + 1) * tile - shiftY - hoch * th;
+		return mx > ix * tile - tshX - hoch * th &&
+				mx < (ix + 1) * tile - tshX - hoch * th &&
+				my > iy * tile - tshY - hoch * th &&
+				my < (iy + 1) * tile - tshY - hoch * th;
 	}
 
-	public static void selectTarget(int newX, int newY, int newH, int divisor, int ticks)
+	public static void selectTarget(int newX1, int newY1, int newH1, int newT1)
 	{
-		tick = 0;
-		maxtick = ticks;
-		startX = shiftX;
-		startY = shiftY;
-		startTile = tile;
-		targetX = newX * basetile / divisor + basetile / 2 / divisor - newH * baseth / divisor;
-		targetY = newY * basetile / divisor + basetile / 2 / divisor - newH * baseth / divisor;
-		targetTile = basetile / divisor;
+		newX = newX1;
+		newY = newY1;
+		newH = newH1;
+		if(newH < 0)
+			newH = 0;
+		newT = newT1;
+		if(newT <= 0)
+			newT = 1;
 	}
 
-	public static void moveTarget(int ticks)
+	public static void instant()
 	{
-		int mlr = TA.take[39] - TA.take[37];
-		int mou = TA.take[40] - TA.take[38];
-		if(mlr == 0 && mou == 0)
-			return;
-		tick = 0;
-		maxtick = ticks;
-		startX = shiftX;
-		startY = shiftY;
-		startTile = tile;
-		targetX = targetX + basetile / 5 * mlr;
-		targetY = targetY + basetile / 5 * mou;
+		curX = newX;
+		curY = newY;
+		curH = newH;
+		curT = newT;
 	}
 
-	public static void moveToTarget()
+	public static void moveTarget(boolean keys, int newT1)
 	{
-		if(tick >= maxtick)
-			return;
-		tick++;
-		shiftX = (startX * (maxtick - tick) + targetX * tick) / maxtick;
-		shiftY = (startY * (maxtick - tick) + targetY * tick) / maxtick;
-		tile = basetile / (basetile / ((startTile * (maxtick - tick) + targetTile * tick) / maxtick));
+		newT = newT1;
+		if(keys)
+		{
+			int mlr = TA.take[39] - TA.take[37];
+			int mou = TA.take[40] - TA.take[38];
+			if(mlr == 0 && mou == 0)
+				return;
+			newX += mlr;
+			newY += mou;
+		}
+	}
+
+	public static void moveToTarget(double realX, double realY, boolean usepix)
+	{
+		if(usepix)
+			acpix = delpix;
+		else if(acpix > 0)
+			acpix--;
+		if(curX < newX)
+			curX++;
+		if(curX > newX)
+			curX--;
+		if(curY < newY)
+			curY++;
+		if(curY > newY)
+			curY--;
+		if(curH < newH)
+			curH++;
+		if(curH > newH)
+			curH--;
+		if(curT < newT)
+			curT++;
+		if(curT > newT)
+			curT--;
+		pixshX = (int)(realX * tile - curX * tile) * acpix / delpix;
+		pixshY = (int)(realY * tile - curY * tile) * acpix / delpix;
+		tile = basetile / curT;
+		tshX = curX * tile + pixshX;
+		tshY = curY * tile + pixshY;
 		th = tile * baseth / basetile;
 	}
 }

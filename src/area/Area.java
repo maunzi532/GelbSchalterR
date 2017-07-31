@@ -85,4 +85,8 @@ public abstract class Area
 	{
 		renders.add(r3);
 	}
+
+	public abstract double realX();
+
+	public abstract double realY();
 }

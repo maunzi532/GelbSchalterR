@@ -142,7 +142,8 @@ public class BlockLab extends Area
 				states.pop().charge(this);
 				srd.reset2(this);
 				SIN.mapview = 0;
-				Shift.selectTarget(xp, yp, hoeheA, SIN.kamZoom, 1);
+				Shift.selectTarget(xp, yp, hoeheA, SIN.kamZoom);
+				Shift.instant();
 			}
 		if(nichtMap)
 		{
@@ -396,6 +397,18 @@ public class BlockLab extends Area
 				throw new RuntimeException(e);
 			}
 		}
+	}
+
+	@Override
+	public double realX()
+	{
+		return srd.x;
+	}
+
+	@Override
+	public double realY()
+	{
+		return srd.y;
 	}
 
 	@Override
