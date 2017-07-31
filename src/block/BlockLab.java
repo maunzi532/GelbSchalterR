@@ -145,22 +145,19 @@ public class BlockLab extends Area
 				Shift.selectTarget(xp, yp, hoeheA, SIN.kamZoom);
 				Shift.instant();
 			}
-		if(nichtMap)
+		if(nichtMap && SIN.mfokusX >= 1 && TA.take[201] == 2)
 		{
-			if(SIN.mfokusX >= 1 && TA.take[201] == 2)
+			if(items.size() > 4)
 			{
-				if(items.size() > 4)
-				{
-					int y1 = SIN.mfokusY * 2 + SIN.mfokusX - 1;
-					if(y1 < items.size())
-						akItem = y1;
-				}
-				else
-				{
-					int y1 = SIN.mfokusY / 2;
-					if(y1 < items.size())
-						akItem = y1;
-				}
+				int y1 = SIN.mfokusY * 2 + SIN.mfokusX - 1;
+				if(y1 < items.size())
+					akItem = y1;
+			}
+			else
+			{
+				int y1 = SIN.mfokusY / 2;
+				if(y1 < items.size())
+					akItem = y1;
 			}
 			return false;
 		}
@@ -191,7 +188,7 @@ public class BlockLab extends Area
 		else if(TA.take[40] == 2)
 			oum = limit;
 		int code = -1;
-		if(TA.take[32] > 0)
+		if(TA.take[32] == 2)
 			code = 0;
 		else if(TA.take[37] > 0 && lrm <= -limit)
 		{
@@ -318,7 +315,7 @@ public class BlockLab extends Area
 				{
 					enhkey--;
 					if(enhkey < 0)
-						enhkey = BFeld.maxenh;
+						enhkey = LFeld.maxenh;
 				}
 			}
 			if(TA.take[118] == 2)
@@ -328,7 +325,7 @@ public class BlockLab extends Area
 				else
 				{
 					enhkey++;
-					if(enhkey > BFeld.maxenh)
+					if(enhkey > LFeld.maxenh)
 						enhkey = 0;
 				}
 			}

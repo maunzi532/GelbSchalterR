@@ -6,6 +6,8 @@ import laderLC.*;
 
 public class LFeld
 {
+	public static final int maxenh = 12;
+
 	public int hoehe;
 	boolean ziel;
 	public char blockFarbe = 'n';
@@ -18,6 +20,7 @@ public class LFeld
 	boolean eis;
 	boolean loescher;
 	public int enterstange = -1;
+	public boolean lift;
 	Item item;
 
 	public void enhance(BlockLab mit, int wie)
@@ -63,6 +66,9 @@ public class LFeld
 				break;
 			case 11:
 				ziel = true;
+				break;
+			case 12:
+				lift = true;
 				break;
 		}
 	}
@@ -138,6 +144,9 @@ public class LFeld
 				case "stange":
 					enterstange = value == null ? hoehe : Integer.parseInt(value);
 					break;
+				case "lift":
+					lift = true;
+					break;
 				case "itemfeuer":
 					item = new Feuer();
 					break;
@@ -190,6 +199,8 @@ public class LFeld
 			speichernZ(sb, "löscher", null);
 		if(enterstange >= 0)
 			speichernZ(sb, "stange", enterstange == hoehe ? null : String.valueOf(enterstange));
+		if(lift)
+			speichernZ(sb, "lift", null);
 		if(item != null)
 		{
 			sb.append(" item").append(item.speichername()).append(" = {");

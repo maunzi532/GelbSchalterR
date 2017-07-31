@@ -29,7 +29,9 @@ public class Movement extends Item
 	@Override
 	public void setzeOptionen(int xp, int yp, int hoeheA)
 	{
-		ArrayList<int[]> re = new ArrayList<>();
+		BFeld f = blockLab.feld[yp][xp];
+		if(f.lift)
+			option(xp, yp, blockLab.hoeheA + (f.liftOben() ? -1 : 1), 0);
 		for(int r = 0; r <= 3; r++)
 		{
 			int xm = r != 3 ? r - 1 : 0;
@@ -38,13 +40,7 @@ public class Movement extends Item
 				continue;
 			int b = feldBegehbar(xp, yp, xp + xm, yp + ym, hoeheA, r);
 			if(b >= 0)
-			{
 				option(xp + xm, yp + ym, b, r + 1);
-				/*geht[yp + ym][xp + xm] = b;
-				gehtT[r + 1][0] = b;
-				gehtT[r + 1][1] = xp + xm;
-				gehtT[r + 1][2] = yp + ym;*/
-			}
 		}
 	}
 

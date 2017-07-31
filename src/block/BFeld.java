@@ -6,8 +6,6 @@ import java.awt.*;
 
 public class BFeld extends LFeld implements Feld
 {
-	public static final int maxenh = 11;
-
 	BlockLab blockLab;
 
 	public boolean benutzt = false;
@@ -35,6 +33,7 @@ public class BFeld extends LFeld implements Feld
 		copy.eis = von.eis;
 		copy.loescher = von.loescher;
 		copy.enterstange = von.enterstange;
+		copy.lift = von.lift;
 		copy.item = von.item;
 		return copy;
 	}
@@ -64,7 +63,7 @@ public class BFeld extends LFeld implements Feld
 		}
 		if(blockFarbe != 'n' && blockFarbe != blockLab.farbeAktuell)
 			return sonstH >= 0 ? sonstH : null;
-		return hoehe;
+		return lift(hoehe);
 	}
 
 	public int getAH()
@@ -74,7 +73,19 @@ public class BFeld extends LFeld implements Feld
 			h1 = sonstH >= 0 ? sonstH : 0;
 		if((einhauwand >= 0 && !benutzt) || diaTuer > 0 || (eis && !benutzt))
 			return h1 + 1;
-		return h1;
+		if(h1 != hoehe)
+			return h1;
+		return lift(hoehe);
+	}
+
+	public boolean liftOben()
+	{
+		return lift && blockLab.hoeheA > hoehe;
+	}
+
+	private int lift(int hv)
+	{
+		return liftOben() ? hv + 1 : hv;
 	}
 
 	public void gehen()
@@ -112,7 +123,7 @@ public class BFeld extends LFeld implements Feld
 	{
 		if(blockFarbe != 'n' && blockFarbe != blockLab.farbeAktuell)
 			return sonstH >= 0 ? sonstH : -1;
-		return hoehe;
+		return lift(hoehe);
 	}
 
 	@Override
@@ -168,6 +179,11 @@ public class BFeld extends LFeld implements Feld
 			area.addw("Löscher");
 		if(enterstange >= 0)
 			area.addm("Stange" + (darauf ? "B" : ""), enterstange);
+		if(lift)
+			if(lift(hoehe) > hoehe)
+				area.addw("LiftOben");
+			else
+				area.addw("LiftUnten");
 		if(item != null && !darauf)
 			area.addw(item.bildname());
 		blockLab.srd.addSpieler(area, xcp, ycp);
