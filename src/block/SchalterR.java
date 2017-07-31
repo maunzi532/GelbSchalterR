@@ -32,7 +32,7 @@ public class SchalterR extends Area
 	public SRD srd;
 
 	public int richtung;
-	public Cheatmode cheatmode;
+	private Cheatmode cheatmode;
 
 	private final Stack<BState> states = new Stack<>();
 
@@ -40,12 +40,12 @@ public class SchalterR extends Area
 	public boolean start(String input, String texOrdnerName, boolean cheatmode, boolean changesize, int testmode)
 	{
 		readFL(input, changesize);
+		if(cheatmode)
+			this.cheatmode = new Cheatmode(this, sl);
 		srd = new SRD(this);
 		reset();
 		Texturen tex = new FTex("BlockLab", texOrdnerName);
-		if(cheatmode)
-			this.cheatmode = new Cheatmode(this, sl);
-		return SIN.start(this, tex, cheatmode, testmode);
+		return SIN.start(this, tex, testmode);
 	}
 
 	private void readFL(String c1, boolean se2n)
@@ -73,6 +73,8 @@ public class SchalterR extends Area
 		farbeAktuell = 'A';
 		dias = 0;
 		items.clear();
+		if(cheatmode != null)
+			cheatmode.reset();
 		items.add(new Movement().kopie(this));
 		xw = sl.se[0][0];
 		yw = sl.se[0][1];
@@ -100,10 +102,21 @@ public class SchalterR extends Area
 	}
 
 	@Override
-	public void checkFields()
+	public void noMovement()
 	{
 		for(int i = 0; i < items.size(); i++)
-			items.get(i).setzeOptionen1(xp, yp, hp, xw, yw, akvorne(i));
+			items.get(akvorne(i)).noMovement();
+	}
+
+	@Override
+	public void checkFields()
+	{
+		boolean[] tasten = new boolean[5];
+		for(int i = 0; i < items.size(); i++)
+			if(items.get(akvorne(i)).disabled)
+				items.get(akvorne(i)).noMovement();
+			else
+				items.get(akvorne(i)).setzeOptionen1(xp, yp, hp, xw, yw, akvorne(i), tasten);
 	}
 
 	private int akvorne(int i)
@@ -133,20 +146,9 @@ public class SchalterR extends Area
 				srd.reset2(this);
 				Shift.localReset(new D3C(xp, yp, hp));
 			}
-		if(nichtMap && SIN.mfokusX >= 1 && TA.take[201] == 2)
+		if(nichtMap && SIN.mfokusX >= 1)
 		{
-			if(items.size() > 4)
-			{
-				int y1 = SIN.mfokusY * 2 + SIN.mfokusX - 1;
-				if(y1 < items.size())
-					akItem = y1;
-			}
-			else
-			{
-				int y1 = SIN.mfokusY / 2;
-				if(y1 < items.size())
-					akItem = y1;
-			}
+			itemauswahl(items.size() > 4 ? SIN.mfokusY * 2 + SIN.mfokusX - 1 : SIN.mfokusY / 2);
 			return false;
 		}
 		if(TA.take[37] <= 0 || TA.take[39] <= 0)
@@ -199,20 +201,29 @@ public class SchalterR extends Area
 			oum = 1;
 		}
 		if(code >= 0)
-		{
-			for(int i = 0; i < items.size(); i++)
-				if(items.get(akvorne(i)).benutze(code, i == 0, false))
-					return true;
-			return false;
-		}
+			benutze(SIN.tasten[code], false);
 		else if(TA.take[201] == 2)
-		{
-			Ziel ziel = SIN.auswahl;
-			return ziel != null && ziel.von instanceof Item && ((Item) ziel.von).benutze(ziel.key, false);
-		}
+			return benutze(SIN.auswahl, true);
 		else if(cheatmode != null)
 			cheatmode.move();
 		return false;
+	}
+
+	private void itemauswahl(int nummer)
+	{
+		if(nummer < items.size())
+		{
+			if(TA.take[201] == 2)
+				akItem = nummer;
+			if(TA.take[203] == 2)
+				items.get(nummer).disabled = !items.get(nummer).disabled;
+		}
+	}
+
+	private boolean benutze(Ziel ziel, boolean cl)
+	{
+		return ziel != null && ziel.von instanceof Item && ((Item) ziel.von)
+				.benutze(ziel.nummer, cl, items.get(akItem) == ziel.von, false);
 	}
 
 	public boolean moveR(int caret2)
@@ -223,7 +234,7 @@ public class SchalterR extends Area
 			{
 				if(k == caret2)
 				{
-					items.get(i).benutze(j, false);
+					items.get(i).benutze(j, true, true, false);
 					return true;
 				}
 				k++;
@@ -298,13 +309,21 @@ public class SchalterR extends Area
 		if(items.size() <= 4)
 		{
 			for(int i = 0; i < items.size(); i++)
+			{
 				gd.drawImage(tex.bilder2D.get(items.get(i).bildname()), w1 + ht, ht * 2 * i, ht * 2, ht * 2, null);
+				if(items.get(i).disabled)
+					gd.drawLine(w1 + ht, ht * 2 * i, w1 + ht * 3 - 1, ht * 2 * (i + 1) - 1);
+			}
 			gd.drawRect(w1 + ht, ht * 2 * akItem, ht * 2 - 1, ht * 2 - 1);
 		}
 		else
 		{
 			for(int i = 0; i < items.size(); i++)
+			{
 				gd.drawImage(tex.bilder2D.get(items.get(i).bildname()), w1 + ht + (i % 2) * ht, ht * (i / 2), ht, ht, null);
+				if(items.get(i).disabled)
+					gd.drawLine(w1 + ht + (i % 2) * ht, ht * (i / 2), w1 + ht + (i % 2 + 1) * ht - 1, ht * (i / 2 + 1) - 1);
+			}
 			gd.drawRect(w1 + ht + (akItem % 2) * ht, ht * (akItem / 2), ht - 1, ht - 1);
 		}
 		if(cheatmode != null)

@@ -2,19 +2,21 @@ package block.item;
 
 import block.*;
 import block.state.*;
-import java.util.*;
 
-public class Movement extends Item
+public class CheatMovement extends Item
 {
-	public Movement()
+	private final Cheatmode cheatmode;
+
+	public CheatMovement(Cheatmode cheatmode)
 	{
+		this.cheatmode = cheatmode;
 		level = -1;
 	}
 
 	@Override
 	public Item kopie(SchalterR schalterR)
 	{
-		Movement i1 = new Movement();
+		CheatMovement i1 = new CheatMovement(cheatmode);
 		i1.schalterR = schalterR;
 		return i1;
 	}
@@ -29,31 +31,23 @@ public class Movement extends Item
 	public void setzeOptionen(int xp, int yp, int hp, int xw, int yw)
 	{
 		BFeld f = schalterR.feld[yp][xp];
-		if(f.lift)
-			option(xp, yp, schalterR.hp + (f.liftOben() ? -1 : 1), 0);
+		option(xp, yp, schalterR.hp + (f.bodenH() < hp ? -1 : 1), 0);
 		for(int r = 0; r <= 3; r++)
 		{
 			int xm = r != 3 ? r - 1 : 0;
 			int ym = r != 0 ? r - 2 : 0;
 			if(xp + xm < 0 || yp + ym < 0 || xp + xm >= schalterR.xw || yp + ym >= schalterR.yw)
 				continue;
-			int b = feldBegehbar(xp, yp, xp + xm, yp + ym, hp, r);
-			if(b >= 0)
-				option(xp + xm, yp + ym, b, r + 1);
+			option(xp + xm, yp + ym, hp, r + 1);
 		}
 	}
 
-	private int feldBegehbar(int xp, int yp, int xf, int yf, int hoeheA, int richtung)
+	@Override
+	public boolean benutze(int num, boolean cl, boolean main, boolean lvm)
 	{
-		Integer ph = schalterR.feld[yp][xp].getH(richtung, false);
-		if(schalterR.feld[yp][xp].bodenH() != hoeheA)
-			ph = hoeheA;
-		Integer fh = schalterR.feld[yf][xf].getH((richtung + 2) % 4, true);
-		if(ph == null || fh == null)
-			return -1;
-		if(Objects.equals(ph, fh))
-			return fh;
-		return -1;
+		if(cheatmode.pfadmodus)
+			schalterR.angleichen();
+		return super.benutze(num, cl, main, lvm);
 	}
 
 	@Override

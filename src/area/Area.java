@@ -28,7 +28,7 @@ public abstract class Area
 
 	public abstract void rahmen(Graphics2D gd, Texturen tex, int w1, int h);
 
-	public void noMovement(){}
+	public abstract void noMovement();
 
 	public int ycp;
 	public int xcp;
@@ -52,7 +52,7 @@ public abstract class Area
 					{
 						PreItem von = z.von;
 						String marker = von.marker();
-						String symbol = von.symbol(z.key);
+						String symbol = von.symbol(z.taste);
 						addm("Möglich" + marker, z.h);
 						if(symbol != null)
 							addm("Symbol" + symbol + marker, z.h);

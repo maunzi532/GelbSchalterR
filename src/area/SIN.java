@@ -3,13 +3,13 @@ package area;
 import block.state.*;
 import java.awt.*;
 import java.awt.image.*;
+import java.util.*;
 import javax.swing.*;
 import shift.*;
 import tex.*;
 
 public class SIN
 {
-	public static boolean cheatmode;
 	public static int testmode;
 	private static boolean ende;
 	private static Texturen tex;
@@ -20,13 +20,13 @@ public class SIN
 	private static Graphics2D gd;
 	public static Area area;
 	public static Ziel auswahl;
+	public static Ziel[] tasten;
 	public static int mfokusX;
 	public static int mfokusY;
 
-	public static boolean start(Area area1, Texturen tex1, boolean chm, int tem)
+	public static boolean start(Area area1, Texturen tex1, int tem)
 	{
 		ende = false;
-		cheatmode = chm;
 		testmode = tem;
 		area = area1;
 		tex = tex1;
@@ -118,7 +118,16 @@ public class SIN
 		Point f = fr.getContentPane().getLocationOnScreen();
 		int mex = m.x - f.x;
 		int mey = m.y - f.y;
-		auswahl = Shift.zeiger(mex, mey, area.anzielbar());
+		ArrayList<Ziel> eintrag = area.anzielbar();
+		auswahl = Shift.zeiger(mex, mey, eintrag);
+		tasten = new Ziel[5];
+		for(int i = 0; i < tasten.length; i++)
+			for(Ziel z : eintrag)
+				if(z.taste == i)
+				{
+					tasten[i] = z;
+					break;
+				}
 		if(mex >= size2.width && mex < size.width && mey >= 0 && mey < size2.height)
 		{
 			mfokusX = (mex - size2.width) / (size2.height / 10);

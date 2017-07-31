@@ -10,6 +10,7 @@ public abstract class Item implements PreItem
 {
 	public SchalterR schalterR;
 	public int level;
+	public boolean disabled;
 
 	public Item()
 	{
@@ -36,27 +37,31 @@ public abstract class Item implements PreItem
 	}
 
 	private int id;
+	private boolean[] tasten;
 	public ArrayList<Ziel> g1;
-	public int[][] g2;
-	public int[] g3;
 
-	public void setzeOptionen1(int xp, int yp, int hp, int xw, int yw, int id)
+	public void setzeOptionen1(int xp, int yp, int hp, int xw, int yw, int id, boolean[] tasten)
 	{
 		this.id = id;
+		this.tasten = tasten;
 		g1 = new ArrayList<>();
-		g2 = new int[yw][xw];
-		g3 = new int[5];
-		setzeOptionen(xp, yp, hp);
+		setzeOptionen(xp, yp, hp, xw, yw);
 	}
 
-	public void setzeOptionen(int xp, int yp, int hp){}
+	public void setzeOptionen(int xp, int yp, int hp, int xw, int yw){}
 
-	public void option(int x, int y, int h, int key)
+	public void noMovement()
 	{
-		g1.add(new Ziel(x, y, h, this, id, g1.size()));
-		g2[y][x] = g1.size();
-		if(key >= 0)
-			g3[key] = g1.size();
+		g1 = new ArrayList<>();
+	}
+
+	public void option(int x, int y, int h, int taste)
+	{
+		if(taste >= 0 && !tasten[taste])
+			tasten[taste] = true;
+		else
+			taste = -1;
+		g1.add(new Ziel(x, y, h, this, id, g1.size(), taste));
 	}
 
 	@Override
@@ -66,17 +71,16 @@ public abstract class Item implements PreItem
 	}
 
 	@Override
-	public String symbol(int key)
+	public String symbol(int taste)
 	{
-		if(g3[0] - 1 == key)
+		if(taste == 0)
 			return "L";
-		for(int i = 0; i < 4; i++)
-			if(g3[i + 1] - 1 == key)
-				return String.valueOf(i);
-		return null;
+		if(taste < 0)
+			return null;
+		return String.valueOf(taste - 1);
 	}
 
-	public boolean benutze(int num, boolean lvm)
+	public boolean benutze(int num, boolean cl, boolean main, boolean lvm)
 	{
 		setzeR(schalterR.xp, schalterR.yp, g1.get(num).x, g1.get(num).y);
 		if(lvm && level > 0)
@@ -84,29 +88,6 @@ public abstract class Item implements PreItem
 		gzo(g1.get(num));
 		return true;
 	}
-
-	public boolean benutze(int r, boolean main, boolean lvm)
-	{
-		if(g3[r] <= 0)
-			return false;
-		if(r > 0)
-			schalterR.setRichtung(r - 1);
-		if(lvm && level > 0)
-			level--;
-		gzo(g1.get(g3[r] - 1));
-		return true;
-	}
-
-	/*public boolean benutze(int x, int y, boolean main, boolean lvm)
-	{
-		if(x < 0 || y < 0 || x >= schalterR.xw || y >= schalterR.yw || g2[y][x] <= 0)
-			return false;
-		setzeR(schalterR.xp, schalterR.yp, x, y);
-		if(lvm && level > 0)
-			level--;
-		gzo(g1.get(g2[y][x] - 1));
-		return true;
-	}*/
 
 	private void gzo(D3C zo)
 	{

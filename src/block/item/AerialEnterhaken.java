@@ -30,7 +30,7 @@ public class AerialEnterhaken extends Item
 	}
 
 	@Override
-	public void setzeOptionen(int xp, int yp, int hp)
+	public void setzeOptionen(int xp, int yp, int hp, int xw, int yw)
 	{
 		int ix = xp - laenge;
 		if(ix < 0)
@@ -38,8 +38,8 @@ public class AerialEnterhaken extends Item
 		int iy = yp - laenge;
 		if(iy < 0)
 			iy = 0;
-		for(; ix <= xp + laenge && ix < g2[0].length; ix++)
-			for(int iy2 = iy; iy2 <= yp + laenge && iy2 < g2.length; iy2++)
+		for(; ix <= xp + laenge && ix < xw; ix++)
+			for(int iy2 = iy; iy2 <= yp + laenge && iy2 < yw; iy2++)
 			{
 				int err = erreichbar(xp, yp, hp, ix, iy2);
 				if(err >= 0)

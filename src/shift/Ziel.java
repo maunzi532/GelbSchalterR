@@ -4,14 +4,16 @@ public class Ziel extends D3C implements Comparable<Ziel>
 {
 	public final PreItem von;
 	private final int id;
-	public final int key;
+	public final int nummer;
+	public final int taste;
 
-	public Ziel(int x, int y, int h, PreItem von, int id, int key)
+	public Ziel(int x, int y, int h, PreItem von, int id, int nummer, int taste)
 	{
 		super(x, y, h);
 		this.von = von;
 		this.id = id;
-		this.key = key;
+		this.nummer = nummer;
+		this.taste = taste;
 	}
 
 	public Ziel(int x, int y, int h)
@@ -19,7 +21,8 @@ public class Ziel extends D3C implements Comparable<Ziel>
 		super(x, y, h);
 		von = null;
 		id = -1;
-		key = -1;
+		nummer = -1;
+		taste = -1;
 	}
 
 	@Override

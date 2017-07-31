@@ -25,7 +25,7 @@ public class Schalterpistole extends LaengeItem
 	}
 
 	@Override
-	public void setzeOptionen(int xp, int yp, int hp)
+	public void setzeOptionen(int xp, int yp, int hp, int xw, int yw)
 	{
 		BFeld akf = schalterR.feld[yp][xp];
 		if(akf.blockFarbe == schalterR.farbeAktuell && akf.hoehe >= schalterR.hp)
@@ -54,36 +54,13 @@ public class Schalterpistole extends LaengeItem
 		}
 	}
 
-	public boolean benutze(int num, boolean lvm)
+	public boolean benutze(int num, boolean cl, boolean main, boolean lvm)
 	{
 		setzeR(schalterR.xp, schalterR.yp, g1.get(num).x, g1.get(num).y);
 		D3C zo = g1.get(num);
 		schalterR.farbeAktuell = schalterR.feld[zo.y][zo.x].schalter;
 		return true;
 	}
-
-	@Override
-	public boolean benutze(int r, boolean main, boolean lvm)
-	{
-		if(g3[r] <= 0)
-			return false;
-		if(r > 0)
-			schalterR.setRichtung(r - 1);
-		D3C zo = g1.get(g3[r] - 1);
-		schalterR.farbeAktuell = schalterR.feld[zo.y][zo.x].schalter;
-		return true;
-	}
-
-	/*@Override
-	public boolean benutze(int x, int y, boolean main, boolean lvm)
-	{
-		if(x < 0 || y < 0 || x >= schalterR.xw || y >= schalterR.yw || g2[y][x] <= 0)
-			return false;
-		setzeR(schalterR.xp, schalterR.yp, x, y);
-		D3C zo = g1.get(g2[y][x] - 1);
-		schalterR.farbeAktuell = schalterR.feld[zo.y][zo.x].schalter;
-		return true;
-	}*/
 
 	@Override
 	public String bildname()

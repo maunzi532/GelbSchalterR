@@ -25,7 +25,7 @@ public class Fluegel extends LaengeItem
 	}
 
 	@Override
-	public void setzeOptionen(int xp, int yp, int hp)
+	public void setzeOptionen(int xp, int yp, int hp, int xw, int yw)
 	{
 		for(int r = 0; r <= 3; r++)
 		{

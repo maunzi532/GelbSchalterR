@@ -26,7 +26,7 @@ public class Gelb extends Area implements PreItem
 		readFL(input);
 		reset();
 		Texturen tex = new GTex("Default", texOrdnerName);
-		return SIN.start(this, tex, chm, tem);
+		return SIN.start(this, tex, tem);
 	}
 
 	public void noMovement()
@@ -104,7 +104,7 @@ public class Gelb extends Area implements PreItem
 		for(int iy = yw - 1; iy >= 0; iy--)
 			for(int ix = xw - 1; ix >= 0; ix--)
 				if(geht[iy][ix] > 0)
-					eintrag.add(new Ziel(ix, iy, feld[iy][ix].markH(), this, geht[iy][ix], -1));
+					eintrag.add(new Ziel(ix, iy, feld[iy][ix].markH(), this, geht[iy][ix], -1, -1));
 		return eintrag;
 	}
 

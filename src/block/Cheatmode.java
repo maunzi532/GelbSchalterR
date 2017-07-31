@@ -1,6 +1,7 @@
 package block;
 
 import area.*;
+import block.item.*;
 import java.awt.*;
 import java.util.*;
 import javax.swing.*;
@@ -18,6 +19,11 @@ public class Cheatmode
 	{
 		this.schalterR = schalterR;
 		this.sl = sl;
+	}
+
+	public void reset()
+	{
+		schalterR.items.add(new CheatMovement(this).kopie(schalterR));
 	}
 
 	public void move()
