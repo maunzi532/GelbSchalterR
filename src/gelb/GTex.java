@@ -13,6 +13,7 @@ public class GTex extends Texturen
 			if(lk2.containsKey("Höhe" + i))
 				for(int j = 0; j < 4; j++)
 					treppentex1(i, j % 2 == 1, j / 2 > 0);
+		drehTex1("Symbol");
 	}
 
 	private void treppentex1(int i, boolean r, boolean gelb)

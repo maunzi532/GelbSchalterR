@@ -76,6 +76,34 @@ public class Texturen
 		lk2.put(dir.getName(), new Textur(kmax, kmin, im));
 	}
 
+	protected void drehTex1(String vonname)
+	{
+		if(!lk2.containsKey(vonname))
+			return;
+		Textur von = lk2.get(vonname);
+		for(int r = 0; r < 4; r++)
+		{
+			String toname = vonname + r;
+			if(!lk2.containsKey(toname))
+				lk2.put(toname, new Textur(von.h_up, von.h_down, drehTex(von.look, r)));
+		}
+	}
+
+	private BufferedImage[] drehTex(BufferedImage[] std, int r)
+	{
+		BufferedImage[] toR = new BufferedImage[std.length];
+		for(int j = 0; j < std.length; j++)
+		{
+			BufferedImage td = std[j];
+			BufferedImage n = new BufferedImage(td.getWidth(), td.getHeight(), BufferedImage.TYPE_INT_ARGB_PRE);
+			Graphics2D gd = n.createGraphics();
+			gd.rotate(r * Math.PI / 2, td.getWidth() / 2, td.getHeight() / 2);
+			gd.drawRenderedImage(td, null);
+			toR[j] = n;
+		}
+		return toR;
+	}
+
 	public void placeAll2(Graphics2D gd, ArrayList<Render>[][] renders, int xw, int yw)
 	{
 		if(Shift.tile <= 0 || Shift.th <= 0)

@@ -6,76 +6,58 @@ import tex.*;
 
 public class FTex extends Texturen
 {
+	public static final Color[] farben = new Color[]
+			{
+					new Color(191, 31, 31, 127),
+					new Color(31, 191, 31, 127),
+					new Color(31, 31, 191, 127),
+					new Color(255, 191, 63, 127),
+					new Color(159, 159, 159, 127),
+					new Color(191, 31, 191, 127)
+			};
+
+	private static final Color[] symbol = new Color[]
+			{
+					new Color(255, 191, 191)
+			};
+
+	private static final Color[] marker = new Color[]
+			{
+					new Color(31, 31, 255)
+			};
+
 	public FTex(String pack, String texOrdnerName)
 	{
 		super(pack, texOrdnerName);
 		for(int i = 0; i < 10; i++)
-			farbTex1(String.valueOf(i), false);
-		farbTex1("I", true);
-		farbTexS(false);
-		farbTexS(true);
+			farbTex1("Höhe" + String.valueOf(i), false, 'A',  farben);
+		farbTex1("HöheI", true, 'A',  farben);
+		farbTex1("Schalter", true, 'A',  farben);
+		farbTex1("Schalter1", true, 'A',  farben);
+		farbTex1("Möglich", true, 'A', marker);
+		drehTex1("Symbol");
+		for(int i = 0; i < 4; i++)
+			farbTex1("Symbol" + i, true, 'A', symbol);
+		farbTex1("SymbolL", true, 'A', symbol);
 		drehTex1("Pfeil");
 		drehTex1("Einhauwand");
 		drehTex1("EinhauwandB");
 	}
 
-	private void drehTex1(String vonname)
+	private void farbTex1(String vonname, boolean in, char start, Color[] farben1)
 	{
 		if(!lk2.containsKey(vonname))
 			return;
 		Textur von = lk2.get(vonname);
-		for(int r = 0; r < 4; r++)
+		for(int farb = 0; farb < farben1.length; farb++)
 		{
-			String toname = vonname + r;
+			String toname = vonname + (char)(start + farb);
 			if(!lk2.containsKey(toname))
-				lk2.put(toname, new Textur(von.h_up, von.h_down, drehTex(von.look, r)));
+				lk2.put(toname, new Textur(von.h_up, von.h_down, farbTex(von.look, in, farben1[farb])));
 		}
 	}
 
-	private void farbTex1(String i, boolean in)
-	{
-		String vonname = "Höhe" + i;
-		if(!lk2.containsKey(vonname))
-			return;
-		Textur von = lk2.get(vonname);
-		for(char farb = 'A'; farb <= 'F'; farb++)
-		{
-			String toname = vonname + farb;
-			if(!lk2.containsKey(toname))
-				lk2.put(toname, new Textur(von.h_up, von.h_down, farbTex(von.look, farb, in)));
-		}
-	}
-
-	private void farbTexS(boolean g)
-	{
-		String vonname = "Schalter" + (g ? "1" : "");
-		if(!lk2.containsKey(vonname))
-			return;
-		Textur von = lk2.get(vonname);
-		for(char farb = 'A'; farb <= 'F'; farb++)
-		{
-			String toname = vonname + farb;
-			if(!lk2.containsKey(toname))
-				lk2.put(toname, new Textur(von.h_up, von.h_down, farbTex(von.look, farb, true)));
-		}
-	}
-
-	private BufferedImage[] drehTex(BufferedImage[] std, int r)
-	{
-		BufferedImage[] toR = new BufferedImage[std.length];
-		for(int j = 0; j < std.length; j++)
-		{
-			BufferedImage td = std[j];
-			BufferedImage n = new BufferedImage(td.getWidth(), td.getHeight(), BufferedImage.TYPE_INT_ARGB_PRE);
-			Graphics2D gd = n.createGraphics();
-			gd.rotate(r * Math.PI / 2, td.getWidth() / 2, td.getHeight() / 2);
-			gd.drawRenderedImage(td, null);
-			toR[j] = n;
-		}
-		return toR;
-	}
-
-	private BufferedImage[] farbTex(BufferedImage[] std, char farb, boolean trans)
+	private BufferedImage[] farbTex(BufferedImage[] std, boolean trans, Color farbe)
 	{
 		BufferedImage[] toR = new BufferedImage[std.length];
 		for(int j = 0; j < std.length; j++)
@@ -88,13 +70,13 @@ public class FTex extends Texturen
 				for(int ix = 0; ix < n.getWidth(); ix++)
 					for(int iy = 0; iy < n.getHeight(); iy++)
 						if(ar.getPixel(ix, iy, (int[])null)[3] > 0)
-							n.setRGB(ix, iy, SchalterR.farben[farb - 'A'].getRGB());
+							n.setRGB(ix, iy, farbe.getRGB());
 			}
 			else
 			{
 				Graphics2D gd = n.createGraphics();
 				gd.drawImage(td, 0, 0, null);
-				gd.setColor(SchalterR.farben[farb - 'A']);
+				gd.setColor(farbe);
 				gd.fillRect(0, 0, td.getWidth(), td.getHeight());
 			}
 			toR[j] = n;

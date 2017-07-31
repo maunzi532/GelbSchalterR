@@ -6,7 +6,7 @@ import java.util.*;
 import laderLC.*;
 import shift.*;
 
-public abstract class Item
+public abstract class Item implements PreItem
 {
 	public SchalterR schalterR;
 	public int level;
@@ -36,7 +36,7 @@ public abstract class Item
 	}
 
 	public int id;
-	public ArrayList<Ziel<Item>> g1;
+	public ArrayList<Ziel> g1;
 	public int[][] g2;
 	public int[] g3;
 
@@ -53,10 +53,27 @@ public abstract class Item
 
 	public void option(int x, int y, int h, int key)
 	{
-		g1.add(new Ziel<>(x, y, h, this, id, g1.size()));
+		g1.add(new Ziel(x, y, h, this, id, g1.size()));
 		g2[y][x] = g1.size();
 		if(key >= 0)
 			g3[key] = g1.size();
+	}
+
+	@Override
+	public String marker()
+	{
+		return "A";
+	}
+
+	@Override
+	public String symbol(int key)
+	{
+		if(g3[0] - 1 == key)
+			return "L";
+		for(int i = 0; i < 4; i++)
+			if(g3[i + 1] - 1 == key)
+				return String.valueOf(i);
+		return null;
 	}
 
 	public boolean benutze(int num, boolean lvm)

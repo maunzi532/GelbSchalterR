@@ -45,8 +45,8 @@ public class Shift
 		for(Ziel z : eintrag)
 			if(checkObDarauf(mx, my, z))
 				return z;
-		for(int iy = SIN.area.yw - 1; iy > 0; iy--)
-			for(int ix = SIN.area.xw - 1; ix > 0; ix--)
+		for(int iy = SIN.area.yw - 1; iy >= 0; iy--)
+			for(int ix = SIN.area.xw - 1; ix >= 0; ix--)
 			{
 				Ziel z = new Ziel(ix, iy, SIN.area.feld(iy, ix).markH());
 				if(checkObDarauf(mx, my, z))

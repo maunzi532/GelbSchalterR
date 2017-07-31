@@ -43,6 +43,7 @@ public abstract class Area
 
 	public void render(Ziel auswahl)
 	{
+		ArrayList<Ziel> eintrag = anzielbar();
 		//noinspection unchecked
 		renders2 = new ArrayList[yw][xw];
 		for(ycp = 0; ycp < yw; ycp++)
@@ -50,10 +51,18 @@ public abstract class Area
 			{
 				renders = new ArrayList<>();
 				feld(ycp, xcp).addToRender(this, xcp == xp && ycp == yp, xcp, ycp);
-				/*if(geht[ycp][xcp] != 0)
-					addw("Möglich");*/
 				if(auswahl != null && auswahl.x == xcp && auswahl.y == ycp)
 					addm("Auswahl", auswahl.h);
+				for(Ziel z : eintrag)
+					if(z.x == xcp && z.y == ycp && z.von != null)
+					{
+						PreItem von = z.von;
+						String marker = von.marker();
+						String symbol = von.symbol(z.key);
+						addm("Möglich" + marker, z.h);
+						if(symbol != null)
+							addm("Symbol" + symbol + marker, z.h);
+					}
 				renders2[ycp][xcp] = renders;
 			}
 	}
@@ -87,9 +96,15 @@ public abstract class Area
 		renders.add(r3);
 	}
 
-	public abstract double realX();
+	public double realX()
+	{
+		return xp;
+	}
 
-	public abstract double realY();
+	public double realY()
+	{
+		return yp;
+	}
 
 	public abstract D3C d3c();
 }

@@ -15,15 +15,6 @@ import tex.*;
 
 public class SchalterR extends Area
 {
-	public static final Color[] farben = new Color[]
-			{
-					new Color(191, 31, 31, 127),
-					new Color(31, 191, 31, 127),
-					new Color(31, 31, 191, 127),
-					new Color(255, 191, 63, 127),
-					new Color(159, 159, 159, 127),
-					new Color(191, 31, 191, 127)
-			};
 	private static final int limit = 6;
 
 	public BFeld[][] feld;
@@ -217,15 +208,8 @@ public class SchalterR extends Area
 		}
 		else if(TA.take[201] == 2)
 		{
-			if(SIN.auswahl != null && SIN.auswahl.von instanceof Item)
-			{
-				Ziel<Item> ziel = (Ziel<Item>) SIN.auswahl;
-				return ziel.von.benutze(ziel.key, false);
-			}
-			/*for(int i = 0; i < items.size(); i++)
-				if(items.get(akvorne(i)).benutze(SIN.fokusX, SIN.fokusY, i == 0, false))
-					return true;*/
-			return false;
+			Ziel ziel = SIN.auswahl;
+			return ziel != null && ziel.von instanceof Item && ((Item) ziel.von).benutze(ziel.key, false);
 		}
 		else if(cheatmode != null)
 			cheatmode.move();
@@ -236,7 +220,6 @@ public class SchalterR extends Area
 	{
 		int k = 0;
 		for(int i = 0; i < items.size(); i++)
-		{
 			for(int j = 0; j < items.get(i).g1.size(); j++)
 			{
 				if(k == caret2)
@@ -246,7 +229,6 @@ public class SchalterR extends Area
 				}
 				k++;
 			}
-		}
 		return false;
 	}
 
@@ -280,13 +262,13 @@ public class SchalterR extends Area
 	@Override
 	public double realX()
 	{
-		return srd.x;
+		return srd.x - 1d / 2;
 	}
 
 	@Override
 	public double realY()
 	{
-		return srd.y;
+		return srd.y - 1d / 2;
 	}
 
 	@Override
@@ -307,7 +289,7 @@ public class SchalterR extends Area
 		int ht = h / 10;
 		gd.setColor(Color.BLACK);
 		gd.fillRect(w1, 0, ht * 3, h);
-		gd.setColor(new Color(SchalterR.farben[farbeAktuell - 'A'].getRGB()));
+		gd.setColor(new Color(FTex.farben[farbeAktuell - 'A'].getRGB()));
 		gd.fillRect(w1, 0, ht, h);
 		gd.setColor(Color.BLUE);
 		gd.fillRect(w1, h - ht * dias, ht, ht * dias);

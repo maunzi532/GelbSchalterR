@@ -6,19 +6,19 @@ import java.util.*;
 import shift.*;
 import tex.*;
 
-public class Gelb extends Area
+public class Gelb extends Area implements PreItem
 {
-	public int[][] geht;
-	GFeld[][] feld;
-	public int xz;
-	public int yz;
+	private int[][] geht;
+	private GFeld[][] feld;
+	private int xz;
+	private int yz;
 	private static final int gelbmax = 10;
 	private int gelbn;
 	private static final int sprmax = 10;
 	private int sprn;
 	private static final int lifmax = 10;
 	private int lif;
-	boolean teleport;
+	private boolean teleport;
 
 	@Override
 	public boolean start(String input, String texOrdnerName, boolean chm, boolean chs, int tem)
@@ -77,12 +77,6 @@ public class Gelb extends Area
 		}
 	}
 
-	@Override
-	public ArrayList<Ziel> anzielbar()
-	{
-		return null;
-	}
-
 	private int feldBegehbar(int yf, int xf, int side, int weit)
 	{
 		Integer ph = treppencheck(feld[yp][xp], side, true);
@@ -94,7 +88,7 @@ public class Gelb extends Area
 		return 0;
 	}
 
-	Integer treppencheck(GFeld f, int r, boolean start)
+	private Integer treppencheck(GFeld f, int r, boolean start)
 	{
 		if(f.treppe == 0)
 			return f.hoehe;
@@ -103,7 +97,30 @@ public class Gelb extends Area
 		return f.hoehe + (f.treppe == (start ? r : (r + 1) % 4 + 1) ? 1 : 0);
 	}
 
-	public void gehen(int felder)
+	@Override
+	public ArrayList<Ziel> anzielbar()
+	{
+		ArrayList<Ziel> eintrag = new ArrayList<>();
+		for(int iy = yw - 1; iy >= 0; iy--)
+			for(int ix = xw - 1; ix >= 0; ix--)
+				if(geht[iy][ix] > 0)
+					eintrag.add(new Ziel(ix, iy, feld[iy][ix].markH(), this, geht[iy][ix], -1));
+		return eintrag;
+	}
+
+	@Override
+	public String marker()
+	{
+		return "";
+	}
+
+	@Override
+	public String symbol(int key)
+	{
+		return null;
+	}
+
+	private void gehen(int felder)
 	{
 		gelbn -= felder;
 		if(gelbn < 0)
@@ -126,7 +143,7 @@ public class Gelb extends Area
 			gewonnen = true;
 	}
 
-	public boolean useItem()
+	private boolean useItem()
 	{
 		if(feld[yp][xp].darauf[2])
 		{
@@ -215,16 +232,19 @@ public class Gelb extends Area
 
 	public boolean moveX(boolean nichtMap)
 	{
-		if(nichtMap)
-			return false;
-		int fokusX = SIN.auswahl.x;
-		int fokusY = SIN.auswahl.y;
+		int fokusY = -1;
+		int fokusX = -1;
+		if(SIN.auswahl != null)
+		{
+			fokusY = SIN.auswahl.y;
+			fokusX = SIN.auswahl.x;
+		}
 		boolean moved = false;
 		int xv = xp;
 		int yv = yp;
 		if(teleport)
 		{
-			if(TA.take[201] == 2 && geht[fokusY][fokusX] != 0)
+			if(TA.take[201] == 2 && SIN.auswahl != null && geht[fokusY][fokusX] != 0)
 			{
 				xp = fokusX;
 				yp = fokusY;
@@ -240,7 +260,7 @@ public class Gelb extends Area
 			int yt = yv + (TA.take[40] == 2 ? 1 : 0) - (TA.take[38] == 2 ? 1 : 0);
 			moved = tryDirection(xt, yt) || tryDirection(xt * 2 - xv, yt * 2 - yv);
 		}
-		else if(TA.take[201] == 2 && geht[fokusY][fokusX] != 0)
+		else if(TA.take[201] == 2 && SIN.auswahl != null && geht[fokusY][fokusX] != 0)
 		{
 			if(fokusX == xp && fokusY == yp)
 				moved = useItem();
@@ -266,6 +286,12 @@ public class Gelb extends Area
 	}
 
 	@Override
+	public D3C d3c()
+	{
+		return new D3C(xp, yp, feld[yp][xp].getJH());
+	}
+
+	@Override
 	public void rahmen(Graphics2D gd, Texturen tex, int w1, int h)
 	{
 		int ht = h / 10;
@@ -281,23 +307,5 @@ public class Gelb extends Area
 		gd.drawRect(w1, 0, ht - 1, h - 1);
 		gd.drawRect(w1 + ht, 0, ht - 1, h - 1);
 		gd.drawRect(w1 + ht * 2, 0, ht - 1, h - 1);
-	}
-
-	@Override
-	public double realX()
-	{
-		return xp;
-	}
-
-	@Override
-	public double realY()
-	{
-		return yp;
-	}
-
-	@Override
-	public D3C d3c()
-	{
-		return new D3C(xp, yp, feld[xp][yp].visualH());
 	}
 }

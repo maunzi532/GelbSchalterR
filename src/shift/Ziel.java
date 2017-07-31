@@ -1,12 +1,12 @@
 package shift;
 
-public class Ziel<T> extends D3C implements Comparable<Ziel>
+public class Ziel extends D3C implements Comparable<Ziel>
 {
-	public final T von;
+	public final PreItem von;
 	public final int id;
 	public final int key;
 
-	public Ziel(int x, int y, int h, T von, int id, int key)
+	public Ziel(int x, int y, int h, PreItem von, int id, int key)
 	{
 		super(x, y, h);
 		this.von = von;

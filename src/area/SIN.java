@@ -3,7 +3,6 @@ package area;
 import block.state.*;
 import java.awt.*;
 import java.awt.image.*;
-import java.util.*;
 import javax.swing.*;
 import shift.*;
 import tex.*;
@@ -88,6 +87,7 @@ public class SIN
 				area.noMovement();
 			else
 				area.checkFields();
+			area.render(auswahl);
 			drawX();
 			U.warte(20);
 			updatePosition();
@@ -101,6 +101,7 @@ public class SIN
 			for(int i = 0; i < 25; i++)
 			{
 				area.victoryTick();
+				area.render(auswahl);
 				drawX();
 				U.warte(20);
 				Shift.moveToTarget(area.realX(), area.realY());
@@ -120,22 +121,6 @@ public class SIN
 		int mex = m.x - f.x;
 		int mey = m.y - f.y;
 		auswahl = Shift.zeiger(mex, mey, area.anzielbar());
-
-		/*int mx = m.x - f.x - Shift.xd2;
-		int my = m.y - f.y - Shift.yd2;
-		int fokusX1 = -1;
-		int fokusY1 = -1;
-		boolean fertig = false;
-		for(int iy = area.yw - 1; iy >= 0 && !fertig; iy--)
-			for(int ix = area.xw - 1; ix >= 0 && !fertig; ix--)
-				if(Shift.checkObDarauf(mx, my, new D3C(ix, iy, area.feld(iy, ix).visualH())))
-				{
-					fokusX1 = ix;
-					fokusY1 = iy;
-					fertig = true;
-				}
-		fokusX = fokusX1;
-		fokusY = fokusY1;*/
 		if(mex >= size2.width && mex < size.width && mey >= 0 && mey < size2.height)
 		{
 			mfokusX = (mex - size2.width) / (size2.height / 10);
@@ -166,7 +151,6 @@ public class SIN
 
 	public static void drawX()
 	{
-		area.render(auswahl);
 		gd.setColor(Color.BLACK);
 		gd.fillRect(0, 0, size.width, size.height);
 		//hintergrund
