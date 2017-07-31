@@ -4,7 +4,7 @@ import java.util.*;
 import javax.swing.*;
 import laderLC.*;
 
-public class BlockLies
+public class SchalterLies
 {
 	LFeld[][] feld;
 	final int[][] se = new int[2][2];

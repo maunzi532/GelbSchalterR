@@ -13,10 +13,10 @@ public class Feuer extends Item
 	}
 
 	@Override
-	public Item kopie(BlockLab blockLab)
+	public Item kopie(SchalterR schalterR)
 	{
 		Feuer i1 = new Feuer(level);
-		i1.blockLab = blockLab;
+		i1.schalterR = schalterR;
 		return i1;
 	}
 

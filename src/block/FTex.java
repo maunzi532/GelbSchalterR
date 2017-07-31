@@ -88,13 +88,13 @@ public class FTex extends Texturen
 				for(int ix = 0; ix < n.getWidth(); ix++)
 					for(int iy = 0; iy < n.getHeight(); iy++)
 						if(ar.getPixel(ix, iy, (int[])null)[3] > 0)
-							n.setRGB(ix, iy, BlockLab.farben[farb - 'A'].getRGB());
+							n.setRGB(ix, iy, SchalterR.farben[farb - 'A'].getRGB());
 			}
 			else
 			{
 				Graphics2D gd = n.createGraphics();
 				gd.drawImage(td, 0, 0, null);
-				gd.setColor(BlockLab.farben[farb - 'A']);
+				gd.setColor(SchalterR.farben[farb - 'A']);
 				gd.fillRect(0, 0, td.getWidth(), td.getHeight());
 			}
 			toR[j] = n;

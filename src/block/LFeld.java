@@ -23,7 +23,7 @@ public class LFeld
 	public boolean lift;
 	Item item;
 
-	public void enhance(BlockLab mit, int wie)
+	public void enhance(SchalterR mit, int wie)
 	{
 		switch(wie)
 		{
@@ -39,7 +39,7 @@ public class LFeld
 					if(sonstH >= 0)
 						sonstH = -1;
 					else
-						sonstH = mit.hoeheA;
+						sonstH = mit.hp;
 				}
 				break;
 			case 4:
@@ -62,7 +62,7 @@ public class LFeld
 				loescher = true;
 				break;
 			case 10:
-				enterstange = mit.hoeheA;
+				enterstange = mit.hp;
 				break;
 			case 11:
 				ziel = true;

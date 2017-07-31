@@ -13,29 +13,29 @@ public class SRD
 	public double dspeed = 0.05;
 	public double mspeed = 0.2;
 
-	public SRD(BlockLab blockLab)
+	public SRD(SchalterR schalterR)
 	{
-		reset(blockLab);
+		reset(schalterR);
 	}
 
-	public void reset(BlockLab blockLab)
+	public void reset(SchalterR schalterR)
 	{
 		richtung2 = 0.75;
 		richtung = richtung2;
-		x = blockLab.xp;
-		y = blockLab.yp;
-		z = blockLab.hoeheA + 20;
+		x = schalterR.xp;
+		y = schalterR.yp;
+		z = schalterR.hp + 20;
 		deep = 0;
 		gelandet = false;
 	}
 
-	public void reset2(BlockLab blockLab)
+	public void reset2(SchalterR schalterR)
 	{
 		richtung2 = 0.75;
 		richtung = richtung2;
-		x = blockLab.xp;
-		y = blockLab.yp;
-		z = blockLab.hoeheA;
+		x = schalterR.xp;
+		y = schalterR.yp;
+		z = schalterR.hp;
 		deep = 0;
 		gelandet = true;
 	}
@@ -86,7 +86,7 @@ public class SRD
 		}
 	}
 
-	public void tick(BlockLab blockLab)
+	public void tick(SchalterR schalterR)
 	{
 		if(richtung < richtung2)
 		{
@@ -101,48 +101,48 @@ public class SRD
 				richtung = richtung2;
 		}
 		rr();
-		if(x < blockLab.xp)
+		if(x < schalterR.xp)
 		{
 			x += mspeed;
-			if(x >= blockLab.xp)
-				x = blockLab.xp;
+			if(x >= schalterR.xp)
+				x = schalterR.xp;
 		}
-		if(x > blockLab.xp)
+		if(x > schalterR.xp)
 		{
 			x -= mspeed;
-			if(x <= blockLab.xp)
-				x = blockLab.xp;
+			if(x <= schalterR.xp)
+				x = schalterR.xp;
 		}
-		if(y < blockLab.yp)
+		if(y < schalterR.yp)
 		{
 			y += mspeed;
-			if(y >= blockLab.yp)
-				y = blockLab.yp;
+			if(y >= schalterR.yp)
+				y = schalterR.yp;
 		}
-		if(y > blockLab.yp)
+		if(y > schalterR.yp)
 		{
 			y -= mspeed;
-			if(y <= blockLab.yp)
-				y = blockLab.yp;
+			if(y <= schalterR.yp)
+				y = schalterR.yp;
 		}
-		if(z < blockLab.hoeheA)
+		if(z < schalterR.hp)
 		{
 			z += mspeed;
-			if(z >= blockLab.hoeheA)
-				z = blockLab.hoeheA;
+			if(z >= schalterR.hp)
+				z = schalterR.hp;
 		}
-		if(z > blockLab.hoeheA)
+		if(z > schalterR.hp)
 		{
 			z -= mspeed;
-			if(z <= blockLab.hoeheA)
-				z = blockLab.hoeheA;
+			if(z <= schalterR.hp)
+				z = schalterR.hp;
 		}
 		if(!gelandet)
 		{
 			z -= 0.8;
-			if(z <= blockLab.hoeheA)
+			if(z <= schalterR.hp)
 			{
-				z = blockLab.hoeheA;
+				z = schalterR.hp;
 				gelandet = true;
 			}
 		}

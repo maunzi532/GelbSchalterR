@@ -4,12 +4,12 @@ import block.*;
 import block.state.*;
 import java.util.*;
 import laderLC.*;
+import shift.*;
 
 public abstract class Item
 {
-	public BlockLab blockLab;
+	public SchalterR schalterR;
 	public int level;
-	public int disable;
 
 	public Item()
 	{
@@ -21,7 +21,7 @@ public abstract class Item
 		this.level = level;
 	}
 
-	public abstract Item kopie(BlockLab blockLab);
+	public abstract Item kopie(SchalterR schalterR);
 
 	public void loescher()
 	{
@@ -35,28 +35,25 @@ public abstract class Item
 		return level == 0;
 	}
 
-	public boolean enabled(int disable)
-	{
-		return true;
-	}
-
-	public ArrayList<int[]> g1;
+	public int id;
+	public ArrayList<Ziel<Item>> g1;
 	public int[][] g2;
 	public int[] g3;
 
-	public void setzeOptionen1(int xp, int yp, int hoeheA, int xw, int yw)
+	public void setzeOptionen1(int xp, int yp, int hp, int xw, int yw, int id)
 	{
+		this.id = id;
 		g1 = new ArrayList<>();
 		g2 = new int[yw][xw];
 		g3 = new int[5];
-		setzeOptionen(xp, yp, hoeheA);
+		setzeOptionen(xp, yp, hp);
 	}
 
-	public void setzeOptionen(int xp, int yp, int hoeheA){}
+	public void setzeOptionen(int xp, int yp, int hp){}
 
-	public void option(int x, int y, int z, int key)
+	public void option(int x, int y, int h, int key)
 	{
-		g1.add(new int[]{x, y, z});
+		g1.add(new Ziel<>(x, y, h, this, id, g1.size()));
 		g2[y][x] = g1.size();
 		if(key >= 0)
 			g3[key] = g1.size();
@@ -64,7 +61,7 @@ public abstract class Item
 
 	public boolean benutze(int num, boolean lvm)
 	{
-		setzeR(blockLab.xp, blockLab.yp, g1.get(num)[0], g1.get(num)[1]);
+		setzeR(schalterR.xp, schalterR.yp, g1.get(num).x, g1.get(num).y);
 		if(lvm && level > 0)
 			level--;
 		gzo(g1.get(num));
@@ -76,7 +73,7 @@ public abstract class Item
 		if(g3[r] <= 0)
 			return false;
 		if(r > 0)
-			blockLab.setRichtung(r - 1);
+			schalterR.setRichtung(r - 1);
 		if(lvm && level > 0)
 			level--;
 		gzo(g1.get(g3[r] - 1));
@@ -85,33 +82,33 @@ public abstract class Item
 
 	public boolean benutze(int x, int y, boolean main, boolean lvm)
 	{
-		if(x < 0 || y < 0 || x >= blockLab.xw || y >= blockLab.yw || g2[y][x] <= 0)
+		if(x < 0 || y < 0 || x >= schalterR.xw || y >= schalterR.yw || g2[y][x] <= 0)
 			return false;
-		setzeR(blockLab.xp, blockLab.yp, x, y);
+		setzeR(schalterR.xp, schalterR.yp, x, y);
 		if(lvm && level > 0)
 			level--;
 		gzo(g1.get(g2[y][x] - 1));
 		return true;
 	}
 
-	private void gzo(int[] zo)
+	private void gzo(D3C zo)
 	{
-		blockLab.xp = zo[0];
-		blockLab.yp = zo[1];
-		blockLab.hoeheA = zo[2];
-		blockLab.feld[zo[1]][zo[0]].gehen();
+		schalterR.xp = zo.x;
+		schalterR.yp = zo.y;
+		schalterR.hp = zo.h;
+		schalterR.feld[zo.y][zo.x].gehen();
 	}
 
 	void setzeR(int xa, int ya, int xn, int yn)
 	{
 		if(xn < xa)
-			blockLab.setRichtung(0);
+			schalterR.setRichtung(0);
 		else if(yn < ya)
-			blockLab.setRichtung(1);
+			schalterR.setRichtung(1);
 		else if(xn > xa)
-			blockLab.setRichtung(2);
+			schalterR.setRichtung(2);
 		else if(yn > ya)
-			blockLab.setRichtung(3);
+			schalterR.setRichtung(3);
 	}
 
 	public String speichername()

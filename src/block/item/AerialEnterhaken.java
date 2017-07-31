@@ -22,15 +22,15 @@ public class AerialEnterhaken extends Item
 	}
 
 	@Override
-	public Item kopie(BlockLab blockLab)
+	public Item kopie(SchalterR schalterR)
 	{
 		AerialEnterhaken i1 = new AerialEnterhaken(level, laenge, doppelt);
-		i1.blockLab = blockLab;
+		i1.schalterR = schalterR;
 		return i1;
 	}
 
 	@Override
-	public void setzeOptionen(int xp, int yp, int hoeheA)
+	public void setzeOptionen(int xp, int yp, int hp)
 	{
 		int ix = xp - laenge;
 		if(ix < 0)
@@ -41,8 +41,8 @@ public class AerialEnterhaken extends Item
 		for(; ix <= xp + laenge && ix < g2[0].length; ix++)
 			for(int iy2 = iy; iy2 <= yp + laenge && iy2 < g2.length; iy2++)
 			{
-				//geht[iy2][ix] = erreichbar(xp, yp, hoeheA, ix, iy2);
-				int err = erreichbar(xp, yp, hoeheA, ix, iy2);
+				//geht[iy2][ix] = erreichbar(xp, yp, hp, ix, iy2);
+				int err = erreichbar(xp, yp, hp, ix, iy2);
 				if(err >= 0)
 					option(ix, iy2, err, -1);
 			}
@@ -50,7 +50,7 @@ public class AerialEnterhaken extends Item
 
 	public int erreichbar(int xp, int yp, int hoeheA, int ix, int iy)
 	{
-		BFeld zf = blockLab.feld[iy][ix];
+		BFeld zf = schalterR.feld[iy][ix];
 		if(zf.enterstange < 0)
 			return -1;
 		if(zf.enterstange != zf.bodenH() && !doppelt)
@@ -66,7 +66,7 @@ public class AerialEnterhaken extends Item
 		int yh = iy > yp ? iy : yp;
 		for(; xn <= xh; xn++)
 			for(int yn2 = yn; yn2 <= yh; yn2++)
-				if(yn2 != yp && xn != xp && blockLab.feld[yn2][xn].getAH() > hoeheA)
+				if(yn2 != yp && xn != xp && schalterR.feld[yn2][xn].getAH() > hoeheA)
 					return -1;
 		return zf.enterstange;
 	}

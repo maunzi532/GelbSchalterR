@@ -10,9 +10,10 @@ import java.nio.file.*;
 import java.util.*;
 import javax.swing.*;
 import laderLC.*;
+import shift.*;
 import tex.*;
 
-public class BlockLab extends Area
+public class SchalterR extends Area
 {
 	public static final Color[] farben = new Color[]
 			{
@@ -23,50 +24,52 @@ public class BlockLab extends Area
 					new Color(159, 159, 159, 127),
 					new Color(191, 31, 191, 127)
 			};
-	public static final int limit = 6;
+	private static final int limit = 6;
 
 	public BFeld[][] feld;
-	BlockLies bl;
+	private SchalterLies sl;
 
 	public char farbeAktuell = 'A';
 	public int dias;
-	public int hoeheA;
+	public int hp;
 
-	int akItem;
+	public int akItem;
 	public final ArrayList<Item> items = new ArrayList<>();
 
-	int lrm;
-	int oum;
+	private int lrm;
+	private int oum;
 	public SRD srd;
-	public int richtung;
-	public boolean pfadmodus;
-	public int enhkey;
 
-	public Stack<BState> states = new Stack<>();
+	public int richtung;
+	public Cheatmode cheatmode;
+
+	private Stack<BState> states = new Stack<>();
 
 	@Override
-	public void start(String input, String texOrdnerName, boolean chm, boolean chs, int tem)
+	public boolean start(String input, String texOrdnerName, boolean cheatmode, boolean changesize, int testmode)
 	{
-		readFL(input, chs);
+		readFL(input, changesize);
 		srd = new SRD(this);
 		reset();
 		Texturen tex = new FTex("BlockLab", texOrdnerName);
-		SIN.start(this, tex, chm, tem);
+		if(cheatmode)
+			this.cheatmode = new Cheatmode(this, sl);
+		return SIN.start(this, tex, cheatmode, testmode);
 	}
 
 	@Override
 	public void readFL(String c1, boolean se2n)
 	{
-		bl = new BlockLies();
+		sl = new SchalterLies();
 		if(c1.charAt(0) == '{')
 		{
-			ErrorVial vial = bl.lies(c1, se2n);
+			ErrorVial vial = sl.lies(c1, se2n);
 			if(vial.errors())
 				System.out.println(vial.errors);
 		}
 		else try
 		{
-			bl.liesA(c1);
+			sl.liesA(c1);
 		}catch(Exception e)
 		{
 			e.printStackTrace();
@@ -81,15 +84,15 @@ public class BlockLab extends Area
 		dias = 0;
 		items.clear();
 		items.add(new Movement().kopie(this));
-		xw = bl.se[0][0];
-		yw = bl.se[0][1];
-		xp = bl.se[1][0];
-		yp = bl.se[1][1];
+		xw = sl.se[0][0];
+		yw = sl.se[0][1];
+		xp = sl.se[1][0];
+		yp = sl.se[1][1];
 		feld = new BFeld[yw][xw];
 		for(int yi = 0; yi < yw; yi++)
 			for(int xi = 0; xi < xw; xi++)
-				feld[yi][xi] = BFeld.copy(bl.feld[yi][xi], this);
-		hoeheA = feld[yp][xp].hoehe;
+				feld[yi][xi] = BFeld.copy(sl.feld[yi][xi], this);
+		hp = feld[yp][xp].hoehe;
 		richtung = 3;
 		srd.reset(this);
 	}
@@ -98,12 +101,6 @@ public class BlockLab extends Area
 	public Feld feld(int y, int x)
 	{
 		return feld[y][x];
-	}
-
-	@Override
-	public int spielerHoehe()
-	{
-		return hoeheA;
 	}
 
 	public void setRichtung(int r1)
@@ -115,20 +112,23 @@ public class BlockLab extends Area
 	@Override
 	public void checkFields()
 	{
-		geht = new int[yw][xw];
-		int disable = 0;
-		for(Item item : items)
-			if(item.disable > disable)
-				disable = item.disable;
 		for(int i = 0; i < items.size(); i++)
-			if(items.get(i).enabled(disable))
-			{
-				items.get(i).setzeOptionen1(xp, yp, hoeheA, xw, yw);
-				for(int iy = 0; iy < geht.length; iy++)
-					for(int ix = 0; ix < geht[iy].length; ix++)
-						if(items.get(i).g2[iy][ix] > 0)
-							geht[iy][ix] = 1;
-			}
+			items.get(i).setzeOptionen1(xp, yp, hp, xw, yw, akvorne(i));
+	}
+
+	private int akvorne(int i)
+	{
+		return i == 0 ? akItem : i <= akItem ? i - 1 : i;
+	}
+
+	@Override
+	public ArrayList<Ziel> anzielbar()
+	{
+		ArrayList<Ziel> eintrag = new ArrayList<>();
+		for(int i = 0; i < items.size(); i++)
+			eintrag.addAll(items.get(akvorne(i)).g1);
+		Collections.sort(eintrag);
+		return eintrag;
 	}
 
 	@Override
@@ -141,9 +141,7 @@ public class BlockLab extends Area
 			{
 				states.pop().charge(this);
 				srd.reset2(this);
-				SIN.mapview = 0;
-				Shift.selectTarget(xp, yp, hoeheA, SIN.kamZoom);
-				Shift.instant();
+				Shift.localReset(new D3C(xp, yp, hp));
 			}
 		if(nichtMap && SIN.mfokusX >= 1 && TA.take[201] == 2)
 		{
@@ -212,135 +210,25 @@ public class BlockLab extends Area
 		}
 		if(code >= 0)
 		{
-			int i;
-			for(i = 0; i < items.size(); i++)
-			{
-				int i2;
-				if(i == 0)
-					i2 = akItem;
-				else if(i <= akItem)
-					i2 = i - 1;
-				else
-					i2 = i;
-				if(items.get(i2).benutze(code, i2 == akItem, false))
-					break;
-			}
-			return i < items.size();
+			for(int i = 0; i < items.size(); i++)
+				if(items.get(akvorne(i)).benutze(code, i == 0, false))
+					return true;
+			return false;
 		}
 		else if(TA.take[201] == 2)
 		{
-			int i;
-			for(i = 0; i < items.size(); i++)
+			if(SIN.auswahl != null && SIN.auswahl.von instanceof Item)
 			{
-				int i2;
-				if(i == 0)
-					i2 = akItem;
-				else if(i <= akItem)
-					i2 = i - 1;
-				else
-					i2 = i;
-				if(items.get(i2).benutze(SIN.fokusX, SIN.fokusY, i2 == akItem, false))
-					break;
+				Ziel<Item> ziel = (Ziel<Item>) SIN.auswahl;
+				return ziel.von.benutze(ziel.key, false);
 			}
-			return i < items.size();
+			/*for(int i = 0; i < items.size(); i++)
+				if(items.get(akvorne(i)).benutze(SIN.fokusX, SIN.fokusY, i == 0, false))
+					return true;*/
+			return false;
 		}
-		else if(SIN.cheatmode)
-		{
-			if(TA.take[112] == 2 && SIN.fokusX >= 0)
-			{
-				String alt = feld[SIN.fokusY][SIN.fokusX].speichern();
-				Object neu = JOptionPane.showInputDialog(null, null, null, JOptionPane.QUESTION_MESSAGE, null, null, alt);
-				if(neu instanceof String)
-				{
-					BFeld nf = new BFeld();
-					nf.liesDirekt((String) neu);
-					bl.feld[SIN.fokusY][SIN.fokusX] = nf;
-					feld[SIN.fokusY][SIN.fokusX] = BFeld.copy(nf, this);
-				}
-			}
-			if(TA.take[113] == 2 || TA.take[114] == 2)
-			{
-				int p = 0;
-				if(TA.take[113] == 2)
-					p--;
-				if(TA.take[114] == 2)
-					p++;
-				if(p != 0)
-				{
-					if(TA.take[16] > 0 || pfadmodus)
-					{
-						hoeheA += p;
-						if(hoeheA < 0)
-							hoeheA = 0;
-						if(pfadmodus)
-							angleichen();
-					}
-					else if(SIN.fokusX >= 0)
-					{
-						LFeld f1 = bl.feld[SIN.fokusY][SIN.fokusX];
-						f1.hoehe += p;
-						if(f1.hoehe < 0)
-							f1.hoehe = 0;
-						feld[SIN.fokusY][SIN.fokusX] = BFeld.copy(f1, this);
-					}
-				}
-			}
-			if(TA.take[115] == 2)
-			{
-				pfadmodus = !pfadmodus;
-				if(pfadmodus)
-					angleichen();
-			}
-			if(TA.take[116] == 2 && SIN.fokusX >= 0)
-			{
-				LFeld f1 = bl.feld[SIN.fokusY][SIN.fokusX];
-				if(f1.schalter != 'n')
-				{
-					f1.schalter = plusfarbe(f1.schalter);
-					feld[SIN.fokusY][SIN.fokusX] = BFeld.copy(f1, this);
-				}
-				else if(f1.blockFarbe != 'n')
-				{
-					f1.blockFarbe = plusfarbe(f1.blockFarbe);
-					feld[SIN.fokusY][SIN.fokusX] = BFeld.copy(f1, this);
-				}
-				else
-					farbeAktuell = plusfarbe(farbeAktuell);
-			}
-			if(TA.take[117] == 2)
-			{
-				if(TA.take[16] > 0)
-					dias--;
-				else
-				{
-					enhkey--;
-					if(enhkey < 0)
-						enhkey = LFeld.maxenh;
-				}
-			}
-			if(TA.take[118] == 2)
-			{
-				if(TA.take[16] > 0)
-					dias++;
-				else
-				{
-					enhkey++;
-					if(enhkey > LFeld.maxenh)
-						enhkey = 0;
-				}
-			}
-			if(TA.take[119] == 2 && SIN.fokusX >= 0)
-			{
-				LFeld f1 = bl.feld[SIN.fokusY][SIN.fokusX];
-				if(enhkey == 0)
-				{
-					f1 = new BFeld(f1.hoehe);
-					bl.feld[SIN.fokusY][SIN.fokusX] = f1;
-				}
-				f1.enhance(this, enhkey);
-				feld[SIN.fokusY][SIN.fokusX] = BFeld.copy(f1, this);
-			}
-		}
+		else if(cheatmode != null)
+			cheatmode.move();
 		return false;
 	}
 
@@ -364,15 +252,8 @@ public class BlockLab extends Area
 
 	public void angleichen()
 	{
-		bl.feld[yp][xp].hoehe = hoeheA;
-		feld[yp][xp] = BFeld.copy(bl.feld[yp][xp], this);
-	}
-
-	public static char plusfarbe(char farbe)
-	{
-		if(farbe == 'F')
-			return 'A';
-		return (char)(farbe + 1);
+		sl.feld[yp][xp].hoehe = hp;
+		feld[yp][xp] = BFeld.copy(sl.feld[yp][xp], this);
 	}
 
 	public void speichern()
@@ -383,9 +264,9 @@ public class BlockLab extends Area
 		{
 			String s;
 			if(sh)
-				s = bl.speichern(xp, yp);
+				s = sl.speichern(xp, yp);
 			else
-				s = bl.speichern();
+				s = sl.speichern();
 			try
 			{
 				Files.write(fc.getSelectedFile().toPath(), s.getBytes(Charset.forName("UTF-8")));
@@ -409,6 +290,12 @@ public class BlockLab extends Area
 	}
 
 	@Override
+	public D3C d3c()
+	{
+		return new D3C(xp, yp, hp);
+	}
+
+	@Override
 	public void victoryTick()
 	{
 		srd.deep += 0.1;
@@ -420,7 +307,7 @@ public class BlockLab extends Area
 		int ht = h / 10;
 		gd.setColor(Color.BLACK);
 		gd.fillRect(w1, 0, ht * 3, h);
-		gd.setColor(new Color(BlockLab.farben[farbeAktuell - 'A'].getRGB()));
+		gd.setColor(new Color(SchalterR.farben[farbeAktuell - 'A'].getRGB()));
 		gd.fillRect(w1, 0, ht, h);
 		gd.setColor(Color.BLUE);
 		gd.fillRect(w1, h - ht * dias, ht, ht * dias);
@@ -439,21 +326,8 @@ public class BlockLab extends Area
 				gd.drawImage(tex.bilder2D.get(items.get(i).bildname()), w1 + ht + (i % 2) * ht, ht * (i / 2), ht, ht, null);
 			gd.drawRect(w1 + ht + (akItem % 2) * ht, ht * (akItem / 2), ht - 1, ht - 1);
 		}
-		if(SIN.cheatmode && Shift.tile > 0)
-		{
-			renders = new ArrayList<>();
-			if(enhkey == 0)
-				renders.add(new Render("Löscher", 1));
-			else if(SIN.fokusX >= 0)
-			{
-				xcp = SIN.fokusX;
-				ycp = SIN.fokusY;
-				BFeld fn = BFeld.copy(bl.feld[SIN.fokusY][SIN.fokusX], this);
-				fn.enhance(this, enhkey);
-				fn.addToRender(this, false, -1, -1);
-			}
-			gd.drawImage(tex.placeThese(renders).img, w1 + ht, ht * 2 * 4, ht * 2, ht * 2, null);
-		}
+		if(cheatmode != null)
+			cheatmode.rahmen(gd, tex, w1, ht);
 		srd.tick(this);
 	}
 }

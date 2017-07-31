@@ -2,12 +2,13 @@ package area;
 
 import java.awt.*;
 import java.util.*;
+import shift.*;
 import sun.reflect.generics.reflectiveObjects.*;
 import tex.*;
 
 public abstract class Area
 {
-	public int[][] geht;
+	//public int[][] geht;
 	public boolean gewonnen;
 	public boolean mapview;
 	public int xw;
@@ -16,13 +17,13 @@ public abstract class Area
 	public int yp;
 	public int tick;
 
-	public abstract void start(String input, String texOrdnerName, boolean chm, boolean chs, int tem);
+	public abstract boolean start(String input, String texOrdnerName, boolean chm, boolean chs, int tem);
 
 	public abstract Feld feld(int y, int x);
 
-	public abstract int spielerHoehe();
-
 	public abstract void checkFields();
+
+	public abstract ArrayList<Ziel> anzielbar();
 
 	public abstract boolean moveX(boolean nichtMap);
 
@@ -30,17 +31,17 @@ public abstract class Area
 
 	public void noMovement()
 	{
-		geht = new int[yw][xw];
+		//geht = new int[yw][xw];
 	}
 
 	public abstract void readFL(String c1, boolean se2n);
 
-	protected int ycp;
-	protected int xcp;
-	protected ArrayList<Render> renders;
+	public int ycp;
+	public int xcp;
+	public ArrayList<Render> renders;
 	protected ArrayList<Render>[][] renders2;
 
-	public void render(int mouseFx, int mouseFy)
+	public void render(Ziel auswahl)
 	{
 		//noinspection unchecked
 		renders2 = new ArrayList[yw][xw];
@@ -49,10 +50,10 @@ public abstract class Area
 			{
 				renders = new ArrayList<>();
 				feld(ycp, xcp).addToRender(this, xcp == xp && ycp == yp, xcp, ycp);
-				if(geht[ycp][xcp] != 0)
-					addw("Möglich");
-				if(mouseFx == xcp && mouseFy == ycp)
-					addw("Auswahl");
+				/*if(geht[ycp][xcp] != 0)
+					addw("Möglich");*/
+				if(auswahl != null && auswahl.x == xcp && auswahl.y == ycp)
+					addm("Auswahl", auswahl.h);
 				renders2[ycp][xcp] = renders;
 			}
 	}
@@ -89,4 +90,6 @@ public abstract class Area
 	public abstract double realX();
 
 	public abstract double realY();
+
+	public abstract D3C d3c();
 }

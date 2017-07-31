@@ -78,6 +78,18 @@ class GFeld implements Feld
 		return getJH();
 	}
 
+	@Override
+	public int texZero()
+	{
+		return getJH();
+	}
+
+	@Override
+	public int markH()
+	{
+		return getJH();
+	}
+
 	public int getJH()
 	{
 		if(treppe > 0)

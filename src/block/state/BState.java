@@ -14,42 +14,42 @@ public class BState
 	List<BlockD> bd;
 	List<ItemD> items;
 
-	public BState(BlockLab blockLab)
+	public BState(SchalterR schalterR)
 	{
-		gewonnen = blockLab.gewonnen;
-		x = blockLab.xp;
-		y = blockLab.yp;
-		z = blockLab.hoeheA;
-		farbe = blockLab.farbeAktuell;
-		dias = blockLab.dias;
+		gewonnen = schalterR.gewonnen;
+		x = schalterR.xp;
+		y = schalterR.yp;
+		z = schalterR.hp;
+		farbe = schalterR.farbeAktuell;
+		dias = schalterR.dias;
 		bd = new ArrayList<>();
-		for(int iy = 0; iy < blockLab.yw; iy++)
-			for(int ix = 0; ix < blockLab.xw; ix++)
-				if(blockLab.feld[iy][ix].benutzt)
+		for(int iy = 0; iy < schalterR.yw; iy++)
+			for(int ix = 0; ix < schalterR.xw; ix++)
+				if(schalterR.feld[iy][ix].benutzt)
 					bd.add(new BlockD(ix, iy));
-		items = blockLab.items.stream().map(Item::saveState).sorted().collect(Collectors.toList());
+		items = schalterR.items.stream().map(Item::saveState).sorted().collect(Collectors.toList());
 	}
 
-	public void charge(BlockLab blockLab)
+	public void charge(SchalterR schalterR)
 	{
-		blockLab.xp = x;
-		blockLab.yp = y;
-		blockLab.hoeheA = z;
-		blockLab.farbeAktuell = farbe;
-		blockLab.dias = dias;
+		schalterR.xp = x;
+		schalterR.yp = y;
+		schalterR.hp = z;
+		schalterR.farbeAktuell = farbe;
+		schalterR.dias = dias;
 		int caret = 0;
-		for(int iy = 0; iy < blockLab.yw; iy++)
-			for(int ix = 0; ix < blockLab.xw; ix++)
+		for(int iy = 0; iy < schalterR.yw; iy++)
+			for(int ix = 0; ix < schalterR.xw; ix++)
 			{
-				blockLab.feld[iy][ix].reset();
+				schalterR.feld[iy][ix].reset();
 				if(caret < bd.size() && ix == bd.get(caret).x && iy == bd.get(caret).y)
 				{
-					blockLab.feld[iy][ix].benutzt = true;
+					schalterR.feld[iy][ix].benutzt = true;
 					caret++;
 				}
 			}
-		blockLab.items.clear();
-		items.forEach(itemD -> blockLab.items.add(itemD.toItem().kopie(blockLab)));
+		schalterR.items.clear();
+		items.forEach(itemD -> schalterR.items.add(itemD.toItem().kopie(schalterR)));
 	}
 
 	@Override
@@ -91,7 +91,7 @@ public class BState
 				"gewonnen=" + gewonnen +
 				", x=" + x +
 				", y=" + y +
-				", z=" + z +
+				", h=" + z +
 				", farbe=" + farbe +
 				", dias=" + dias +
 				", bd=" + bd +

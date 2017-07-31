@@ -14,7 +14,6 @@ class M
 	private static int testmode;
 	private static final String texOrdnerName = "Texturen2";
 	private static File selected;
-	public static boolean reload = true;
 
 	public static void main(String[] args)
 	{
@@ -38,23 +37,25 @@ class M
 					selected = new File(args[i]);
 			}
 		}
-		while(reload)
+		while(true)
 		{
-			reload = false;
 			if(selected == null)
 			{
 				JFileChooser fc = new JFileChooser(new File("saves"));
 				if(fc.showOpenDialog(null) == JFileChooser.APPROVE_OPTION)
 					selected = fc.getSelectedFile();
+				else
+					break;
 			}
 			if(selected != null)
-				start(selected, cheatmode);
+				if(start(selected, cheatmode))
+					break;
 			selected = null;
 		}
 		System.exit(0);
 	}
 
-	private static void start(File lv, boolean cheatmode)
+	private static boolean start(File lv, boolean cheatmode)
 	{
 		String input = null;
 		try
@@ -71,14 +72,14 @@ class M
 		{
 			case '{':
 			case ' ':
-				area = new BlockLab();
+				area = new SchalterR();
 				break;
 			default:
 				if(input.contains(";;"))
 					area = new Gelb();
 				else
-					area = new BlockLab();
+					area = new SchalterR();
 		}
-		area.start(input, texOrdnerName, cheatmode, changesize, testmode);
+		return area.start(input, texOrdnerName, cheatmode, changesize, testmode);
 	}
 }

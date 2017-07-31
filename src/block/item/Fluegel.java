@@ -17,15 +17,15 @@ public class Fluegel extends LaengeItem
 	}
 
 	@Override
-	public Item kopie(BlockLab blockLab)
+	public Item kopie(SchalterR schalterR)
 	{
 		Fluegel i1 = new Fluegel(level, laenge);
-		i1.blockLab = blockLab;
+		i1.schalterR = schalterR;
 		return i1;
 	}
 
 	@Override
-	public void setzeOptionen(int xp, int yp, int hoeheA)
+	public void setzeOptionen(int xp, int yp, int hp)
 	{
 		for(int r = 0; r <= 3; r++)
 		{
@@ -33,15 +33,15 @@ public class Fluegel extends LaengeItem
 			int ym = r != 0 ? r - 2 : 0;
 			for(int i = 1; i <= laenge; i++)
 			{
-				if(xp + i * xm < 0 || yp + i * ym < 0 || xp + i * xm >= blockLab.xw || yp + i * ym >= blockLab.yw)
+				if(xp + i * xm < 0 || yp + i * ym < 0 || xp + i * xm >= schalterR.xw || yp + i * ym >= schalterR.yw)
 					break;
-				BFeld f = blockLab.feld[yp + i * ym][xp + i * xm];
-				if(f.getAH() > hoeheA)
+				BFeld f = schalterR.feld[yp + i * ym][xp + i * xm];
+				if(f.getAH() > hp)
 					break;
-				if(f.bodenH() == hoeheA)
+				if(f.bodenH() == hp)
 				{
 					if(i > 1)
-						option(xp + i * xm, yp + i * ym, hoeheA, r + 1);
+						option(xp + i * xm, yp + i * ym, hp, r + 1);
 					break;
 				}
 			}

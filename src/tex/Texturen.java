@@ -7,6 +7,7 @@ import java.io.*;
 import java.nio.charset.*;
 import java.nio.file.*;
 import java.util.*;
+import shift.*;
 
 public class Texturen
 {
@@ -151,13 +152,13 @@ public class Texturen
 						int heightNo = i * accuracy / Shift.th - re.height * accuracy;
 						if(heightNo - tex.h_down < tex.look.length)
 						{
-							Shift.place3Vor(gd, tex.look[heightNo - tex.h_down], maxH, i);
+							place3Vor(gd, tex.look[heightNo - tex.h_down], maxH, i);
 							if(tex.h_up == texH && re.text != null)
-								Shift.placeErsatzTextVor(gd, re.text, maxH, i);
+								placeErsatzTextVor(gd, re.text, maxH, i);
 						}
 					}
 					if(!lk2.containsKey(key) && re.height * accuracy == i * accuracy / Shift.th)
-						Shift.placeErsatzTextVor(gd, key, maxH, i);
+						placeErsatzTextVor(gd, key, maxH, i);
 				}
 			}
 		}
@@ -171,5 +172,18 @@ public class Texturen
 		if(tex == null && key.length() >= 5 && key.substring(0, 4).equals("Höhe"))
 			tex = lk2.get(key.substring(0, 5));
 		return tex;
+	}
+
+	public static void place3Vor(Graphics2D gd, Image im, int sh, int h)
+	{
+		gd.drawImage(im, sh - h, sh - h, Shift.tile, Shift.tile, null);
+	}
+
+	public static void placeErsatzTextVor(Graphics2D gd, String s, int sh, int h)
+	{
+		gd.setFont(new Font("Consolas", Font.PLAIN, (int)(Shift.tile * 1.5f / s.length())));
+		int fh2 = gd.getFontMetrics().getHeight() / 2;
+		gd.setColor(Color.WHITE);
+		gd.drawString(s, sh - h, sh - h + Shift.tile / 2 + fh2);
 	}
 }

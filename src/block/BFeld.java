@@ -6,7 +6,7 @@ import java.awt.*;
 
 public class BFeld extends LFeld implements Feld
 {
-	BlockLab blockLab;
+	SchalterR schalterR;
 
 	public boolean benutzt = false;
 
@@ -17,10 +17,10 @@ public class BFeld extends LFeld implements Feld
 		this.hoehe = hoehe;
 	}
 
-	public static BFeld copy(LFeld von, BlockLab blockLab)
+	public static BFeld copy(LFeld von, SchalterR schalterR)
 	{
 		BFeld copy = new BFeld();
-		copy.blockLab = blockLab;
+		copy.schalterR = schalterR;
 		copy.ziel = von.ziel;
 		copy.hoehe = von.hoehe;
 		copy.blockFarbe = von.blockFarbe;
@@ -51,9 +51,9 @@ public class BFeld extends LFeld implements Feld
 				return null;
 			if(pfeil >= 0 && pfeil == side)
 				return null;
-			if(diaTuer > blockLab.dias)
+			if(diaTuer > schalterR.dias)
 				return null;
-			if(eis && !benutzt && !blockLab.items.contains(new Feuer()))
+			if(eis && !benutzt && !schalterR.items.contains(new Feuer()))
 				return null;
 		}
 		else
@@ -61,7 +61,7 @@ public class BFeld extends LFeld implements Feld
 			if(pfeil >= 0 && pfeil != side)
 				return null;
 		}
-		if(blockFarbe != 'n' && blockFarbe != blockLab.farbeAktuell)
+		if(blockFarbe != 'n' && blockFarbe != schalterR.farbeAktuell)
 			return sonstH >= 0 ? sonstH : null;
 		return lift(hoehe);
 	}
@@ -69,7 +69,7 @@ public class BFeld extends LFeld implements Feld
 	public int getAH()
 	{
 		int h1 = hoehe;
-		if(blockFarbe != 'n' && blockFarbe != blockLab.farbeAktuell)
+		if(blockFarbe != 'n' && blockFarbe != schalterR.farbeAktuell)
 			h1 = sonstH >= 0 ? sonstH : 0;
 		if((einhauwand >= 0 && !benutzt) || diaTuer > 0 || (eis && !benutzt))
 			return h1 + 1;
@@ -80,7 +80,7 @@ public class BFeld extends LFeld implements Feld
 
 	public boolean liftOben()
 	{
-		return lift && blockLab.hoeheA > hoehe;
+		return lift && schalterR.hp > hoehe;
 	}
 
 	private int lift(int hv)
@@ -91,22 +91,22 @@ public class BFeld extends LFeld implements Feld
 	public void gehen()
 	{
 		if(loescher)
-			blockLab.items.forEach(Item::loescher);
-		Item itemA = blockLab.items.get(blockLab.akItem);
-		blockLab.items.removeIf(Item::weg);
+			schalterR.items.forEach(Item::loescher);
+		Item itemA = schalterR.items.get(schalterR.akItem);
+		schalterR.items.removeIf(Item::weg);
 		if(item != null)
 		{
-			blockLab.items.remove(item);
-			blockLab.items.add(item.kopie(blockLab));
+			schalterR.items.remove(item);
+			schalterR.items.add(item.kopie(schalterR));
 		}
-		int nA = blockLab.items.indexOf(itemA);
-		blockLab.akItem = nA >= 0 ? nA : 0;
+		int nA = schalterR.items.indexOf(itemA);
+		schalterR.akItem = nA >= 0 ? nA : 0;
 		if(schalter != 'n')
-			blockLab.farbeAktuell = schalter;
+			schalterR.farbeAktuell = schalter;
 		if(dia && !benutzt)
 		{
 			benutzt = true;
-			blockLab.dias++;
+			schalterR.dias++;
 		}
 		if(einhauwand >= 0)
 			benutzt = true;
@@ -114,14 +114,14 @@ public class BFeld extends LFeld implements Feld
 			benutzt = true;
 		if(ziel)
 		{
-			blockLab.setRichtung(3);
-			blockLab.gewonnen = true;
+			schalterR.setRichtung(3);
+			schalterR.gewonnen = true;
 		}
 	}
 
 	public int bodenH()
 	{
-		if(blockFarbe != 'n' && blockFarbe != blockLab.farbeAktuell)
+		if(blockFarbe != 'n' && blockFarbe != schalterR.farbeAktuell)
 			return sonstH >= 0 ? sonstH : -1;
 		return lift(hoehe);
 	}
@@ -133,13 +133,27 @@ public class BFeld extends LFeld implements Feld
 	}
 
 	@Override
+	public int texZero()
+	{
+		return hoehe;
+	}
+
+	@Override
+	public int markH()
+	{
+		if(blockFarbe != 'n' && blockFarbe != schalterR.farbeAktuell)
+			return sonstH >= 0 ? sonstH : -1;
+		return lift(hoehe);
+	}
+
+	@Override
 	public void addToRender(Area area, boolean darauf, int xcp, int ycp)
 	{
 		StringBuilder sb = new StringBuilder();
 		sb.append("Höhe").append(hoehe);
 		if(blockFarbe != 'n')
 		{
-			if(((BlockLab) area).farbeAktuell != blockFarbe)
+			if(((SchalterR) area).farbeAktuell != blockFarbe)
 			{
 				sb = new StringBuilder("HöheI");
 				if(sonstH >= 0)
@@ -155,7 +169,7 @@ public class BFeld extends LFeld implements Feld
 			area.addw("Ziel1");
 		}
 		if(schalter != 'n')
-			area.addw("Schalter" + (blockLab.farbeAktuell == schalter ? "1" : "") + schalter);
+			area.addw("Schalter" + (schalterR.farbeAktuell == schalter ? "1" : "") + schalter);
 		if(pfeil >= 0)
 			area.addw("Pfeil" + pfeil);
 		if(einhauwand >= 0)
@@ -166,7 +180,7 @@ public class BFeld extends LFeld implements Feld
 		if(dia)
 			area.add3(DiaRender.gib(0.1, 0.9, 4, (area.tick % 100) / 100d, 0.8, new Color(0, 0, benutzt ? 0 : 200, 127), visualH()));
 		if(diaTuer > 0)
-			if(diaTuer > blockLab.dias || xcp < 0)
+			if(diaTuer > schalterR.dias || xcp < 0)
 				area.addw("DiaTür", "  " + diaTuer);
 			else
 				area.addw("DiaTürOffen");
@@ -186,6 +200,6 @@ public class BFeld extends LFeld implements Feld
 				area.addw("LiftUnten");
 		if(item != null && !darauf)
 			area.addw(item.bildname());
-		blockLab.srd.addSpieler(area, xcp, ycp);
+		schalterR.srd.addSpieler(area, xcp, ycp);
 	}
 }

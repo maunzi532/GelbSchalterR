@@ -3,20 +3,20 @@ package block.state;
 import area.*;
 import block.*;
 import java.util.*;
-import tex.*;
+import shift.*;
 
 public class ASIN
 {
-	static ArrayList<BState> states;
-	static int caret1;
-	static boolean nca;
-	static int caret2;
-	static ArrayList<ArrayList<Integer>> pointers;
-	static BlockLab blockLab;
+	private static ArrayList<BState> states;
+	private static int caret1;
+	private static boolean nca;
+	private static int caret2;
+	private static ArrayList<ArrayList<Integer>> pointers;
+	private static SchalterR schalterR;
 
-	static int[] ws;
-	static ArrayList<Integer> newws;
-	static ArrayList<Integer> newws2;
+	private static int[] ws;
+	private static ArrayList<Integer> newws;
+	private static ArrayList<Integer> newws2;
 
 	public static void run()
 	{
@@ -25,9 +25,9 @@ public class ASIN
 		nca = true;
 		caret2 = 0;
 		pointers = new ArrayList<>();
-		blockLab = (BlockLab) SIN.area;
+		schalterR = (SchalterR) SIN.area;
 
-		states.add(new BState(blockLab));
+		states.add(new BState(schalterR));
 		pointers.add(new ArrayList<>());
 		while(caret1 < states.size())
 		{
@@ -40,9 +40,9 @@ public class ASIN
 				pointers.add(new ArrayList<>());
 				continue;
 			}
-			states.get(caret1).charge(blockLab);
-			blockLab.srd.reset2(blockLab);
-			Shift.selectTarget(blockLab.xp, blockLab.yp, blockLab.hoeheA, SIN.kamZoom);
+			states.get(caret1).charge(schalterR);
+			schalterR.srd.reset2(schalterR);
+			Shift.localReset(schalterR.d3c());
 
 			SIN.area.checkFields();
 			if(nca)
@@ -50,16 +50,16 @@ public class ASIN
 				nca = false;
 				if(SIN.testmode == 2)
 				{
-					Shift.moveToTarget(0, 0, true);
+					Shift.moveToTarget(schalterR.xp, schalterR.yp);
 					SIN.drawX();
 				}
 				else
 					System.out.println(states.size());
 			}
-			if(blockLab.moveR(caret2))
+			if(schalterR.moveR(caret2))
 			{
 				caret2++;
-				BState nst = new BState(blockLab);
+				BState nst = new BState(schalterR);
 				int ind = states.indexOf(nst);
 				if(ind >= 0)
 					pointers.get(caret1).add(ind);
@@ -82,7 +82,7 @@ public class ASIN
 		ws();
 	}
 
-	public static void ws()
+	private static void ws()
 	{
 		ws = new int[states.size()];
 		int tcl = ws.length;
@@ -126,15 +126,15 @@ public class ASIN
 			showFastPath();
 	}
 
-	public static void showDeadEnds()
+	private static void showDeadEnds()
 	{
 		for(int i = 0; i < ws.length; i++)
 			if(ws[i] < 0)
 			{
-				states.get(i).charge(blockLab);
-				blockLab.srd.reset2(blockLab);
-				Shift.selectTarget(blockLab.xp, blockLab.yp, blockLab.hoeheA, SIN.kamZoom);
-				Shift.moveToTarget(0, 0, true);
+				states.get(i).charge(schalterR);
+				schalterR.srd.reset2(schalterR);
+				Shift.localReset(schalterR.d3c());
+				Shift.moveToTarget(schalterR.xp, schalterR.yp);
 				SIN.drawX();
 				System.out.println(i);
 				TA.bereit();
@@ -146,27 +146,27 @@ public class ASIN
 			}
 	}
 
-	public static void showFastPath()
+	private static void showFastPath()
 	{
 		caret1 = 0;
-		states.get(caret1).charge(blockLab);
-		blockLab.srd.reset(blockLab);
-		Shift.selectTarget(blockLab.xp, blockLab.yp, blockLab.hoeheA, SIN.kamZoom);
+		states.get(caret1).charge(schalterR);
+		schalterR.srd.reset(schalterR);
+		Shift.localReset(schalterR.d3c());
 		for(int i = 0; i < 5; i++)
 		{
-			Shift.moveToTarget(blockLab.realX(), blockLab.realY(), true);
+			Shift.moveToTarget(schalterR.realX(), schalterR.realY());
 			SIN.drawX();
 			U.warte(20);
 		}
-		blockLab.srd.dspeed = 0.25;
-		blockLab.srd.mspeed = 2;
+		schalterR.srd.dspeed = 0.25;
+		schalterR.srd.mspeed = 2;
 		int noch = ws[0];
 		while(!states.get(caret1).gewonnen)
 		{
-			Shift.moveToTarget(blockLab.realX(), blockLab.realY(), true);
+			Shift.moveToTarget(schalterR.realX(), schalterR.realY());
 			SIN.drawX();
 			U.warte(20);
-			blockLab.checkFields();
+			schalterR.checkFields();
 			int c2 = 0;
 			for(int i = 0; i < pointers.get(caret1).size(); i++)
 				if(ws[pointers.get(caret1).get(i)] < noch)
@@ -176,14 +176,14 @@ public class ASIN
 				}
 			caret1 = pointers.get(caret1).get(c2);
 			noch = ws[caret1];
-			blockLab.moveR(c2);
-			Shift.selectTarget(blockLab.xp, blockLab.yp, blockLab.hoeheA, SIN.kamZoom);
+			schalterR.moveR(c2);
+			Shift.selectTarget(schalterR.d3c());
 		}
 		for(int i = 0; i < 20; i++)
 		{
-			if(blockLab.gewonnen)
-				blockLab.victoryTick();
-			Shift.moveToTarget(blockLab.realX(), blockLab.realY(), true);
+			if(schalterR.gewonnen)
+				schalterR.victoryTick();
+			Shift.moveToTarget(schalterR.realX(), schalterR.realY());
 			SIN.drawX();
 			U.warte(20);
 		}

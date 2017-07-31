@@ -2,10 +2,13 @@ package gelb;
 
 import area.*;
 import java.awt.*;
+import java.util.*;
+import shift.*;
 import tex.*;
 
 public class Gelb extends Area
 {
+	public int[][] geht;
 	GFeld[][] feld;
 	public int xz;
 	public int yz;
@@ -18,23 +21,22 @@ public class Gelb extends Area
 	boolean teleport;
 
 	@Override
-	public void start(String input, String texOrdnerName, boolean chm, boolean chs, int tem)
+	public boolean start(String input, String texOrdnerName, boolean chm, boolean chs, int tem)
 	{
 		readFL(input, chs);
 		reset();
 		Texturen tex = new GTex("Default", texOrdnerName);
-		SIN.start(this, tex, chm, tem);
+		return SIN.start(this, tex, chm, tem);
+	}
+
+	public void noMovement()
+	{
+		geht = new int[yw][xw];
 	}
 
 	public Feld feld(int y, int x)
 	{
 		return feld[y][x];
-	}
-
-	@Override
-	public int spielerHoehe()
-	{
-		return feld[xp][yp].visualH();
 	}
 
 	public void checkFields()
@@ -73,6 +75,12 @@ public class Gelb extends Area
 			if(feld[yp][xp].lift && lif > 0)
 				geht[yp][xp] = -1;
 		}
+	}
+
+	@Override
+	public ArrayList<Ziel> anzielbar()
+	{
+		return null;
 	}
 
 	private int feldBegehbar(int yf, int xf, int side, int weit)
@@ -209,15 +217,17 @@ public class Gelb extends Area
 	{
 		if(nichtMap)
 			return false;
+		int fokusX = SIN.auswahl.x;
+		int fokusY = SIN.auswahl.y;
 		boolean moved = false;
 		int xv = xp;
 		int yv = yp;
 		if(teleport)
 		{
-			if(TA.take[201] == 2 && geht[SIN.fokusY][SIN.fokusX] != 0)
+			if(TA.take[201] == 2 && geht[fokusY][fokusX] != 0)
 			{
-				xp = SIN.fokusX;
-				yp = SIN.fokusY;
+				xp = fokusX;
+				yp = fokusY;
 				gehen(0);
 				moved = true;
 				teleport = false;
@@ -230,14 +240,14 @@ public class Gelb extends Area
 			int yt = yv + (TA.take[40] == 2 ? 1 : 0) - (TA.take[38] == 2 ? 1 : 0);
 			moved = tryDirection(xt, yt) || tryDirection(xt * 2 - xv, yt * 2 - yv);
 		}
-		else if(TA.take[201] == 2 && geht[SIN.fokusY][SIN.fokusX] != 0)
+		else if(TA.take[201] == 2 && geht[fokusY][fokusX] != 0)
 		{
-			if(SIN.fokusX == xp && SIN.fokusY == yp)
+			if(fokusX == xp && fokusY == yp)
 				moved = useItem();
 			else
 			{
-				xp = SIN.fokusX;
-				yp = SIN.fokusY;
+				xp = fokusX;
+				yp = fokusY;
 				gehen(geht[yp][xp]);
 				moved = true;
 			}
@@ -283,5 +293,11 @@ public class Gelb extends Area
 	public double realY()
 	{
 		return yp;
+	}
+
+	@Override
+	public D3C d3c()
+	{
+		return new D3C(xp, yp, feld[xp][yp].visualH());
 	}
 }
