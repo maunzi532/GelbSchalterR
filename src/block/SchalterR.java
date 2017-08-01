@@ -44,7 +44,7 @@ public class SchalterR extends Area
 			this.cheatmode = new Cheatmode(this, sl);
 		srd = new SRD(this);
 		reset();
-		Texturen tex = new FTex("BlockLab", texOrdnerName);
+		Texturen tex = new FTex("SchalterR", texOrdnerName);
 		return SIN.start(this, tex, testmode);
 	}
 

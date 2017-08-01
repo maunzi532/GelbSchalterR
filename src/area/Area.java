@@ -67,6 +67,7 @@ public abstract class Area
 			{
 				renders = new ArrayList<>();
 				feld(ycp, xcp).addToRender(this, xcp == xp && ycp == yp, xcp, ycp);
+				mapAdd();
 				if(auswahl != null && auswahl.x == xcp && auswahl.y == ycp)
 					addm("Auswahl", auswahl.h);
 				for(Ziel z : eintrag)
@@ -82,6 +83,8 @@ public abstract class Area
 				renders2[ycp][xcp] = renders;
 			}
 	}
+
+	protected void mapAdd(){}
 
 	public void addw(String name)
 	{

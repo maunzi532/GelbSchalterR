@@ -76,7 +76,7 @@ class M
 				break;
 			default:
 				if(input.contains(";;"))
-					area = new Gelb();
+					area = new Gelbgeher();
 				else
 					area = new SchalterR();
 		}

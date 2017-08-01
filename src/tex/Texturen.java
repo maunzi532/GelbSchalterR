@@ -45,35 +45,40 @@ public class Texturen
 
 	private void neueTextur(File[] files, File dir)
 	{
-		int kmin = Integer.MAX_VALUE;
-		int kmax = Integer.MIN_VALUE;
-		if(files != null)
+		try
+		{
+			boolean dreh = false;
+			int kmin = Integer.MAX_VALUE;
+			int kmax = Integer.MIN_VALUE;
+			ArrayList<TBild> tb = new ArrayList<>();
 			for(int j = 0; j < files.length; j++)
 			{
 				String filename = files[j].getName();
-				int noSuffix = Integer.parseInt(filename.substring(0, filename.length() - 4));
-				if(kmin > noSuffix)
-					kmin = noSuffix;
-				if(kmax < noSuffix)
-					kmax = noSuffix;
+				if(filename.equals("dreh"))
+					dreh = true;
+				if(!filename.endsWith(".png"))
+					continue;
+				String[] ft = filename.substring(0, filename.lastIndexOf('.')).split("_");
+				int min = Integer.parseInt(ft[0]);
+				int max = Integer.parseInt(ft[ft.length > 1 ? 1 : 0]);
+				tb.add(new TBild(files[j], min, max));
+				if(kmin > min)
+					kmin = min;
+				if(kmax < max)
+					kmax = max;
 			}
-		BufferedImage[] im = new BufferedImage[kmax - kmin + 1];
-		boolean rauf = false;
-		BufferedImage last = null;
-		for(int q = 0; !rauf || q <= kmax; q += rauf ? 1 : -1)
-		{
-			if(!rauf && q < kmin)
-			{
-				q = 0;
-				rauf = true;
-				last = null;
-			}
-			BufferedImage ov = U.readImage(new File(dir.getPath() + File.separator + q + ".png"));
-			if(ov != null)
-				last = ov;
-			im[q - kmin] = last;
+			BufferedImage[] im = new BufferedImage[kmax - kmin + 1];
+			for(TBild tb1 : tb)
+				for(int i = tb1.min - kmin; i <= tb1.max - kmin; i++)
+					im[i] = tb1.b;
+			lk2.put(dir.getName(), new Textur(kmax, kmin, im));
+			if(dreh)
+				drehTex1(dir.getName());
 		}
-		lk2.put(dir.getName(), new Textur(kmax, kmin, im));
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
 	}
 
 	protected void drehTex1(String vonname)

@@ -35,13 +35,9 @@ public class FTex extends Texturen
 		farbTex1("Schalter", true, 'A',  farben);
 		farbTex1("Schalter1", true, 'A',  farben);
 		farbTex1("Möglich", true, 'A', marker);
-		drehTex1("Symbol");
 		for(int i = 0; i < 4; i++)
 			farbTex1("Symbol" + i, true, 'A', symbol);
 		farbTex1("SymbolL", true, 'A', symbol);
-		drehTex1("Pfeil");
-		drehTex1("Einhauwand");
-		drehTex1("EinhauwandB");
 	}
 
 	private void farbTex1(String vonname, boolean in, char start, Color[] farben1)

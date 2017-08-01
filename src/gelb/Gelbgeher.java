@@ -6,7 +6,7 @@ import java.util.*;
 import shift.*;
 import tex.*;
 
-public class Gelb extends Area implements PreItem
+public class Gelbgeher extends Area implements PreItem
 {
 	private int[][] geht;
 	private GFeld[][] feld;
@@ -25,7 +25,7 @@ public class Gelb extends Area implements PreItem
 	{
 		readFL(input);
 		reset();
-		Texturen tex = new GTex("Default", texOrdnerName);
+		Texturen tex = new GTex("Gelbgeher", texOrdnerName);
 		return SIN.start(this, tex, tem);
 	}
 
@@ -292,6 +292,13 @@ public class Gelb extends Area implements PreItem
 	public D3C d3c()
 	{
 		return new D3C(xp, yp, feld[yp][xp].getJH());
+	}
+
+	@Override
+	protected void mapAdd()
+	{
+		if(xcp == xz && ycp == yz)
+			addw("Ziel");
 	}
 
 	@Override

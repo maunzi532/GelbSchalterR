@@ -10,25 +10,33 @@ public class GTex extends Texturen
 	{
 		super(pack, texOrdnerName);
 		for(int i = 0; i < 10; i++)
-			if(lk2.containsKey("Höhe" + i))
-				for(int j = 0; j < 4; j++)
-					treppentex1(i, j % 2 == 1, j / 2 > 0);
-		drehTex1("Symbol");
+		{
+			treppentex1("Höhe" + i);
+			treppentex1("Höhe" + i + 'G');
+			lifttex(i, "");
+			lifttex(i, "G");
+		}
 	}
 
-	private void treppentex1(int i, boolean r, boolean gelb)
+	private void treppentex1(String vonname)
 	{
-		String vonname = "Höhe" + i + (gelb ? "G" : "") + (r ? "R" : "T");
 		if(!lk2.containsKey(vonname))
 			return;
 		Textur von = lk2.get(vonname);
-		String t = (gelb ? "G" : "") + (r ? "R" : "T");
 		for(int j = 1; j <= 4; j++)
+			lk2.put(vonname + 'T' + j, new Textur(von.h_up, von.h_down - accuracy, treppentex(von.look, j)));
+		BufferedImage[] look2 = new BufferedImage[von.look.length];
+		System.arraycopy(von.look, 0, look2, 0, von.look.length);
+		BufferedImage td = von.look[von.look.length - 1];
+		if(td != null)
 		{
-			String toname = "Höhe" + i + t + j;
-			if(!lk2.containsKey(toname))
-				lk2.put(toname, new Textur(von.h_up, von.h_down - accuracy, treppentex(von.look, j)));
+			BufferedImage td2 = new BufferedImage(td.getWidth(), td.getHeight(), BufferedImage.TYPE_INT_ARGB_PRE);
+			td2.getGraphics().drawImage(td, 0, 0, null);
+			td2.getGraphics().drawImage(bilder2D.get("R"), 0, 0, td.getWidth(), td.getHeight(), null);
+			look2[look2.length - 1] = td2;
 		}
+		for(int j = 1; j <= 4; j++)
+			lk2.put(vonname + 'R' + j, new Textur(von.h_up, von.h_down - accuracy, treppentex(look2, j)));
 	}
 
 	private BufferedImage[] treppentex(BufferedImage[] std, int j1)
@@ -52,5 +60,29 @@ public class GTex extends Texturen
 			toR[std.length + j] = ti;
 		}
 		return toR;
+	}
+
+	private void lifttex(int h, String g)
+	{
+		String vonname = "Höhe" + h + g;
+		if(!lk2.containsKey(vonname))
+			return;
+		Textur von = lk2.get(vonname);
+		BufferedImage[] look2 = new BufferedImage[von.look.length];
+		BufferedImage[] look3 = new BufferedImage[von.look.length + accuracy];
+		System.arraycopy(von.look, 0, look2, 0, von.look.length);
+		System.arraycopy(von.look, 0, look3, 0, von.look.length);
+		BufferedImage td = von.look[von.look.length - 1];
+		if(td != null)
+		{
+			BufferedImage td2 = new BufferedImage(td.getWidth(), td.getHeight(), BufferedImage.TYPE_INT_ARGB_PRE);
+			td2.getGraphics().drawImage(td, 0, 0, null);
+			td2.getGraphics().drawImage(bilder2D.get("L"), 0, 0, td.getWidth(), td.getHeight(), null);
+			look2[look2.length - 1] = td2;
+			for(int i = 0; i <= accuracy; i++)
+				look3[look3.length - 1 - i] = td2;
+		}
+		lk2.put(vonname + 'L', new Textur(von.h_up, von.h_down, look2));
+		lk2.put("Höhe" + (h + 1) + g + 'F', new Textur(von.h_up, von.h_down - accuracy, look3));
 	}
 }
