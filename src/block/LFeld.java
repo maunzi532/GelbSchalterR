@@ -11,7 +11,7 @@ public class LFeld
 	public int hoehe;
 	boolean ziel;
 	public char blockFarbe = 'n';
-	int sonstH;
+	public int sonstH;
 	public char schalter = 'n';
 	int pfeil = -1;
 	int einhauwand = -1;

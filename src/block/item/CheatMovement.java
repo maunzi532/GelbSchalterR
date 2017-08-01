@@ -28,10 +28,9 @@ public class CheatMovement extends Item
 	}
 
 	@Override
-	public void setzeOptionen(int xp, int yp, int hp, int xw, int yw)
+	public void setzeOptionen(int xp, int yp, int hp, int xw, int yw, BFeld fp)
 	{
-		BFeld f = schalterR.feld[yp][xp];
-		option(xp, yp, hp + (f.bodenH() < hp ? -1 : 1), 0);
+		option(xp, yp, hp + (fp.bodenH() < hp ? -1 : 1), 0);
 		for(int r = 0; r <= 3; r++)
 		{
 			int xm = r != 3 ? r - 1 : 0;

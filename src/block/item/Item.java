@@ -45,10 +45,10 @@ public abstract class Item implements PreItem
 		this.id = id;
 		this.tasten = tasten;
 		g1.clear();
-		setzeOptionen(xp, yp, hp, xw, yw);
+		setzeOptionen(xp, yp, hp, xw, yw, schalterR.feld[yp][xp]);
 	}
 
-	public void setzeOptionen(int xp, int yp, int hp, int xw, int yw){}
+	public void setzeOptionen(int xp, int yp, int hp, int xw, int yw, BFeld fp){}
 
 	public void noMovement()
 	{

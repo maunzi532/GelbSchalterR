@@ -25,15 +25,22 @@ public class Schalterpistole extends LaengeItem
 	}
 
 	@Override
-	public void setzeOptionen(int xp, int yp, int hp, int xw, int yw)
+	public void setzeOptionen(int xp, int yp, int hp, int xw, int yw, BFeld fp)
 	{
-		BFeld fp = schalterR.feld[yp][xp];
-		//if(fp.bodenH() == hp)
-		if(fp.blockFarbe == schalterR.farbeAktuell && fp.hoehe >= hp)
-			return;
 		char verboten = 'n';
-		if(fp.blockFarbe != 'n' && fp.hoehe > hp)
+		if(fp.aufBoden())
+		{
+			if(fp.farbeAktiv())
+				return;
 			verboten = fp.blockFarbe;
+		}
+		else
+		{
+			if(fp.farbeAktiv() && fp.sonstH > hp)
+				return;
+			if(fp.hoehe > hp)
+				verboten = fp.blockFarbe;
+		}
 		for(int r = 0; r <= 3; r++)
 		{
 			int xm = r != 3 ? r - 1 : 0;
@@ -47,9 +54,9 @@ public class Schalterpistole extends LaengeItem
 				BFeld f = schalterR.feld[yf][xf];
 				if(f.getBlockH() > hp)
 					break;
-				if(f.schalter != 'n' && f.bodenH() == hp)
+				if(f.schalter != 'n' && f.aufBoden())
 				{
-					if(f.schalter != verboten)
+					if(!f.farbeAktiv() && f.schalter != verboten)
 						option(xf, yf, hp, r + 1);
 					break;
 				}

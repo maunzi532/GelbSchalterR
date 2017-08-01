@@ -30,44 +30,38 @@ public class AerialEnterhaken extends Item
 	}
 
 	@Override
-	public void setzeOptionen(int xp, int yp, int hp, int xw, int yw)
+	public void setzeOptionen(int xp, int yp, int hp, int xw, int yw, BFeld fp)
 	{
-		int ix = xp - laenge;
-		if(ix < 0)
-			ix = 0;
-		int iy = yp - laenge;
-		if(iy < 0)
-			iy = 0;
-		for(; ix <= xp + laenge && ix < xw; ix++)
-			for(int iy2 = iy; iy2 <= yp + laenge && iy2 < yw; iy2++)
+		for(int ix = Math.max(xp - laenge, 0); ix <= xp + laenge && ix < xw; ix++)
+			for(int iy = Math.max(yp - laenge, 0); iy <= yp + laenge && iy < yw; iy++)
 			{
-				int err = erreichbar(xp, yp, hp, ix, iy2);
-				if(err >= 0)
-					option(ix, iy2, err, -1);
+				int zh = erreichbar(xp, yp, hp, ix, iy);
+				if(zh >= 0)
+					option(ix, iy, zh, -1);
 			}
 	}
 
-	private int erreichbar(int xp, int yp, int hp, int ix, int iy)
+	private int erreichbar(int xp, int yp, int hp, int xf, int yf)
 	{
-		BFeld zf = schalterR.feld[iy][ix];
-		if(zf.enterstange < 0)
+		BFeld f = schalterR.feld[yf][xf];
+		int zh = f.enterstange;
+		if(zh < f.bodenH() || (zh > f.bodenH() && !doppelt))
 			return -1;
-		if(zf.enterstange != zf.bodenH() && !doppelt)
-			return -1;
-		int xd = (ix - xp) * (ix - xp);
-		int yd = (iy - yp) * (iy - yp);
-		int zd = (zf.enterstange - hp) * (zf.enterstange - hp);
+		int xd = (xf - xp) * (xf - xp);
+		int yd = (yf - yp) * (yf - yp);
+		int zd = (zh - hp) * (zh - hp);
 		if(xd + yd + zd > laenge * laenge)
 			return -1;
-		int xn = ix > xp ? xp : ix;
-		int xh = ix > xp ? ix : xp;
-		int yn = iy > yp ? yp : iy;
-		int yh = iy > yp ? iy : yp;
-		for(; xn <= xh; xn++)
+		int xn = Math.min(xp, xf);
+		int xh = Math.max(xp, xf);
+		int yn = Math.min(yp, yf);
+		int yh = Math.max(yp, yf);
+		int minh = Math.min(hp, zh);
+		for(int xn2 = xn; xn2 <= xh; xn2++)
 			for(int yn2 = yn; yn2 <= yh; yn2++)
-				if(yn2 != yp && xn != xp && schalterR.feld[yn2][xn].getBlockH() > hp)
+				if((yn2 != yp || xn2 != xp) && (yn2 != yf || xn2 != xf) && schalterR.feld[yn2][xn2].getBlockH() > minh)
 					return -1;
-		return zf.enterstange;
+		return zh;
 	}
 
 	@Override

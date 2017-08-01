@@ -43,9 +43,9 @@ public class BFeld extends LFeld implements Feld<SchalterR>
 		benutzt = false;
 	}
 
-	public boolean betretengeht(int side, int hp)
+	public boolean betretengeht(int side)
 	{
-		if(hp != bodenH())
+		if(!aufBoden())
 			return false;
 		if(einhauwand >= 0 && !benutzt && einhauwand != side)
 			return false;
@@ -58,13 +58,14 @@ public class BFeld extends LFeld implements Feld<SchalterR>
 		return true;
 	}
 
-	public boolean weggehengeht(int side, int hp)
+	public boolean aufBoden()
 	{
-		if(hp != bodenH())
-			return true;
-		if(pfeil >= 0 && pfeil != side)
-			return false;
-		return true;
+		return schalterR.hp == bodenH();
+	}
+
+	public boolean weggehengeht(int side)
+	{
+		return !(pfeil >= 0 && pfeil != side);
 	}
 
 	/*public int getBlockLaserH()
@@ -75,6 +76,11 @@ public class BFeld extends LFeld implements Feld<SchalterR>
 	public int getBlockH()
 	{
 		return (einhauwand >= 0 && !benutzt) || diaTuer > schalterR.dias || (eis && !benutzt) ? bodenH() + 1 : bodenH();
+	}
+
+	public boolean farbeAktiv()
+	{
+		return blockFarbe == schalterR.farbeAktuell;
 	}
 
 	private int steinH()

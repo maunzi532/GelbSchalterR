@@ -25,8 +25,10 @@ public class Fluegel extends LaengeItem
 	}
 
 	@Override
-	public void setzeOptionen(int xp, int yp, int hp, int xw, int yw)
+	public void setzeOptionen(int xp, int yp, int hp, int xw, int yw, BFeld fp)
 	{
+		if(!fp.aufBoden())
+			return;
 		for(int r = 0; r <= 3; r++)
 		{
 			int xm = r != 3 ? r - 1 : 0;
@@ -40,7 +42,7 @@ public class Fluegel extends LaengeItem
 				BFeld f = schalterR.feld[yf][xf];
 				if(f.getBlockH() > hp)
 					break;
-				if(f.bodenH() == hp)
+				if(f.aufBoden())
 				{
 					if(i > 1)
 						option(xf, yf, hp, r + 1);
