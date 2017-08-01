@@ -72,12 +72,12 @@ public abstract class Area
 
 	public void addw(String name)
 	{
-		renders.add(new Render(name, feld(ycp, xcp).visualH()));
+		renders.add(new Render(name, feld(ycp, xcp).daraufH()));
 	}
 
 	public void addw(String name, String text)
 	{
-		renders.add(new Render(name, text, feld(ycp, xcp).visualH()));
+		renders.add(new Render(name, text, feld(ycp, xcp).daraufH()));
 	}
 
 	public void addm(String name, int h)

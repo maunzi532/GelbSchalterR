@@ -18,7 +18,6 @@ public abstract class LaengeItem extends Item
 	@Override
 	public boolean benutze(int num, boolean cl, boolean main, boolean lvm)
 	{
-		//noinspection SimplifiableIfStatement
 		if(!cl && !main && TA.take[16] <= 0 && level >= 0)
 			return false;
 		return super.benutze(num, cl, main, true);

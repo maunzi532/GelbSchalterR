@@ -2,7 +2,6 @@ package block.item;
 
 import block.*;
 import block.state.*;
-import java.util.*;
 
 public class Movement extends Item
 {
@@ -30,30 +29,16 @@ public class Movement extends Item
 	{
 		BFeld f = schalterR.feld[yp][xp];
 		if(f.lift)
-			option(xp, yp, schalterR.hp + (f.liftOben() ? -1 : 1), 0);
+			option(xp, yp, hp + (f.liftOben() ? -1 : 1), 0);
 		for(int r = 0; r <= 3; r++)
 		{
 			int xm = r != 3 ? r - 1 : 0;
 			int ym = r != 0 ? r - 2 : 0;
-			if(xp + xm < 0 || yp + ym < 0 || xp + xm >= schalterR.xw || yp + ym >= schalterR.yw)
+			if(xp + xm < 0 || yp + ym < 0 || xp + xm >= xw || yp + ym >= yw)
 				continue;
-			int b = feldBegehbar(xp, yp, xp + xm, yp + ym, hp, r);
-			if(b >= 0)
-				option(xp + xm, yp + ym, b, r + 1);
+			if(schalterR.feld[yp][xp].weggehengeht(r, hp) && schalterR.feld[yp + ym][xp + xm].betretengeht((r + 2) % 4, hp))
+				option(xp + xm, yp + ym, hp, r + 1);
 		}
-	}
-
-	private int feldBegehbar(int xp, int yp, int xf, int yf, int hoeheA, int richtung)
-	{
-		Integer ph = schalterR.feld[yp][xp].getH(richtung, false);
-		if(schalterR.feld[yp][xp].bodenH() != hoeheA)
-			ph = hoeheA;
-		Integer fh = schalterR.feld[yf][xf].getH((richtung + 2) % 4, true);
-		if(ph == null || fh == null)
-			return -1;
-		if(Objects.equals(ph, fh))
-			return fh;
-		return -1;
 	}
 
 	@Override

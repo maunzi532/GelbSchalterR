@@ -43,49 +43,65 @@ public class BFeld extends LFeld implements Feld
 		benutzt = false;
 	}
 
-	public Integer getH(int side, boolean enter)
+	public boolean betretengeht(int side, int hp)
 	{
-		if(enter)
-		{
-			if(einhauwand >= 0 && !benutzt && einhauwand != side)
-				return null;
-			if(pfeil >= 0 && pfeil == side)
-				return null;
-			if(diaTuer > schalterR.dias)
-				return null;
-			if(eis && !benutzt && !schalterR.items.contains(new Feuer()))
-				return null;
-		}
-		else
-		{
-			if(pfeil >= 0 && pfeil != side)
-				return null;
-		}
-		if(blockFarbe != 'n' && blockFarbe != schalterR.farbeAktuell)
-			return sonstH >= 0 ? sonstH : null;
-		return lift(hoehe);
+		if(hp != bodenH())
+			return false;
+		if(einhauwand >= 0 && !benutzt && einhauwand != side)
+			return false;
+		if(pfeil >= 0 && pfeil == side)
+			return false;
+		if(diaTuer > schalterR.dias)
+			return false;
+		if(eis && !benutzt && !schalterR.items.contains(new Feuer()))
+			return false;
+		return true;
 	}
 
-	public int getAH()
+	public boolean weggehengeht(int side, int hp)
 	{
-		int h1 = hoehe;
-		if(blockFarbe != 'n' && blockFarbe != schalterR.farbeAktuell)
-			h1 = sonstH >= 0 ? sonstH : 0;
-		if((einhauwand >= 0 && !benutzt) || diaTuer > 0 || (eis && !benutzt))
-			return h1 + 1;
-		if(h1 != hoehe)
-			return h1;
-		return lift(hoehe);
+		if(hp != bodenH())
+			return true;
+		if(pfeil >= 0 && pfeil != side)
+			return false;
+		return true;
+	}
+
+	public int getBlockedH()
+	{
+		return (einhauwand >= 0 && !benutzt) || diaTuer > 0 || (eis && !benutzt) ? bodenH() + 1 : bodenH();
+	}
+
+	public int getBlockedH2()
+	{
+		return (einhauwand >= 0 && !benutzt) || diaTuer > schalterR.dias || (eis && !benutzt) ? bodenH() + 1 : bodenH();
+	}
+
+	private int steinH()
+	{
+		return blockFarbe != 'n' && blockFarbe != schalterR.farbeAktuell ? sonstH : hoehe;
 	}
 
 	public boolean liftOben()
 	{
-		return lift && schalterR.hp > hoehe;
+		return lift && schalterR.hp > steinH();
 	}
 
-	private int lift(int hv)
+	public int bodenH()
 	{
-		return liftOben() ? hv + 1 : hv;
+		return liftOben() ? steinH() + 1 : steinH();
+	}
+
+	@Override
+	public int daraufH()
+	{
+		return hoehe;
+	}
+
+	@Override
+	public int markH()
+	{
+		return bodenH();
 	}
 
 	public void gehen()
@@ -117,33 +133,6 @@ public class BFeld extends LFeld implements Feld
 			schalterR.setRichtung(3);
 			schalterR.gewonnen = true;
 		}
-	}
-
-	public int bodenH()
-	{
-		if(blockFarbe != 'n' && blockFarbe != schalterR.farbeAktuell)
-			return sonstH >= 0 ? sonstH : -1;
-		return lift(hoehe);
-	}
-
-	@Override
-	public int visualH()
-	{
-		return hoehe;
-	}
-
-	@Override
-	public int texZero()
-	{
-		return hoehe;
-	}
-
-	@Override
-	public int markH()
-	{
-		if(blockFarbe != 'n' && blockFarbe != schalterR.farbeAktuell)
-			return sonstH >= 0 ? sonstH : -1;
-		return lift(hoehe);
 	}
 
 	@Override
@@ -178,26 +167,20 @@ public class BFeld extends LFeld implements Feld
 			else
 				area.addw("Einhauwand" + einhauwand);
 		if(dia)
-			area.add3(DiaRender.gib(0.1, 0.9, 4, (area.tick % 100) / 100d, 0.8, new Color(0, 0, benutzt ? 0 : 200, 127), visualH()));
+			area.add3(DiaRender.gib(0.1, 0.9, 4, (area.tick % 100) / 100d, 0.8, new Color(0, 0, benutzt ? 0 : 200, 127), daraufH()));
 		if(diaTuer > 0)
 			if(diaTuer > schalterR.dias || xcp < 0)
 				area.addw("DiaTür", "  " + diaTuer);
 			else
 				area.addw("DiaTürOffen");
 		if(eis)
-			if(benutzt)
-				area.addw("EisB");
-			else
-				area.addw("Eis");
+			area.addw(benutzt ? "EisB" : "Eis");
 		if(loescher)
 			area.addw("Löscher");
 		if(enterstange >= 0)
 			area.addm("Stange" + (darauf ? "B" : ""), enterstange);
 		if(lift)
-			if(lift(hoehe) > hoehe)
-				area.addw("LiftOben");
-			else
-				area.addw("LiftUnten");
+			area.addw(liftOben() ? "LiftOben" : "LiftUnten");
 		if(item != null && !darauf)
 			area.addw(item.bildname());
 		schalterR.srd.addSpieler(area, xcp, ycp);

@@ -74,13 +74,7 @@ class GFeld implements Feld
 		return hoehe;
 	}
 
-	public int visualH()
-	{
-		return getJH();
-	}
-
-	@Override
-	public int texZero()
+	public int daraufH()
 	{
 		return getJH();
 	}

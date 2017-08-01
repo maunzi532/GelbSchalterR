@@ -11,7 +11,7 @@ public class LFeld
 	public int hoehe;
 	boolean ziel;
 	public char blockFarbe = 'n';
-	int sonstH = -1;
+	int sonstH;
 	public char schalter = 'n';
 	int pfeil = -1;
 	int einhauwand = -1;
@@ -35,12 +35,7 @@ public class LFeld
 				break;
 			case 3:
 				if(blockFarbe != 'n')
-				{
-					if(sonstH >= 0)
-						sonstH = -1;
-					else
-						sonstH = mit.hp;
-				}
+					sonstH = sonstH > 0 ? 0 : mit.hp;
 				break;
 			case 4:
 				pfeil = mit.richtung;
@@ -181,7 +176,7 @@ public class LFeld
 			speichernZ(sb, "ziel", null);
 		if(blockFarbe != 'n')
 			speichernZ(sb, "farbe", String.valueOf(blockFarbe));
-		if(sonstH >= 0)
+		if(sonstH > 0)
 			speichernZ(sb, "sonsth", String.valueOf(sonstH));
 		if(schalter != 'n')
 			speichernZ(sb, "schalter", String.valueOf(schalter));
@@ -280,10 +275,7 @@ public class LFeld
 							break;
 						default:
 							if(build.charAt(1) >= 'A' && build.charAt(1) <= 'F')
-							{
 								blockFarbe = build.charAt(1);
-								sonstH = 1;
-							}
 					}
 					break;
 				case 's':

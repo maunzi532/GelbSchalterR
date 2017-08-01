@@ -31,12 +31,12 @@ public class CheatMovement extends Item
 	public void setzeOptionen(int xp, int yp, int hp, int xw, int yw)
 	{
 		BFeld f = schalterR.feld[yp][xp];
-		option(xp, yp, schalterR.hp + (f.bodenH() < hp ? -1 : 1), 0);
+		option(xp, yp, hp + (f.bodenH() < hp ? -1 : 1), 0);
 		for(int r = 0; r <= 3; r++)
 		{
 			int xm = r != 3 ? r - 1 : 0;
 			int ym = r != 0 ? r - 2 : 0;
-			if(xp + xm < 0 || yp + ym < 0 || xp + xm >= schalterR.xw || yp + ym >= schalterR.yw)
+			if(xp + xm < 0 || yp + ym < 0 || xp + xm >= xw || yp + ym >= yw)
 				continue;
 			option(xp + xm, yp + ym, hp, r + 1);
 		}

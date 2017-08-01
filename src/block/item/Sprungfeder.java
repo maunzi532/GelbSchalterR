@@ -33,10 +33,10 @@ public class Sprungfeder extends LaengeItem
 			int ym = r != 0 ? r - 2 : 0;
 			for(int i = 1; i <= laenge; i++)
 			{
-				if(xp + i * xm < 0 || yp + i * ym < 0 || xp + i * xm >= schalterR.xw || yp + i * ym >= schalterR.yw)
+				if(xp + i * xm < 0 || yp + i * ym < 0 || xp + i * xm >= xw || yp + i * ym >= yw)
 					break;
 				BFeld f = schalterR.feld[yp + i * ym][xp + i * xm];
-				if(f.getAH() > hp)
+				if(f.getBlockedH() > hp)
 					break;
 				if(i == laenge && f.bodenH() == hp)
 					option(xp + i * xm, yp + i * ym, hp, r + 1);

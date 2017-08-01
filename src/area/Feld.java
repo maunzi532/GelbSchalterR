@@ -2,9 +2,7 @@ package area;
 
 public interface Feld
 {
-	int visualH();
-
-	int texZero();
+	int daraufH();
 
 	int markH();
 

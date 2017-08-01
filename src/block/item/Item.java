@@ -38,7 +38,7 @@ public abstract class Item implements PreItem
 
 	private int id;
 	private boolean[] tasten;
-	public ArrayList<Ziel> g1 = new ArrayList<>();
+	public final ArrayList<Ziel> g1 = new ArrayList<>();
 
 	public void setzeOptionen1(int xp, int yp, int hp, int xw, int yw, int id, boolean[] tasten)
 	{
@@ -85,16 +85,16 @@ public abstract class Item implements PreItem
 		setzeR(schalterR.xp, schalterR.yp, g1.get(num).x, g1.get(num).y);
 		if(lvm && level > 0)
 			level--;
-		gzo(g1.get(num));
+		gehen(g1.get(num));
 		return true;
 	}
 
-	private void gzo(D3C zo)
+	private void gehen(D3C ziel)
 	{
-		schalterR.xp = zo.x;
-		schalterR.yp = zo.y;
-		schalterR.hp = zo.h;
-		schalterR.feld[zo.y][zo.x].gehen();
+		schalterR.xp = ziel.x;
+		schalterR.yp = ziel.y;
+		schalterR.hp = ziel.h;
+		schalterR.feld[ziel.y][ziel.x].gehen();
 	}
 
 	void setzeR(int xa, int ya, int xn, int yn)

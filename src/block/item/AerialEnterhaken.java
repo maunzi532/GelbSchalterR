@@ -47,7 +47,7 @@ public class AerialEnterhaken extends Item
 			}
 	}
 
-	private int erreichbar(int xp, int yp, int hoeheA, int ix, int iy)
+	private int erreichbar(int xp, int yp, int hp, int ix, int iy)
 	{
 		BFeld zf = schalterR.feld[iy][ix];
 		if(zf.enterstange < 0)
@@ -56,7 +56,7 @@ public class AerialEnterhaken extends Item
 			return -1;
 		int xd = (ix - xp) * (ix - xp);
 		int yd = (iy - yp) * (iy - yp);
-		int zd = (zf.enterstange - hoeheA) * (zf.enterstange - hoeheA);
+		int zd = (zf.enterstange - hp) * (zf.enterstange - hp);
 		if(xd + yd + zd > laenge * laenge)
 			return -1;
 		int xn = ix > xp ? xp : ix;
@@ -65,7 +65,7 @@ public class AerialEnterhaken extends Item
 		int yh = iy > yp ? iy : yp;
 		for(; xn <= xh; xn++)
 			for(int yn2 = yn; yn2 <= yh; yn2++)
-				if(yn2 != yp && xn != xp && schalterR.feld[yn2][xn].getAH() > hoeheA)
+				if(yn2 != yp && xn != xp && schalterR.feld[yn2][xn].getBlockedH() > hp)
 					return -1;
 		return zf.enterstange;
 	}
