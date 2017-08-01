@@ -29,16 +29,19 @@ public class Gelb extends Area implements PreItem
 		return SIN.start(this, tex, tem);
 	}
 
+	@Override
 	public void noMovement()
 	{
 		geht = new int[yw][xw];
 	}
 
+	@Override
 	public Feld feld(int y, int x)
 	{
 		return feld[y][x];
 	}
 
+	@Override
 	public void checkFields()
 	{
 		if(teleport)
@@ -229,7 +232,8 @@ public class Gelb extends Area implements PreItem
 	@Override
 	public void reset(){}
 
-	public boolean moveX(boolean nichtMap)
+	@Override
+	public boolean moveX()
 	{
 		int fokusY = -1;
 		int fokusX = -1;

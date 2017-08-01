@@ -173,6 +173,7 @@ public class ASIN
 			schalterR.moveR(c2);
 			Shift.selectTarget(schalterR.d3c());
 		}
+		schalterR.noMovement();
 		for(int i = 0; i < 20; i++)
 		{
 			if(schalterR.gewonnen)

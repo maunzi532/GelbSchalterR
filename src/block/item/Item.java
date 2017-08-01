@@ -38,13 +38,13 @@ public abstract class Item implements PreItem
 
 	private int id;
 	private boolean[] tasten;
-	public ArrayList<Ziel> g1;
+	public ArrayList<Ziel> g1 = new ArrayList<>();
 
 	public void setzeOptionen1(int xp, int yp, int hp, int xw, int yw, int id, boolean[] tasten)
 	{
 		this.id = id;
 		this.tasten = tasten;
-		g1 = new ArrayList<>();
+		g1.clear();
 		setzeOptionen(xp, yp, hp, xw, yw);
 	}
 
@@ -52,7 +52,7 @@ public abstract class Item implements PreItem
 
 	public void noMovement()
 	{
-		g1 = new ArrayList<>();
+		g1.clear();
 	}
 
 	public void option(int x, int y, int h, int taste)

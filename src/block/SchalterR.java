@@ -135,7 +135,7 @@ public class SchalterR extends Area
 	}
 
 	@Override
-	public boolean moveX(boolean nichtMap)
+	public boolean moveX()
 	{
 		if(TA.take[120] == 2)
 			states.add(new BState(this));
@@ -146,11 +146,8 @@ public class SchalterR extends Area
 				srd.reset2(this);
 				Shift.localReset(new D3C(xp, yp, hp));
 			}
-		if(nichtMap && SIN.mfokusX >= 1)
-		{
-			itemauswahl(items.size() > 4 ? SIN.mfokusY * 2 + SIN.mfokusX - 1 : SIN.mfokusY / 2);
+		if(SIN.mfokusX >= 1 && itemauswahl(items.size() > 4 ? SIN.mfokusY * 2 + SIN.mfokusX - 1 : SIN.mfokusY / 2))
 			return false;
-		}
 		if(TA.take[37] <= 0 || TA.take[39] <= 0)
 		{
 			if(TA.take[37] > 0 && lrm > -limit)
@@ -209,15 +206,22 @@ public class SchalterR extends Area
 		return false;
 	}
 
-	private void itemauswahl(int nummer)
+	private boolean itemauswahl(int nummer)
 	{
 		if(nummer < items.size())
 		{
 			if(TA.take[201] == 2)
+			{
 				akItem = nummer;
+				return true;
+			}
 			if(TA.take[203] == 2)
+			{
 				items.get(nummer).disabled = !items.get(nummer).disabled;
+				return true;
+			}
 		}
+		return false;
 	}
 
 	private boolean benutze(Ziel ziel, boolean cl)

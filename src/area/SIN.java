@@ -85,7 +85,6 @@ public class SIN
 				area.noMovement();
 			else
 				area.checkFields();
-			area.render(auswahl);
 			drawX();
 			U.warte(20);
 			updatePosition();
@@ -99,7 +98,6 @@ public class SIN
 			for(int i = 0; i < 25; i++)
 			{
 				area.victoryTick();
-				area.render(auswahl);
 				drawX();
 				U.warte(20);
 				Shift.moveToTarget(area.realX(), area.realY());
@@ -152,12 +150,13 @@ public class SIN
 				Shift.localReset(area.d3c());
 			}
 		}
-		if(Shift.control(area.d3c()) && area.moveX(mfokusX > 0))
+		if(Shift.control(area.d3c()) && area.moveX())
 			Shift.specialView(area.d3c(), area.mapview);
 	}
 
 	public static void drawX()
 	{
+		area.render(auswahl);
 		gd.setColor(Color.BLACK);
 		gd.fillRect(0, 0, size.width, size.height);
 		tex.placeAll2(gd, area.renders2, area.xw, area.yw);

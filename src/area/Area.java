@@ -24,7 +24,7 @@ public abstract class Area
 
 	public abstract ArrayList<Ziel> anzielbar();
 
-	public abstract boolean moveX(boolean nichtMap);
+	public abstract boolean moveX();
 
 	public abstract void rahmen(Graphics2D gd, Texturen tex, int w1, int h);
 
