@@ -27,27 +27,30 @@ public class Schalterpistole extends LaengeItem
 	@Override
 	public void setzeOptionen(int xp, int yp, int hp, int xw, int yw)
 	{
-		BFeld akf = schalterR.feld[yp][xp];
-		if(akf.blockFarbe == schalterR.farbeAktuell && akf.hoehe >= hp)
+		BFeld fp = schalterR.feld[yp][xp];
+		//if(fp.bodenH() == hp)
+		if(fp.blockFarbe == schalterR.farbeAktuell && fp.hoehe >= hp)
 			return;
 		char verboten = 'n';
-		if(akf.blockFarbe != 'n' && akf.hoehe > hp)
-			verboten = akf.blockFarbe;
+		if(fp.blockFarbe != 'n' && fp.hoehe > hp)
+			verboten = fp.blockFarbe;
 		for(int r = 0; r <= 3; r++)
 		{
 			int xm = r != 3 ? r - 1 : 0;
 			int ym = r != 0 ? r - 2 : 0;
 			for(int i = 1; i <= laenge; i++)
 			{
-				if(xp + i * xm < 0 || yp + i * ym < 0 || xp + i * xm >= xw || yp + i * ym >= yw)
+				int xf = xp + i * xm;
+				int yf = yp + i * ym;
+				if(xf < 0 || yf < 0 || xf >= xw || yf >= yw)
 					break;
-				BFeld f = schalterR.feld[yp + i * ym][xp + i * xm];
-				if(f.getBlockedH2() > hp)
+				BFeld f = schalterR.feld[yf][xf];
+				if(f.getBlockH() > hp)
 					break;
 				if(f.schalter != 'n' && f.bodenH() == hp)
 				{
 					if(f.schalter != verboten)
-						option(xp + i * xm, yp + i * ym, hp, r + 1);
+						option(xf, yf, hp, r + 1);
 					break;
 				}
 			}

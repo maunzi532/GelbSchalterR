@@ -30,15 +30,37 @@ public abstract class Area
 
 	public abstract void noMovement();
 
+	public abstract void reset();
+
+	public void victoryTick(){}
+
+	public void speichern()
+	{
+		throw new NotImplementedException();
+	}
+
+	public double realX()
+	{
+		return xp;
+	}
+
+	public double realY()
+	{
+		return yp;
+	}
+
+	public abstract D3C d3c();
+
 	public int ycp;
 	public int xcp;
+	public int sh;
 	public ArrayList<Render> renders;
-	protected ArrayList<Render>[][] renders2;
+	public ArrayList<Render>[][] renders2;
 
+	@SuppressWarnings("unchecked")
 	public void render(Ziel auswahl)
 	{
 		ArrayList<Ziel> eintrag = anzielbar();
-		//noinspection unchecked
 		renders2 = new ArrayList[yw][xw];
 		for(ycp = 0; ycp < yw; ycp++)
 			for(xcp = 0; xcp < xw; xcp++)
@@ -61,23 +83,14 @@ public abstract class Area
 			}
 	}
 
-	public abstract void reset();
-
-	public void victoryTick(){}
-
-	public void speichern()
-	{
-		throw new NotImplementedException();
-	}
-
 	public void addw(String name)
 	{
-		renders.add(new Render(name, feld(ycp, xcp).daraufH()));
+		renders.add(new Render(name, sh));
 	}
 
 	public void addw(String name, String text)
 	{
-		renders.add(new Render(name, text, feld(ycp, xcp).daraufH()));
+		renders.add(new Render(name, text, sh));
 	}
 
 	public void addm(String name, int h)
@@ -85,20 +98,14 @@ public abstract class Area
 		renders.add(new Render(name, h));
 	}
 
+	public void addgz(String name, int h)
+	{
+		if(h > 0)
+			renders.add(new Render(name, h));
+	}
+
 	public void add3(Render3 r3)
 	{
 		renders.add(r3);
 	}
-
-	public double realX()
-	{
-		return xp;
-	}
-
-	public double realY()
-	{
-		return yp;
-	}
-
-	public abstract D3C d3c();
 }

@@ -1,10 +1,10 @@
 package area;
 
-public interface Feld
+public interface Feld<T extends Area>
 {
 	int daraufH();
 
 	int markH();
 
-	void addToRender(Area area, boolean darauf, int xcp, int ycp);
+	void addToRender(T area, boolean darauf, int xcp, int ycp);
 }

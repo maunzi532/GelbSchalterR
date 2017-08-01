@@ -4,7 +4,7 @@ import area.*;
 import block.item.*;
 import java.awt.*;
 
-public class BFeld extends LFeld implements Feld
+public class BFeld extends LFeld implements Feld<SchalterR>
 {
 	private SchalterR schalterR;
 
@@ -67,12 +67,12 @@ public class BFeld extends LFeld implements Feld
 		return true;
 	}
 
-	public int getBlockedH()
+	/*public int getBlockLaserH()
 	{
 		return (einhauwand >= 0 && !benutzt) || diaTuer > 0 || (eis && !benutzt) ? bodenH() + 1 : bodenH();
-	}
+	}*/
 
-	public int getBlockedH2()
+	public int getBlockH()
 	{
 		return (einhauwand >= 0 && !benutzt) || diaTuer > schalterR.dias || (eis && !benutzt) ? bodenH() + 1 : bodenH();
 	}
@@ -136,22 +136,18 @@ public class BFeld extends LFeld implements Feld
 	}
 
 	@Override
-	public void addToRender(Area area, boolean darauf, int xcp, int ycp)
+	public void addToRender(SchalterR area, boolean darauf, int xcp, int ycp)
 	{
-		StringBuilder sb = new StringBuilder();
-		sb.append("Höhe").append(hoehe);
-		if(blockFarbe != 'n')
+		if(blockFarbe == 'n')
+			area.addgz("Höhe" + hoehe, hoehe);
+		else if(area.farbeAktuell == blockFarbe)
+			area.addgz("Höhe" + hoehe + blockFarbe, hoehe);
+		else
 		{
-			if(((SchalterR) area).farbeAktuell != blockFarbe)
-			{
-				sb = new StringBuilder("HöheI");
-				if(sonstH >= 0)
-					area.addm("Höhe" + sonstH, sonstH);
-			}
-			sb.append(blockFarbe);
+			area.addgz("HöheI" + blockFarbe, hoehe);
+			area.addgz("Höhe" + sonstH, sonstH);
 		}
-		if(hoehe > 0)
-			area.addw(sb.toString());
+		area.sh = bodenH();
 		if(ziel)
 		{
 			area.addw("Ziel2");
@@ -167,7 +163,7 @@ public class BFeld extends LFeld implements Feld
 			else
 				area.addw("Einhauwand" + einhauwand);
 		if(dia)
-			area.add3(DiaRender.gib(0.1, 0.9, 4, (area.tick % 100) / 100d, 0.8, new Color(0, 0, benutzt ? 0 : 200, 127), daraufH()));
+			area.add3(DiaRender.gib(0.1, 0.9, 4, (area.tick % 100) / 100d, 0.8, new Color(0, 0, benutzt ? 0 : 200, 127), bodenH()));
 		if(diaTuer > 0)
 			if(diaTuer > schalterR.dias || xcp < 0)
 				area.addw("DiaTür", "  " + diaTuer);
@@ -180,7 +176,10 @@ public class BFeld extends LFeld implements Feld
 		if(enterstange >= 0)
 			area.addm("Stange" + (darauf ? "B" : ""), enterstange);
 		if(lift)
-			area.addw(liftOben() ? "LiftOben" : "LiftUnten");
+			if(liftOben())
+				area.addm("LiftOben", steinH());
+			else
+				area.addm("LiftUnten", steinH());
 		if(item != null && !darauf)
 			area.addw(item.bildname());
 		schalterR.srd.addSpieler(area, xcp, ycp);

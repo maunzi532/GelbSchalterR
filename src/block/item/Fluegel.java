@@ -33,15 +33,17 @@ public class Fluegel extends LaengeItem
 			int ym = r != 0 ? r - 2 : 0;
 			for(int i = 1; i <= laenge; i++)
 			{
-				if(xp + i * xm < 0 || yp + i * ym < 0 || xp + i * xm >= xw || yp + i * ym >= yw)
+				int xf = xp + i * xm;
+				int yf = yp + i * ym;
+				if(xf < 0 || yf < 0 || xf >= xw || yf >= yw)
 					break;
-				BFeld f = schalterR.feld[yp + i * ym][xp + i * xm];
-				if(f.getBlockedH() > hp)
+				BFeld f = schalterR.feld[yf][xf];
+				if(f.getBlockH() > hp)
 					break;
 				if(f.bodenH() == hp)
 				{
 					if(i > 1)
-						option(xp + i * xm, yp + i * ym, hp, r + 1);
+						option(xf, yf, hp, r + 1);
 					break;
 				}
 			}

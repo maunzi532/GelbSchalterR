@@ -65,7 +65,7 @@ public class AerialEnterhaken extends Item
 		int yh = iy > yp ? iy : yp;
 		for(; xn <= xh; xn++)
 			for(int yn2 = yn; yn2 <= yh; yn2++)
-				if(yn2 != yp && xn != xp && schalterR.feld[yn2][xn].getBlockedH() > hp)
+				if(yn2 != yp && xn != xp && schalterR.feld[yn2][xn].getBlockH() > hp)
 					return -1;
 		return zf.enterstange;
 	}

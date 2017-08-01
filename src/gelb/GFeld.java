@@ -2,7 +2,7 @@ package gelb;
 
 import area.*;
 
-class GFeld implements Feld
+class GFeld implements Feld<Gelb>
 {
 	int hoehe;
 	boolean gelb;
@@ -92,8 +92,9 @@ class GFeld implements Feld
 		return hoehe;
 	}
 
-	public void addToRender(Area area, boolean hier, int xcp, int ycp)
+	public void addToRender(Gelb area, boolean hier, int xcp, int ycp)
 	{
+		area.sh = daraufH();
 		boolean[] da = darauf;
 		String dire = "Höhe" + hoehe;
 		if(gelb)
