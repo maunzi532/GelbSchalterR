@@ -2,69 +2,22 @@ package gelb;
 
 import area.*;
 
-class GFeld implements Feld<Gelbgeher>
+class GFeld extends GLFeld implements Feld<Gelbgeher>
 {
-	int hoehe;
-	boolean gelb;
-	boolean lift;
-	final boolean[] darauf;
 	boolean aktiviert;
-	int treppe;
-	boolean nTyp;
 
-	@SuppressWarnings("ConstantConditions")
-	public GFeld(String f)
+	public static GFeld copy(GLFeld von)
 	{
-		darauf = new boolean[4];
-		try
-		{
-			String zahl = "";
-			for(int i = 0; i < f.length(); i++)
-			{
-				switch(f.charAt(i))
-				{
-					case 'g':
-						darauf[0] = true;
-						break;
-					case 's':
-						darauf[1] = true;
-						break;
-					case 't':
-						darauf[2] = true;
-						break;
-					case 'l':
-						darauf[3] = true;
-						break;
-					case 'G':
-						gelb = true;
-						break;
-					case 'L':
-						lift = true;
-						break;
-					case 'F':
-						lift = true;
-						aktiviert = true;
-						break;
-					case 'T':
-						treppe = f.charAt(i + 1) - 48;
-						i++;
-						break;
-					case 'R':
-						treppe = f.charAt(i + 1) - 48;
-						i++;
-						nTyp = true;
-						break;
-					default:
-						zahl = zahl + f.charAt(i);
-				}
-			}
-			hoehe = Integer.parseInt(zahl);
-		}
-		catch(Exception e)
-		{
-			System.out.println("Fehler auf Feld: " + f);
-			System.exit(3);
-		}
+		GFeld copy = new GFeld();
+		copy.hoehe = von.hoehe;
+		copy.gelb = von.gelb;
+		copy.lift = von.lift;
+		System.arraycopy(von.darauf, 0, copy.darauf, 0, von.darauf.length);
+		copy.treppe = von.treppe;
+		copy.nTyp = von.nTyp;
+		if(copy.lift && copy.nTyp)
+			copy.aktiviert = true;
+		return copy;
 	}
 
 	public Integer getH(int side)
@@ -74,6 +27,7 @@ class GFeld implements Feld<Gelbgeher>
 		return hoehe;
 	}
 
+	@Override
 	public int daraufH()
 	{
 		return getJH();
@@ -92,6 +46,7 @@ class GFeld implements Feld<Gelbgeher>
 		return hoehe;
 	}
 
+	@Override
 	public void addToRender(Gelbgeher area, boolean hier, int xcp, int ycp)
 	{
 		area.sh = daraufH();
@@ -121,7 +76,5 @@ class GFeld implements Feld<Gelbgeher>
 				area.addw("TeleI");
 		if(da[3])
 			area.addw("Liftfahrer");
-		if(hier)
-			area.addw("Spieler");
 	}
 }

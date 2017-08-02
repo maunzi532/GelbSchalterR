@@ -88,7 +88,7 @@ public class SIN
 			drawX();
 			U.warte(20);
 			updatePosition();
-			Shift.moveToTarget(area.realX(), area.realY());
+			Shift.moveToTarget(area.srd);
 			if(area.gewonnen)
 				ende = true;
 		}
@@ -100,7 +100,7 @@ public class SIN
 				area.victoryTick();
 				drawX();
 				U.warte(20);
-				Shift.moveToTarget(area.realX(), area.realY());
+				Shift.moveToTarget(area.srd);
 			}
 		}
 	}

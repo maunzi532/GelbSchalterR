@@ -188,6 +188,5 @@ public class BFeld extends LFeld implements Feld<SchalterR>
 				area.addm("LiftUnten", steinH());
 		if(item != null && !darauf)
 			area.addw(item.bildname());
-		schalterR.srd.addSpieler(area, xcp, ycp);
 	}
 }

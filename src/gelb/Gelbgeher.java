@@ -10,6 +10,7 @@ public class Gelbgeher extends Area implements PreItem
 {
 	private int[][] geht;
 	private GFeld[][] feld;
+	private GelbLies gl;
 	private int xz;
 	private int yz;
 	private static final int gelbmax = 10;
@@ -23,10 +24,36 @@ public class Gelbgeher extends Area implements PreItem
 	@Override
 	public boolean start(String input, String texOrdnerName, boolean chm, boolean chs, int tem)
 	{
-		readFL(input);
+		gl = new GelbLies();
+		gl.liesA(input);
+		srd = new SRD(this);
 		reset();
 		Texturen tex = new GTex("Gelbgeher", texOrdnerName);
 		return SIN.start(this, tex, tem);
+	}
+
+	@Override
+	public void reset()
+	{
+		tick = 0;
+		mapview = false;
+		gelbn = 0;
+		sprn = 0;
+		lif = 0;
+		teleport = false;
+		xw = gl.xw;
+		yw = gl.yw;
+		xp = gl.xs;
+		yp = gl.ys;
+		xz = gl.xz;
+		yz = gl.yz;
+		feld = new GFeld[yw][xw];
+		for(int yi = 0; yi < yw; yi++)
+			for(int xi = 0; xi < xw; xi++)
+				feld[yi][xi] = GFeld.copy(gl.feld[yi][xi]);
+		hp = feld[yp][xp].hoehe;
+		richtung = 3;
+		srd.reset(this);
 	}
 
 	@Override
@@ -134,6 +161,7 @@ public class Gelbgeher extends Area implements PreItem
 		lif -= felder;
 		if(lif < 0)
 			lif = 0;
+		hp = feld[yp][xp].daraufH();
 		if(feld[yp][xp].darauf[0])
 			gelbn = gelbmax;
 		if(feld[yp][xp].darauf[1])
@@ -158,79 +186,11 @@ public class Gelbgeher extends Area implements PreItem
 		{
 			feld[yp][xp].hoehe += feld[yp][xp].aktiviert ? -1 : 1;
 			feld[yp][xp].aktiviert = !feld[yp][xp].aktiviert;
+			hp = feld[yp][xp].daraufH();
 			return true;
 		}
 		return false;
 	}
-
-	private void readFL(String c1)
-	{
-		try
-		{
-			c1 = c1.replaceAll("\\s", "");
-			char[] c = c1.toCharArray();
-			String loaded = "";
-			int no1 = 0;
-			int no2 = 0;
-			int x1 = 0;
-			int x2;
-			for(int i = 0; i < c.length; i++)
-			{
-				if(c[i] == ';')
-				{
-					no1++;
-					if(no1 <= 3)
-					{
-						x2 = Integer.parseInt(loaded);
-						loaded = "";
-						switch(no1)
-						{
-							case 1:
-								xw = x1;
-								yw = x2;
-								break;
-							case 2:
-								xp = x1;
-								yp = x2;
-								break;
-							case 3:
-								xz = x1;
-								yz = x2;
-								break;
-						}
-					}
-					else if(no1 == 4)
-					{
-						feld = new GFeld[yw][xw];
-						loaded = "";
-					}
-				}
-				else if(c[i] == 'x')
-				{
-					x1 = Integer.parseInt(loaded);
-					loaded = "";
-				}
-				else if(c[i] == ',')
-				{
-					feld[no2 / xw][no2 % xw] = new GFeld(loaded);
-					loaded = "";
-					no2++;
-				}
-				else
-					loaded = loaded + c[i];
-			}
-			feld[no2 / xw][no2 % xw] = new GFeld(loaded);
-		}catch(Exception e)
-		{
-			System.out.println("Fehler beim Lesen der Datei");
-			e.printStackTrace();
-			System.exit(2);
-		}
-		noMovement();
-	}
-
-	@Override
-	public void reset(){}
 
 	@Override
 	public boolean moveX()
@@ -257,22 +217,28 @@ public class Gelbgeher extends Area implements PreItem
 				mapview = false;
 			}
 		}
-		else if(TA.take[37] == 2 || TA.take[38] == 2 || TA.take[39] == 2 || TA.take[40] == 2)
+		else
 		{
-			int xt = xv + (TA.take[39] == 2 ? 1 : 0) - (TA.take[37] == 2 ? 1 : 0);
-			int yt = yv + (TA.take[40] == 2 ? 1 : 0) - (TA.take[38] == 2 ? 1 : 0);
-			moved = tryDirection(xt, yt) || tryDirection(xt * 2 - xv, yt * 2 - yv);
-		}
-		else if(TA.take[201] == 2 && SIN.auswahl != null && geht[fokusY][fokusX] != 0)
-		{
-			if(fokusX == xp && fokusY == yp)
+			int code = slowerInput();
+			if(code == 0)
 				moved = useItem();
-			else
+			else if(code > 0)
 			{
-				xp = fokusX;
-				yp = fokusY;
-				gehen(geht[yp][xp]);
-				moved = true;
+				int xe = code == 1 ? -1 : (code == 3 ? 1 : 0);
+				int ye = code == 2 ? -1 : (code == 4 ? 1 : 0);
+				moved = TA.take[16] > 0 ? tryDirection(xv + xe * 2, yv + ye * 2) : tryDirection(xv + xe, yv + ye);
+			}
+			else if(TA.take[201] == 2 && SIN.auswahl != null && geht[fokusY][fokusX] != 0)
+			{
+				if(fokusX == xp && fokusY == yp)
+					moved = useItem();
+				else
+				{
+					xp = fokusX;
+					yp = fokusY;
+					gehen(geht[yp][xp]);
+					moved = true;
+				}
 			}
 		}
 		return moved;
@@ -299,6 +265,7 @@ public class Gelbgeher extends Area implements PreItem
 	{
 		if(xcp == xz && ycp == yz)
 			addw("Ziel");
+		super.mapAdd();
 	}
 
 	@Override

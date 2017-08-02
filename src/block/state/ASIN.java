@@ -45,7 +45,7 @@ public class ASIN
 				nca = false;
 				if(SIN.testmode == 2)
 				{
-					Shift.moveToTarget(schalterR.xp, schalterR.yp);
+					Shift.moveToTarget(schalterR.srd);
 					SIN.drawX();
 				}
 				else
@@ -128,7 +128,7 @@ public class ASIN
 				states.get(i).charge(schalterR);
 				schalterR.srd.reset2(schalterR);
 				Shift.localReset(schalterR.d3c());
-				Shift.moveToTarget(schalterR.xp, schalterR.yp);
+				Shift.moveToTarget(schalterR.srd);
 				SIN.drawX();
 				System.out.println(i);
 				TA.bereit();
@@ -148,7 +148,7 @@ public class ASIN
 		Shift.localReset(schalterR.d3c());
 		for(int i = 0; i < 5; i++)
 		{
-			Shift.moveToTarget(schalterR.realX(), schalterR.realY());
+			Shift.moveToTarget(schalterR.srd);
 			SIN.drawX();
 			U.warte(20);
 		}
@@ -157,7 +157,7 @@ public class ASIN
 		int noch = ws[0];
 		while(!states.get(caret1).gewonnen)
 		{
-			Shift.moveToTarget(schalterR.realX(), schalterR.realY());
+			Shift.moveToTarget(schalterR.srd);
 			SIN.drawX();
 			U.warte(20);
 			schalterR.checkFields();
@@ -178,7 +178,7 @@ public class ASIN
 		{
 			if(schalterR.gewonnen)
 				schalterR.victoryTick();
-			Shift.moveToTarget(schalterR.realX(), schalterR.realY());
+			Shift.moveToTarget(schalterR.srd);
 			SIN.drawX();
 			U.warte(20);
 		}

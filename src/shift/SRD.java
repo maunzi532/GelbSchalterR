@@ -1,4 +1,4 @@
-package block;
+package shift;
 
 import area.*;
 import tex.*;
@@ -13,29 +13,29 @@ public class SRD
 	public double dspeed = 0.05;
 	public double mspeed = 0.2;
 
-	public SRD(SchalterR schalterR)
+	public SRD(Area area)
 	{
-		reset(schalterR);
+		reset(area);
 	}
 
-	public void reset(SchalterR schalterR)
+	public void reset(Area area)
 	{
 		richtung2 = 0.75;
 		richtung = richtung2;
-		x = schalterR.xp;
-		y = schalterR.yp;
-		z = schalterR.hp + 20;
+		x = area.xp;
+		y = area.yp;
+		z = area.hp + 20;
 		deep = 0;
 		gelandet = false;
 	}
 
-	public void reset2(SchalterR schalterR)
+	public void reset2(Area area)
 	{
 		richtung2 = 0.75;
 		richtung = richtung2;
-		x = schalterR.xp;
-		y = schalterR.yp;
-		z = schalterR.hp;
+		x = area.xp;
+		y = area.yp;
+		z = area.hp;
 		deep = 0;
 		gelandet = true;
 	}
@@ -86,7 +86,7 @@ public class SRD
 		}
 	}
 
-	public void tick(SchalterR schalterR)
+	public void tick(Area area)
 	{
 		if(richtung < richtung2)
 		{
@@ -101,48 +101,48 @@ public class SRD
 				richtung = richtung2;
 		}
 		rr();
-		if(x < schalterR.xp)
+		if(x < area.xp)
 		{
 			x += mspeed;
-			if(x >= schalterR.xp)
-				x = schalterR.xp;
+			if(x >= area.xp)
+				x = area.xp;
 		}
-		if(x > schalterR.xp)
+		if(x > area.xp)
 		{
 			x -= mspeed;
-			if(x <= schalterR.xp)
-				x = schalterR.xp;
+			if(x <= area.xp)
+				x = area.xp;
 		}
-		if(y < schalterR.yp)
+		if(y < area.yp)
 		{
 			y += mspeed;
-			if(y >= schalterR.yp)
-				y = schalterR.yp;
+			if(y >= area.yp)
+				y = area.yp;
 		}
-		if(y > schalterR.yp)
+		if(y > area.yp)
 		{
 			y -= mspeed;
-			if(y <= schalterR.yp)
-				y = schalterR.yp;
+			if(y <= area.yp)
+				y = area.yp;
 		}
-		if(z < schalterR.hp)
+		if(z < area.hp)
 		{
 			z += mspeed;
-			if(z >= schalterR.hp)
-				z = schalterR.hp;
+			if(z >= area.hp)
+				z = area.hp;
 		}
-		if(z > schalterR.hp)
+		if(z > area.hp)
 		{
 			z -= mspeed;
-			if(z <= schalterR.hp)
-				z = schalterR.hp;
+			if(z <= area.hp)
+				z = area.hp;
 		}
 		if(!gelandet)
 		{
 			z -= 0.8;
-			if(z <= schalterR.hp)
+			if(z <= area.hp)
 			{
-				z = schalterR.hp;
+				z = area.hp;
 				gelandet = true;
 			}
 		}

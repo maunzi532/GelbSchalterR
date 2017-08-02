@@ -68,7 +68,7 @@ public class Shift
 		curX = newX;
 		curY = newY;
 		curH = newH;
-		newT = mapview == 1 ? mapKamZoom : kamZoom;
+		newT = kamZoom;
 		curT = newT;
 	}
 
@@ -83,7 +83,7 @@ public class Shift
 			newT = 1;
 	}
 
-	public static void moveToTarget(double realX, double realY)
+	public static void moveToTarget(SRD srd)
 	{
 		if(mapview == 0)
 		{
@@ -109,6 +109,8 @@ public class Shift
 			curT++;
 		if(curT > newT)
 			curT--;
+		double realX = srd.x - 1d / 2;
+		double realY = srd.y - 1d / 2;
 		int pixshX = (int) (realX * tile - curX * tile) * acpix / delpix;
 		int pixshY = (int) (realY * tile - curY * tile) * acpix / delpix;
 		tile = basetile / curT;

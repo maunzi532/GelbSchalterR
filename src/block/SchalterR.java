@@ -15,23 +15,15 @@ import tex.*;
 
 public class SchalterR extends Area
 {
-	private static final int limit = 6;
-
 	public BFeld[][] feld;
 	private SchalterLies sl;
 
 	public char farbeAktuell = 'A';
 	public int dias;
-	public int hp;
 
 	public int akItem;
 	public final ArrayList<Item> items = new ArrayList<>();
 
-	private int lrm;
-	private int oum;
-	public SRD srd;
-
-	public int richtung;
 	private Cheatmode cheatmode;
 
 	private final Stack<BState> states = new Stack<>();
@@ -70,6 +62,7 @@ public class SchalterR extends Area
 	public void reset()
 	{
 		tick = 0;
+		mapview = false;
 		farbeAktuell = 'A';
 		dias = 0;
 		items.clear();
@@ -93,12 +86,6 @@ public class SchalterR extends Area
 	public Feld feld(int y, int x)
 	{
 		return feld[y][x];
-	}
-
-	public void setRichtung(int r1)
-	{
-		richtung = r1;
-		srd.setRichtung(r1);
 	}
 
 	@Override
@@ -148,55 +135,7 @@ public class SchalterR extends Area
 			}
 		if(SIN.mfokusX >= 1 && itemauswahl(items.size() > 4 ? SIN.mfokusY * 2 + SIN.mfokusX - 1 : SIN.mfokusY / 2))
 			return false;
-		if(TA.take[37] <= 0 || TA.take[39] <= 0)
-		{
-			if(TA.take[37] > 0 && lrm > -limit)
-				lrm--;
-			if(TA.take[39] > 0 && lrm < limit)
-				lrm++;
-		}
-		if(TA.take[37] == 2 && TA.take[39] == 2)
-			lrm = 0;
-		else if(TA.take[37] == 2)
-			lrm = -limit;
-		else if(TA.take[39] == 2)
-			lrm = limit;
-		if(TA.take[38] <= 0 || TA.take[40] <= 0)
-		{
-			if(TA.take[38] > 0 && oum > -limit)
-				oum--;
-			if(TA.take[40] > 0 && oum < limit)
-				oum++;
-		}
-		if(TA.take[38] == 2 && TA.take[40] == 2)
-			oum = 0;
-		else if(TA.take[38] == 2)
-			oum = -limit;
-		else if(TA.take[40] == 2)
-			oum = limit;
-		int code = -1;
-		if(TA.take[32] == 2)
-			code = 0;
-		else if(TA.take[37] > 0 && lrm <= -limit)
-		{
-			code = 1;
-			lrm = -1;
-		}
-		else if(TA.take[38] > 0 && oum <= -limit)
-		{
-			code = 2;
-			oum = -1;
-		}
-		else if(TA.take[39] > 0 && lrm >= limit)
-		{
-			code = 3;
-			lrm = 1;
-		}
-		else if(TA.take[40] > 0 && oum >= limit)
-		{
-			code = 4;
-			oum = 1;
-		}
+		int code = slowerInput();
 		if(code >= 0)
 			benutze(SIN.tasten[code], false);
 		else if(TA.take[201] == 2)
@@ -274,27 +213,9 @@ public class SchalterR extends Area
 	}
 
 	@Override
-	public double realX()
-	{
-		return srd.x - 1d / 2;
-	}
-
-	@Override
-	public double realY()
-	{
-		return srd.y - 1d / 2;
-	}
-
-	@Override
 	public D3C d3c()
 	{
 		return new D3C(xp, yp, hp);
-	}
-
-	@Override
-	public void victoryTick()
-	{
-		srd.deep += 0.1;
 	}
 
 	@Override
@@ -332,6 +253,5 @@ public class SchalterR extends Area
 		}
 		if(cheatmode != null)
 			cheatmode.rahmen(gd, tex, w1, ht);
-		srd.tick(this);
 	}
 }
