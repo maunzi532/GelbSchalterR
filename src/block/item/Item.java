@@ -8,16 +8,16 @@ import shift.*;
 
 public abstract class Item implements PreItem
 {
-	public SchalterR schalterR;
-	public int level;
+	SchalterR schalterR;
+	int level;
 	public boolean disabled;
 
-	public Item()
+	Item()
 	{
 		level = 1;
 	}
 
-	public Item(int level)
+	Item(int level)
 	{
 		this.level = level;
 	}
@@ -48,14 +48,14 @@ public abstract class Item implements PreItem
 		setzeOptionen(xp, yp, hp, xw, yw, schalterR.feld[yp][xp]);
 	}
 
-	public void setzeOptionen(int xp, int yp, int hp, int xw, int yw, BFeld fp){}
+	void setzeOptionen(int xp, int yp, int hp, int xw, int yw, BFeld fp){}
 
 	public void noMovement()
 	{
 		g1.clear();
 	}
 
-	public void option(int x, int y, int h, int taste)
+	void option(int x, int y, int h, int taste)
 	{
 		if(taste >= 0 && !tasten[taste])
 			tasten[taste] = true;

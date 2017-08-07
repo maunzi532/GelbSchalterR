@@ -51,7 +51,7 @@ public abstract class Area
 		throw new NotImplementedException();
 	}
 
-	public int slowerInput()
+	protected int slowerInput()
 	{
 		if(TA.take[37] <= 0 || TA.take[39] <= 0)
 		{

@@ -1,10 +1,10 @@
 package block.state;
 
-public class BlockD
+class BlockD
 {
 	final int x, y;
 
-	public BlockD(int x, int y)
+	BlockD(int x, int y)
 	{
 		this.x = x;
 		this.y = y;

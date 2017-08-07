@@ -4,7 +4,7 @@ import java.util.*;
 
 public class RenderCreater
 {
-	public ArrayList<Render> renders = new ArrayList<>();
+	public final ArrayList<Render> renders = new ArrayList<>();
 	public int sh;
 
 	public void add(Render r)

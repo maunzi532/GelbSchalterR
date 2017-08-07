@@ -1,11 +1,11 @@
 package gelb;
 
-public class GelbLies
+class GelbLies
 {
 	GLFeld[][] feld;
 	int xw, yw, xs, ys, xz, yz;
 
-	public void liesA(String c1)
+	void liesA(String c1)
 	{
 		try
 		{

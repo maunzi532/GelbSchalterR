@@ -4,10 +4,10 @@ public class Render
 {
 	final String what;
 	final boolean sth;
-	protected final int height;
-	protected final boolean rerender;
+	final int height;
+	final boolean rerender;
 
-	protected Render(int height, boolean rerender)
+	Render(int height, boolean rerender)
 	{
 		what = null;
 		sth = true;

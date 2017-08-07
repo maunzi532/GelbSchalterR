@@ -29,7 +29,6 @@ class GFeld extends GLFeld implements Feld
 		return hoehe;
 	}
 
-	@Override
 	public int daraufH()
 	{
 		return getJH();

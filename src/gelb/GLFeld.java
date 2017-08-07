@@ -1,6 +1,6 @@
 package gelb;
 
-public class GLFeld
+class GLFeld
 {
 	int hoehe;
 	boolean gelb;
@@ -9,10 +9,10 @@ public class GLFeld
 	int treppe;
 	boolean nTyp;
 
-	protected GLFeld(){}
+	GLFeld(){}
 
 	@SuppressWarnings("ConstantConditions")
-	public GLFeld(String f)
+	GLFeld(String f)
 	{
 		try
 		{

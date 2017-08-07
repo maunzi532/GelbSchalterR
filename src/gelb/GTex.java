@@ -4,9 +4,9 @@ import java.awt.*;
 import java.awt.image.*;
 import tex.*;
 
-public class GTex extends Texturen
+class GTex extends Texturen
 {
-	public GTex(String pack, String texOrdnerName)
+	GTex(String pack, String texOrdnerName)
 	{
 		super(pack, texOrdnerName);
 		for(int i = 0; i < 10; i++)

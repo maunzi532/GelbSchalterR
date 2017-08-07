@@ -4,9 +4,9 @@ import java.awt.*;
 import java.awt.image.*;
 import tex.*;
 
-public class FTex extends Texturen
+class FTex extends Texturen
 {
-	public static final Color[] farben = new Color[]
+	static final Color[] farben = new Color[]
 			{
 					new Color(191, 31, 31, 127),
 					new Color(31, 191, 31, 127),
@@ -27,7 +27,7 @@ public class FTex extends Texturen
 					new Color(255, 31, 31)
 			};
 
-	public FTex(String pack, String texOrdnerName)
+	FTex(String pack, String texOrdnerName)
 	{
 		super(pack, texOrdnerName);
 		for(int i = 0; i < 10; i++)

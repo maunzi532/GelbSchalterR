@@ -7,9 +7,9 @@ public abstract class LaengeItem extends Item
 {
 	int laenge;
 
-	public LaengeItem(){}
+	LaengeItem(){}
 
-	public LaengeItem(int level, int laenge)
+	LaengeItem(int level, int laenge)
 	{
 		super(level);
 		this.laenge = laenge;

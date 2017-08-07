@@ -8,7 +8,7 @@ public class SRD
 {
 	private double richtung;
 	private double richtung2;
-	public double x, y, z;
+	public double x, y, h;
 	private boolean gelandet;
 	public double deep;
 	public double dspeed = 0.05;
@@ -25,7 +25,7 @@ public class SRD
 		richtung = richtung2;
 		x = area.xp;
 		y = area.yp;
-		z = area.hp + 20;
+		h = area.hp + 20;
 		deep = 0;
 		gelandet = false;
 	}
@@ -36,7 +36,7 @@ public class SRD
 		richtung = richtung2;
 		x = area.xp;
 		y = area.yp;
-		z = area.hp;
+		h = area.hp;
 		deep = 0;
 		gelandet = true;
 	}
@@ -45,7 +45,7 @@ public class SRD
 	{
 		for(int iy = (int) Math.ceil(y); iy >= Math.floor(y); iy--)
 			for(int ix = (int) Math.ceil(x); ix >= Math.floor(x); ix--)
-				renders2[iy][ix].add(SpielerRender.gib(richtung, z, x - ix, y - iy, deep));
+				renders2[iy][ix].add(SpielerRender.gib(richtung, h, x - ix, y - iy, deep));
 	}
 
 
@@ -54,7 +54,7 @@ public class SRD
 		setRichtung(r2 / 4d);
 	}
 
-	public void setRichtung(double r2)
+	private void setRichtung(double r2)
 	{
 		richtung2 = r2;
 		if(richtung < richtung2)
@@ -127,24 +127,24 @@ public class SRD
 			if(y <= area.yp)
 				y = area.yp;
 		}
-		if(z < area.hp)
+		if(h < area.hp)
 		{
-			z += mspeed;
-			if(z >= area.hp)
-				z = area.hp;
+			h += mspeed;
+			if(h >= area.hp)
+				h = area.hp;
 		}
-		if(z > area.hp)
+		if(h > area.hp)
 		{
-			z -= mspeed;
-			if(z <= area.hp)
-				z = area.hp;
+			h -= mspeed;
+			if(h <= area.hp)
+				h = area.hp;
 		}
 		if(!gelandet)
 		{
-			z -= 0.8;
-			if(z <= area.hp)
+			h -= 0.8;
+			if(h <= area.hp)
 			{
-				z = area.hp;
+				h = area.hp;
 				gelandet = true;
 			}
 		}

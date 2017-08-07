@@ -21,10 +21,10 @@ public class SchalterR extends Area
 	public char farbeAktuell = 'A';
 	public int dias;
 
-	public int akItem;
+	int akItem;
 	public final ArrayList<Item> items = new ArrayList<>();
 
-	Cheatmode cheatmode;
+	private Cheatmode cheatmode;
 
 	private final Stack<BState> states = new Stack<>();
 

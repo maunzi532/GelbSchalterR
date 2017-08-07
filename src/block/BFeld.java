@@ -101,12 +101,6 @@ public class BFeld extends LFeld implements Feld
 	}
 
 	@Override
-	public int daraufH()
-	{
-		return hoehe;
-	}
-
-	@Override
 	public int markH()
 	{
 		return bodenH();

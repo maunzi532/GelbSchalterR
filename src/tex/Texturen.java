@@ -16,7 +16,7 @@ public class Texturen
 	public final HashMap<String, BufferedImage> bilder2D = new HashMap<>();
 	private final HashMap<String, TexturR> lk3 = new HashMap<>();
 
-	public Texturen(String pack, String texOrdnerName)
+	protected Texturen(String pack, String texOrdnerName)
 	{
 		String txtDir = texOrdnerName + File.separator + pack;
 		try
