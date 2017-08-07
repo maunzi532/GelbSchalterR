@@ -43,10 +43,17 @@ public class Shift
 		for(Ziel z : eintrag)
 			if(checkObDarauf(mx, my, z))
 				return z;
+		return null;
+	}
+
+	public static D3C zeigerF(int mex, int mey)
+	{
+		int mx = mex - xd2 + tile / 2;
+		int my = mey - yd2 + tile / 2;
 		for(int iy = SIN.area.yw - 1; iy >= 0; iy--)
 			for(int ix = SIN.area.xw - 1; ix >= 0; ix--)
 			{
-				Ziel z = new Ziel(ix, iy, SIN.area.feld(iy, ix).markH());
+				D3C z = new D3C(ix, iy, SIN.area.feld(iy, ix).markH());
 				if(checkObDarauf(mx, my, z))
 					return z;
 			}

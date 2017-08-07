@@ -1,10 +1,13 @@
 package area;
 
-public interface Feld<T extends Area>
+import java.util.*;
+import tex.*;
+
+public interface Feld
 {
 	int daraufH();
 
 	int markH();
 
-	void addToRender(T area, boolean darauf, int xcp, int ycp);
+	ArrayList<Render> addToRender(RenderCreater rc, boolean darauf, boolean preview);
 }

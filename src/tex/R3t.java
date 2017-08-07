@@ -73,6 +73,8 @@ public class R3t
 		double shdx = fl[0] - fl[4] + fl[2] - fl[6] + 2;
 		double shdy = fl[1] - fl[5] + fl[3] - fl[7] - 2;
 		double shd = Math.sqrt(shdx * shdx + shdy * shdy);
+		if(shd > 4)
+			shd = 4;
 		gd.setColor(new Color(shd(farbe.getRed(), shd), shd(farbe.getGreen(), shd), shd(farbe.getBlue(), shd), farbe.getAlpha()));
 		int[] xk = new int[]{inf(fl, 0), inf(fl, 2), inf(fl, 6) - 1, inf(fl, 4) - 1};
 		int[] yk = new int[]{inf(fl, 1), inf(fl, 3), inf(fl, 7) - 1, inf(fl, 5) - 1};

@@ -20,6 +20,7 @@ public class SIN
 	private static Graphics2D gd;
 	public static Area area;
 	public static Ziel auswahl;
+	public static D3C feldAuswahl;
 	public static Ziel[] tasten;
 	public static int mfokusX;
 	public static int mfokusY;
@@ -81,16 +82,16 @@ public class SIN
 	{
 		while(!ende)
 		{
+			U.warte(20);
 			if(Shift.blockMovement())
 				area.noMovement();
 			else
 				area.checkFields();
-			drawX();
-			U.warte(20);
 			updatePosition();
 			Shift.moveToTarget(area.srd);
 			if(area.gewonnen)
 				ende = true;
+			drawX();
 		}
 		if(area.gewonnen)
 		{
@@ -116,25 +117,31 @@ public class SIN
 		Point f = fr.getContentPane().getLocationOnScreen();
 		int mex = m.x - f.x;
 		int mey = m.y - f.y;
-		ArrayList<Ziel> eintrag = area.anzielbar();
-		auswahl = Shift.zeiger(mex, mey, eintrag);
-		tasten = new Ziel[5];
-		for(int i = 0; i < tasten.length; i++)
-			for(Ziel z : eintrag)
-				if(z.taste == i)
-				{
-					tasten[i] = z;
-					break;
-				}
-		if(mex >= size2.width && mex < size.width && mey >= 0 && mey < size2.height)
+		if(mex >= 0 && mex < size.width && mey >= 0 && mey < size2.height)
 		{
-			mfokusX = (mex - size2.width) / (size2.height / 10);
-			mfokusY = mey / (size2.height / 10);
-		}
-		else
-		{
-			mfokusX = -1;
-			mfokusY = -1;
+			ArrayList<Ziel> eintrag = area.anzielbar();
+			tasten = new Ziel[5];
+			for(int i = 0; i < tasten.length; i++)
+				for(Ziel z : eintrag)
+					if(z.taste == i)
+					{
+						tasten[i] = z;
+						break;
+					}
+			if(mex >= size2.width)
+			{
+				mfokusX = (mex - size2.width) / (size2.height / 10);
+				mfokusY = mey / (size2.height / 10);
+				auswahl = null;
+				feldAuswahl = null;
+			}
+			else
+			{
+				mfokusX = -1;
+				mfokusY = -1;
+				feldAuswahl = Shift.zeigerF(mex, mey);
+				auswahl = Shift.zeiger(mex, mey, eintrag);
+			}
 		}
 		TA.bereit();
 		area.tick++;
@@ -156,10 +163,9 @@ public class SIN
 
 	public static void drawX()
 	{
-		area.render(auswahl);
 		gd.setColor(Color.BLACK);
 		gd.fillRect(0, 0, size.width, size.height);
-		tex.placeAll2(gd, area.renders2, area.xw, area.yw);
+		tex.placeAll2(gd, area.render(auswahl, feldAuswahl), area.xw, area.yw);
 		area.rahmen(gd, tex, size2.width, size2.height);
 		fr.getGraphics().drawImage(img, 0, 0, null);
 	}

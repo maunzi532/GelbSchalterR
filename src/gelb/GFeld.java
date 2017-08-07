@@ -1,8 +1,10 @@
 package gelb;
 
 import area.*;
+import java.util.*;
+import tex.*;
 
-class GFeld extends GLFeld implements Feld<Gelbgeher>
+class GFeld extends GLFeld implements Feld
 {
 	boolean aktiviert;
 
@@ -47,9 +49,9 @@ class GFeld extends GLFeld implements Feld<Gelbgeher>
 	}
 
 	@Override
-	public void addToRender(Gelbgeher area, boolean hier, int xcp, int ycp)
+	public ArrayList<Render> addToRender(RenderCreater rc, boolean hier, boolean preview)
 	{
-		area.sh = daraufH();
+		rc.sh = daraufH();
 		boolean[] da = darauf;
 		String dire = "Höhe" + hoehe;
 		if(gelb)
@@ -64,17 +66,18 @@ class GFeld extends GLFeld implements Feld<Gelbgeher>
 				dire = dire + "F";
 			else
 				dire = dire + "L";
-		area.addw(dire);
+		rc.addw(dire);
 		if(da[0])
-			area.addw("Gelbgeher");
+			rc.addw("Gelbgeher");
 		if(da[1])
-			area.addw("Springer");
+			rc.addw("Springer");
 		if(da[2])
 			if(aktiviert)
-				area.addw("TeleA");
+				rc.addw("TeleA");
 			else
-				area.addw("TeleI");
+				rc.addw("TeleI");
 		if(da[3])
-			area.addw("Liftfahrer");
+			rc.addw("Liftfahrer");
+		return rc.renders;
 	}
 }

@@ -1,6 +1,7 @@
 package shift;
 
 import area.*;
+import java.util.*;
 import tex.*;
 
 public class SRD
@@ -40,10 +41,11 @@ public class SRD
 		gelandet = true;
 	}
 
-	public void addSpieler(Area area, int xcp, int ycp)
+	public void addSpieler(ArrayList<Render>[][] renders2)
 	{
-		if(xcp >= 0 && (xcp == Math.floor(x) || xcp == Math.ceil(x)) && (ycp == Math.floor(y) || ycp == Math.ceil(y)))
-			area.add3(SpielerRender.gib(richtung, z, x - xcp, y - ycp, deep));
+		for(int iy = (int) Math.ceil(y); iy >= Math.floor(y); iy--)
+			for(int ix = (int) Math.ceil(x); ix >= Math.floor(x); ix--)
+				renders2[iy][ix].add(SpielerRender.gib(richtung, z, x - ix, y - iy, deep));
 	}
 
 

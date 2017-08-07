@@ -3,8 +3,10 @@ package block;
 import area.*;
 import block.item.*;
 import java.awt.*;
+import java.util.*;
+import tex.*;
 
-public class BFeld extends LFeld implements Feld<SchalterR>
+public class BFeld extends LFeld implements Feld
 {
 	private SchalterR schalterR;
 
@@ -142,51 +144,55 @@ public class BFeld extends LFeld implements Feld<SchalterR>
 	}
 
 	@Override
-	public void addToRender(SchalterR area, boolean darauf, int xcp, int ycp)
+	public ArrayList<Render> addToRender(RenderCreater rc, boolean darauf, boolean preview)
 	{
+		rc.sh = bodenH();
 		if(blockFarbe == 'n')
-			area.addgz("Höhe" + hoehe, hoehe);
-		else if(area.farbeAktuell == blockFarbe)
-			area.addgz("Höhe" + hoehe + blockFarbe, hoehe);
+			rc.addgz("Höhe" + hoehe, hoehe);
+		else if(schalterR.farbeAktuell == blockFarbe)
+			rc.addgz("Höhe" + hoehe + blockFarbe, hoehe);
 		else
 		{
-			area.addgz("HöheI" + blockFarbe, hoehe);
-			area.addgz("Höhe" + sonstH, sonstH);
+			rc.addgz("HöheI" + blockFarbe, hoehe);
+			rc.addgz("Höhe" + sonstH, sonstH);
 		}
-		area.sh = bodenH();
 		if(ziel)
 		{
-			area.addw("Ziel2");
-			area.addw("Ziel1");
+			rc.addw("Ziel2");
+			rc.addw("Ziel1");
 		}
 		if(schalter != 'n')
-			area.addw("Schalter" + (schalterR.farbeAktuell == schalter ? "1" : "") + schalter);
+			rc.addw("Schalter" + (schalterR.farbeAktuell == schalter ? "1" : "") + schalter);
 		if(pfeil >= 0)
-			area.addw("Pfeil" + pfeil);
+			rc.addw("Pfeil" + pfeil);
 		if(einhauwand >= 0)
 			if(benutzt)
-				area.addw("EinhauwandB" + einhauwand);
+				rc.addw("EinhauwandB" + einhauwand);
 			else
-				area.addw("Einhauwand" + einhauwand);
+				rc.addw("Einhauwand" + einhauwand);
 		if(dia)
-			area.add3(DiaRender.gib(0.1, 0.9, 4, (area.tick % 100) / 100d, 0.8, new Color(0, 0, benutzt ? 0 : 200, 127), bodenH()));
+			rc.add(DiaRender.gib(0.1, 0.9, 4, (schalterR.tick % 100) / 100d, 0.8, new Color(0, 0, benutzt ? 0 : 200, 127), bodenH()));
 		if(diaTuer > 0)
-			if(diaTuer > schalterR.dias || xcp < 0)
-				area.addw("DiaTür", "  " + diaTuer);
+			if(diaTuer > schalterR.dias || preview)
+			{
+				rc.addw("DiaTür");
+				rc.addt("  " + diaTuer, bodenH() + 1);
+			}
 			else
-				area.addw("DiaTürOffen");
+				rc.addw("DiaTürOffen");
 		if(eis)
-			area.addw(benutzt ? "EisB" : "Eis");
+			rc.addw(benutzt ? "EisB" : "Eis");
 		if(loescher)
-			area.addw("Löscher");
+			rc.addw("Löscher");
 		if(enterstange >= 0)
-			area.addm("Stange" + (darauf ? "B" : ""), enterstange);
+			rc.addm("Stange" + (darauf ? "B" : ""), enterstange);
 		if(lift)
 			if(liftOben())
-				area.addm("LiftOben", steinH());
+				rc.addm("LiftOben", steinH());
 			else
-				area.addm("LiftUnten", steinH());
+				rc.addm("LiftUnten", steinH());
 		if(item != null && !darauf)
-			area.addw(item.bildname());
+			rc.addw(item.bildname());
+		return rc.renders;
 	}
 }

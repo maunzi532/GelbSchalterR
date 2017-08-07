@@ -81,7 +81,7 @@ public class Texturen
 		}
 	}
 
-	protected void drehTex1(String vonname)
+	private void drehTex1(String vonname)
 	{
 		if(!lk2.containsKey(vonname))
 			return;
@@ -125,7 +125,7 @@ public class Texturen
 				{
 					if(re.rerender)
 						rerender = true;
-					sb.append('-').append(re.what).append(re.text).append(re.height);
+					sb.append(re.sth ? '-' : '_').append(re.what).append(re.height);
 				}
 				String s1 = sb.toString();
 				if(rerender)
@@ -185,13 +185,14 @@ public class Texturen
 						int heightNo = i * accuracy / Shift.th - re.height * accuracy;
 						if(heightNo - tex.h_down < tex.look.length)
 						{
-							place3Vor(gd, tex.look[heightNo - tex.h_down], maxH, i);
-							if(tex.h_up == texH && re.text != null)
-								placeErsatzTextVor(gd, re.text, maxH, i);
+							if(re.sth)
+								place3Vor(gd, tex.look[heightNo - tex.h_down], maxH, i);
+							else if(tex.h_up == texH)
+								placeTextVor(gd, re.what, maxH, i);
 						}
 					}
 					if(!lk2.containsKey(key) && re.height * accuracy == i * accuracy / Shift.th)
-						placeErsatzTextVor(gd, key, maxH, i);
+						placeTextVor(gd, key, maxH, i);
 				}
 			}
 		}
@@ -212,7 +213,7 @@ public class Texturen
 		gd.drawImage(im, sh - h, sh - h, Shift.tile, Shift.tile, null);
 	}
 
-	private static void placeErsatzTextVor(Graphics2D gd, String s, int sh, int h)
+	private static void placeTextVor(Graphics2D gd, String s, int sh, int h)
 	{
 		gd.setFont(new Font("Consolas", Font.PLAIN, (int)(Shift.tile * 1.5f / s.length())));
 		int fh2 = gd.getFontMetrics().getHeight() / 2;

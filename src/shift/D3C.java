@@ -10,4 +10,22 @@ public class D3C
 		this.y = y;
 		this.h = h;
 	}
+
+	@Override
+	public boolean equals(Object o)
+	{
+		if(this == o) return true;
+		if(!(o instanceof D3C)) return false;
+		D3C d3C = (D3C) o;
+		return x == d3C.x && y == d3C.y && h == d3C.h;
+	}
+
+	@Override
+	public int hashCode()
+	{
+		int result = x;
+		result = 31 * result + y;
+		result = 31 * result + h;
+		return result;
+	}
 }

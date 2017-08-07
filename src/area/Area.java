@@ -112,68 +112,31 @@ public abstract class Area
 
 	public abstract D3C d3c();
 
-	public int ycp;
-	public int xcp;
-	public int sh;
-	public ArrayList<Render> renders;
-	public ArrayList<Render>[][] renders2;
-
 	@SuppressWarnings("unchecked")
-	public void render(Ziel auswahl)
+	public ArrayList<Render>[][] render(Ziel auswahl, D3C feldAuswahl)
 	{
 		srd.tick(this);
-		ArrayList<Ziel> eintrag = anzielbar();
-		renders2 = new ArrayList[yw][xw];
+		ArrayList<Render>[][] renders = new ArrayList[yw][xw];
+		int ycp;
+		int xcp;
 		for(ycp = 0; ycp < yw; ycp++)
 			for(xcp = 0; xcp < xw; xcp++)
-			{
-				renders = new ArrayList<>();
-				feld(ycp, xcp).addToRender(this, xcp == xp && ycp == yp, xcp, ycp);
-				mapAdd();
-				if(auswahl != null && auswahl.x == xcp && auswahl.y == ycp)
-					addm("Auswahl", auswahl.h);
-				for(Ziel z : eintrag)
-					if(z.x == xcp && z.y == ycp && z.von != null)
-					{
-						PreItem von = z.von;
-						String marker = von.marker();
-						String symbol = von.symbol(z.taste);
-						addm("Möglich" + marker, z.h);
-						if(symbol != null)
-							addm("Symbol" + symbol + marker, z.h);
-					}
-				renders2[ycp][xcp] = renders;
-			}
+				renders[ycp][xcp] = feld(ycp, xcp).addToRender(new RenderCreater(), xcp == xp && ycp == yp, false);
+		mapAdd(renders, feldAuswahl);
+		anzielbar().stream().distinct().forEach(z ->
+		{
+			PreItem von = z.von;
+			String marker = von.marker();
+			String symbol = von.symbol(z.taste);
+			renders[z.y][z.x].add(new Render("Möglich" + (auswahl == z ? "B" : marker), z.h));
+			if(symbol != null)
+				renders[z.y][z.x].add(new Render("Symbol" + symbol + marker, z.h));
+		});
+		return renders;
 	}
 
-	protected void mapAdd()
+	protected void mapAdd(ArrayList<Render>[][] renders2, D3C feldAuswahl)
 	{
-		srd.addSpieler(this, xcp, ycp);
-	}
-
-	public void addw(String name)
-	{
-		renders.add(new Render(name, sh));
-	}
-
-	public void addw(String name, String text)
-	{
-		renders.add(new Render(name, text, sh));
-	}
-
-	public void addm(String name, int h)
-	{
-		renders.add(new Render(name, h));
-	}
-
-	public void addgz(String name, int h)
-	{
-		if(h > 0)
-			renders.add(new Render(name, h));
-	}
-
-	public void add3(Render3 r3)
-	{
-		renders.add(r3);
+		srd.addSpieler(renders2);
 	}
 }

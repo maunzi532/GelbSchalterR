@@ -18,12 +18,13 @@ public class FTex extends Texturen
 
 	private static final Color[] symbol = new Color[]
 			{
-					new Color(255, 191, 191)
+					new Color(255, 191, 191, 127)
 			};
 
 	private static final Color[] marker = new Color[]
 			{
-					new Color(31, 31, 255)
+					new Color(31, 31, 255),
+					new Color(255, 31, 31)
 			};
 
 	public FTex(String pack, String texOrdnerName)

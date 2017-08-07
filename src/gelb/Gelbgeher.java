@@ -261,11 +261,10 @@ public class Gelbgeher extends Area implements PreItem
 	}
 
 	@Override
-	protected void mapAdd()
+	protected void mapAdd(ArrayList<Render>[][] renders2, D3C feldAuswahl)
 	{
-		if(xcp == xz && ycp == yz)
-			addw("Ziel");
-		super.mapAdd();
+		renders2[yz][xz].add(new Render("Ziel", feld[yz][xz].daraufH()));
+		super.mapAdd(renders2, feldAuswahl);
 	}
 
 	@Override

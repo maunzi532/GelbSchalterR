@@ -3,7 +3,6 @@ package block;
 import area.*;
 import block.item.*;
 import java.awt.*;
-import java.util.*;
 import javax.swing.*;
 import shift.*;
 import tex.*;
@@ -30,12 +29,12 @@ public class Cheatmode
 	{
 		int fokusY = 0;
 		int fokusX = 0;
-		if(SIN.auswahl != null)
+		if(SIN.feldAuswahl != null)
 		{
-			fokusY = SIN.auswahl.y;
-			fokusX = SIN.auswahl.x;
+			fokusY = SIN.feldAuswahl.y;
+			fokusX = SIN.feldAuswahl.x;
 		}
-		if(TA.take[112] == 2 && SIN.auswahl != null)
+		if(TA.take[112] == 2 && SIN.feldAuswahl != null)
 		{
 			String alt = schalterR.feld[fokusY][fokusX].speichern();
 			Object neu = JOptionPane.showInputDialog(null, null, null, JOptionPane.QUESTION_MESSAGE, null, null, alt);
@@ -142,18 +141,19 @@ public class Cheatmode
 	{
 		if(Shift.tile > 0)
 		{
-			schalterR.renders = new ArrayList<>();
+			RenderCreater rc = new RenderCreater();
+			int th = 1;
 			if(enhkey == 0)
-				schalterR.renders.add(new Render("Löscher", 1));
-			else if(SIN.auswahl != null)
+				rc.addm("Löscher", 1);
+			else if(SIN.feldAuswahl != null)
 			{
-				schalterR.xcp = SIN.auswahl.x;
-				schalterR.ycp = SIN.auswahl.y;
-				BFeld fn = BFeld.copy(sl.feld[schalterR.ycp][schalterR.xcp], schalterR);
+				BFeld fn = BFeld.copy(sl.feld[SIN.feldAuswahl.y][SIN.feldAuswahl.x], schalterR);
 				fn.enhance(schalterR, enhkey);
-				fn.addToRender(schalterR, false, -1, -1);
+				th = fn.markH();
+				fn.addToRender(rc, false, true);
 			}
-			gd.drawImage(tex.placeThese(schalterR.renders).img, w1 + ht, ht * 2 * 4, ht * 2, ht * 2, null);
+			rc.addt("  " + enhkey, th);
+			gd.drawImage(tex.placeThese(rc.renders).img, w1 + ht, ht * 2 * 4, ht * 2, ht * 2, null);
 		}
 	}
 }

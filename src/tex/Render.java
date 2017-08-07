@@ -3,14 +3,14 @@ package tex;
 public class Render
 {
 	final String what;
-	final String text;
-	public final int height;
-	public final boolean rerender;
+	final boolean sth;
+	protected final int height;
+	protected final boolean rerender;
 
 	protected Render(int height, boolean rerender)
 	{
 		what = null;
-		text = null;
+		sth = true;
 		this.height = height;
 		this.rerender = rerender;
 	}
@@ -18,15 +18,15 @@ public class Render
 	public Render(String what, int height)
 	{
 		this.what = what;
-		text = null;
+		sth = true;
 		this.height = height;
 		rerender = false;
 	}
 
-	public Render(String what, String text, int height)
+	public Render(int height, String text)
 	{
-		this.what = what;
-		this.text = text;
+		this.what = text;
+		sth = false;
 		this.height = height;
 		rerender = false;
 	}

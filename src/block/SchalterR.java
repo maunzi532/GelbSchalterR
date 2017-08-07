@@ -24,7 +24,7 @@ public class SchalterR extends Area
 	public int akItem;
 	public final ArrayList<Item> items = new ArrayList<>();
 
-	private Cheatmode cheatmode;
+	Cheatmode cheatmode;
 
 	private final Stack<BState> states = new Stack<>();
 
@@ -216,6 +216,14 @@ public class SchalterR extends Area
 	public D3C d3c()
 	{
 		return new D3C(xp, yp, hp);
+	}
+
+	@Override
+	protected void mapAdd(ArrayList<Render>[][] renders2, D3C feldAuswahl)
+	{
+		super.mapAdd(renders2, feldAuswahl);
+		if(feldAuswahl != null && cheatmode != null)
+			renders2[feldAuswahl.y][feldAuswahl.x].add(new Render("Auswahl", feld(feldAuswahl.y, feldAuswahl.x).markH()));
 	}
 
 	@Override

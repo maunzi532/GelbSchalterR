@@ -54,6 +54,9 @@ public class SpielerRender extends Render3
 		setzeQP(punkte, 30, hb2, nw1, h3);
 		setzeQP(punkte, 34, hb3, nw1, h2);
 
+		//dreh(punkte, new R3p(-hb3, 0, h2), 0.02, 0.4, 26, 28, 30, 32);
+		//dreh(punkte, new R3p(hb3, 0, h2), -0.02, 0.4, 27, 29, 31, 33);
+
 		for(int i = 0; i < 8; i++)
 			punkte[38 + i] = new R3p((i % 4 > 1 ? 0.3 : 0.15) * (i / 4 * 2 - 1), -kw1, maxh - (i % 2 == 0 ? 0.2 : 0.1));
 
@@ -63,7 +66,7 @@ public class SpielerRender extends Render3
 			punkte[cs2b + i] = new R3p(i * hb3 / ct1 * cwb, ca, 0);
 
 		for(int i = 0; i < punkte.length; i++)
-			punkte[i] = R3p.shift(R3p.dreh(dreh, punkte[i]), xs, ys, z - (int) z - deep);
+			punkte[i] = R3p.shift(R3p.endDreh(dreh, punkte[i]), xs, ys, z - (int) z - deep);
 
 		r4(teile1, w, punkte[16], punkte[17], punkte[12], punkte[14], punkte[22], punkte[24], punkte[18], punkte[20]);
 		r4(teile1, w, punkte[16], punkte[17], punkte[13], punkte[15], punkte[23], punkte[25], punkte[19], punkte[21]);
@@ -111,5 +114,11 @@ public class SpielerRender extends Render3
 		punkte[k + 1] = new R3p(-x, y, z);
 		punkte[k + 2] = new R3p(x, -y, z);
 		punkte[k + 3] = new R3p(-x, -y, z);
+	}
+
+	private static void dreh(R3p[] punkte, R3p start, double wl, double wb, int... wo)
+	{
+		for(int i = 0; i < wo.length; i++)
+			punkte[wo[i]] = R3p.dreh(start, punkte[wo[i]], wl, wb);
 	}
 }
