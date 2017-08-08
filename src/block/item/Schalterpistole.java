@@ -11,15 +11,15 @@ public class Schalterpistole extends LaengeItem
 		laenge = 5;
 	}
 
-	public Schalterpistole(int level, int laenge)
+	public Schalterpistole(int level, int priority, int laenge)
 	{
-		super(level, laenge);
+		super(level, priority, laenge);
 	}
 
 	@Override
 	public Item kopie(SchalterR schalterR)
 	{
-		Schalterpistole i1 = new Schalterpistole(level, laenge);
+		Schalterpistole i1 = new Schalterpistole(level, priority, laenge);
 		i1.schalterR = schalterR;
 		return i1;
 	}
@@ -30,7 +30,7 @@ public class Schalterpistole extends LaengeItem
 		char verboten = 'n';
 		if(fp.aufBoden())
 		{
-			if(fp.farbeAktiv())
+			if(fp.farbeAktiv() || fp.schalter != 'n')
 				return;
 			verboten = fp.blockFarbe;
 		}
@@ -47,6 +47,7 @@ public class Schalterpistole extends LaengeItem
 			int ym = r != 0 ? r - 2 : 0;
 			for(int i = 1; i <= laenge; i++)
 			{
+
 				int xf = xp + i * xm;
 				int yf = yp + i * ym;
 				if(xf < 0 || yf < 0 || xf >= xw || yf >= yw)

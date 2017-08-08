@@ -21,15 +21,15 @@ public class ItemD implements Comparable<ItemD>
 			case 0:
 				return new Movement();
 			case 1:
-				return new Feuer(data[0]);
+				return new Feuer(data[0], data[1]);
 			case 2:
-				return new AerialEnterhaken(data[0], data[1], data[2] == 2);
+				return new AerialEnterhaken(data[0], data[1], data[2], data[3] == 2);
 			case 3:
-				return new Schalterpistole(data[0], data[1]);
+				return new Schalterpistole(data[0], data[1], data[2]);
 			case 4:
-				return new Sprungfeder(data[0], data[1]);
+				return new Sprungfeder(data[0], data[1], data[2]);
 			case 5:
-				return new Fluegel(data[0], data[1]);
+				return new Fluegel(data[0], data[1], data[2]);
 			default:
 				throw new RuntimeException();
 		}

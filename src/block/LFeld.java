@@ -238,7 +238,7 @@ public class LFeld
 			switch(build.toLowerCase())
 			{
 				case "feuer":
-					item = new Feuer(1);
+					item = new Feuer(1, 0);
 					break;
 				case "eiszapfen":
 					eis = true;
@@ -250,13 +250,13 @@ public class LFeld
 					enterstange = 1;
 					break;
 				case "sprung":
-					item = new Sprungfeder(1, 2);
+					item = new Sprungfeder(1, 0, 2);
 					break;
 				default:
 					if(build.toLowerCase().startsWith("enterhaken"))
-						item = new AerialEnterhaken(1, Integer.parseInt(build.substring(11, build.length() - 1)), false);
+						item = new AerialEnterhaken(1, 0, Integer.parseInt(build.substring(11, build.length() - 1)), false);
 					if(build.toLowerCase().startsWith("schalterkanone"))
-						item = new Schalterpistole(1, Integer.parseInt(build.substring(15, build.length() - 1)));
+						item = new Schalterpistole(1, 0, Integer.parseInt(build.substring(15, build.length() - 1)));
 					if(build.toLowerCase().startsWith("flugdingboden"))
 						enterpfeil = loru(build.charAt(14));
 					else if(build.toLowerCase().startsWith("flugding"))

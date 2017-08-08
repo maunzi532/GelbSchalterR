@@ -18,9 +18,10 @@ public abstract class Item implements PreItem
 		level = 1;
 	}
 
-	Item(int level)
+	Item(int level, int priority)
 	{
 		this.level = level;
+		this.priority = priority;
 	}
 
 	public abstract Item kopie(SchalterR schalterR);

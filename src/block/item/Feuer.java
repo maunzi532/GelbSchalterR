@@ -7,15 +7,15 @@ public class Feuer extends Item
 {
 	public Feuer(){}
 
-	public Feuer(int level)
+	public Feuer(int level, int priority)
 	{
-		super(level);
+		super(level, priority);
 	}
 
 	@Override
 	public Item kopie(SchalterR schalterR)
 	{
-		Feuer i1 = new Feuer(level);
+		Feuer i1 = new Feuer(level, priority);
 		i1.schalterR = schalterR;
 		return i1;
 	}

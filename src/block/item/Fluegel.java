@@ -11,15 +11,15 @@ public class Fluegel extends LaengeItem
 		laenge = 5;
 	}
 
-	public Fluegel(int level, int laenge)
+	public Fluegel(int level, int priority, int laenge)
 	{
-		super(level, laenge);
+		super(level, priority, laenge);
 	}
 
 	@Override
 	public Item kopie(SchalterR schalterR)
 	{
-		Fluegel i1 = new Fluegel(level, laenge);
+		Fluegel i1 = new Fluegel(level, priority, laenge);
 		i1.schalterR = schalterR;
 		return i1;
 	}

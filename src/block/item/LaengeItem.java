@@ -9,9 +9,9 @@ public abstract class LaengeItem extends Item
 
 	LaengeItem(){}
 
-	LaengeItem(int level, int laenge)
+	LaengeItem(int level, int priority, int laenge)
 	{
-		super(level);
+		super(level, priority);
 		this.laenge = laenge;
 	}
 
@@ -23,12 +23,15 @@ public abstract class LaengeItem extends Item
 		return super.benutze(num, cl, main, true);
 	}
 
+	@Override
 	public void lies2(String value, Integer errStart, Integer errEnd, ErrorVial vial, String textKey)
 	{
 		try
 		{
 			if(textKey.toLowerCase().equals("level"))
 				level = Integer.parseInt(value);
+			else if(textKey.toLowerCase().equals("priorität"))
+				priority = Integer.parseInt(value);
 			else if(textKey.toLowerCase().equals("länge"))
 				laenge = Integer.parseInt(value);
 			else
@@ -39,6 +42,7 @@ public abstract class LaengeItem extends Item
 		}
 	}
 
+	@Override
 	public void speichern(StringBuilder sb)
 	{
 		super.speichern(sb);

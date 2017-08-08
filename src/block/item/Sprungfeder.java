@@ -11,15 +11,15 @@ public class Sprungfeder extends LaengeItem
 		laenge = 2;
 	}
 
-	public Sprungfeder(int level, int laenge)
+	public Sprungfeder(int level, int priority, int laenge)
 	{
-		super(level, laenge);
+		super(level, priority, laenge);
 	}
 
 	@Override
 	public Item kopie(SchalterR schalterR)
 	{
-		Sprungfeder i1 = new Sprungfeder(level, laenge);
+		Sprungfeder i1 = new Sprungfeder(level, priority, laenge);
 		i1.schalterR = schalterR;
 		return i1;
 	}

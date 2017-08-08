@@ -14,17 +14,17 @@ public class AerialEnterhaken extends Item
 		laenge = 5;
 	}
 
-	public AerialEnterhaken(int level, int laenge, boolean doppelt)
+	public AerialEnterhaken(int level, int priority, int laenge, boolean doppelt)
 	{
-		super(level);
-		this.doppelt = doppelt;
+		super(level, priority);
 		this.laenge = laenge;
+		this.doppelt = doppelt;
 	}
 
 	@Override
 	public Item kopie(SchalterR schalterR)
 	{
-		AerialEnterhaken i1 = new AerialEnterhaken(level, laenge, doppelt);
+		AerialEnterhaken i1 = new AerialEnterhaken(level, priority, laenge, doppelt);
 		i1.schalterR = schalterR;
 		return i1;
 	}

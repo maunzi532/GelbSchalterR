@@ -47,6 +47,11 @@ public class ASIN
 				{
 					Shift.moveToTarget(schalterR.srd);
 					SIN.drawX();
+					/*do
+					{
+						U.warte(20);
+						TA.bereit();
+					}while(TA.take[16] != 2);*/
 				}
 				else
 					System.out.println(states.size());
