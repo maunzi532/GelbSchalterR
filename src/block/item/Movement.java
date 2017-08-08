@@ -37,7 +37,8 @@ public class Movement extends Item
 			int ym = r != 0 ? r - 2 : 0;
 			if(xp + xm < 0 || yp + ym < 0 || xp + xm >= xw || yp + ym >= yw)
 				continue;
-			if(fp.weggehengeht(r) && schalterR.feld[yp + ym][xp + xm].betretengeht((r + 2) % 4))
+			BFeld nf = schalterR.feld[yp + ym][xp + xm];
+			if(fp.weggehengeht(r) && nf.aufBoden() && nf.betretengeht((r + 2) % 4))
 				option(xp + xm, yp + ym, hp, r + 1);
 		}
 	}

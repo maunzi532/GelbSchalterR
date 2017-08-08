@@ -81,6 +81,6 @@ public class Schalterpistole extends LaengeItem
 	@Override
 	public ItemD saveState()
 	{
-		return new ItemD(3, level, laenge);
+		return new ItemD(3, level, priority, laenge);
 	}
 }

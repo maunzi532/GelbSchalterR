@@ -21,6 +21,7 @@ public class LFeld
 	boolean eis;
 	boolean loescher;
 	public int enterstange = -1;
+	public int enterpfeil = -1;
 	public boolean lift;
 	Item item;
 
@@ -60,7 +61,10 @@ public class LFeld
 				loescher = true;
 				break;
 			case 10:
-				enterstange = mit.hp;
+				if(enterstange == mit.hp)
+					enterpfeil = mit.richtung;
+				else
+					enterstange = mit.hp;
 				break;
 			case 11:
 				ziel = true;
@@ -145,6 +149,9 @@ public class LFeld
 				case "stange":
 					enterstange = value == null ? hoehe : Integer.parseInt(value);
 					break;
+				case "enterpfeil":
+					enterpfeil = Integer.parseInt(value);
+					break;
 				case "lift":
 					lift = true;
 					break;
@@ -200,6 +207,8 @@ public class LFeld
 			speichernZ(sb, "löscher", null);
 		if(enterstange >= 0)
 			speichernZ(sb, "stange", enterstange == hoehe ? null : String.valueOf(enterstange));
+		if(enterpfeil >= 0)
+			speichernZ(sb, "enterpfeil", String.valueOf(enterpfeil));
 		if(lift)
 			speichernZ(sb, "lift", null);
 		if(item != null)
@@ -248,6 +257,13 @@ public class LFeld
 						item = new AerialEnterhaken(1, Integer.parseInt(build.substring(11, build.length() - 1)), false);
 					if(build.toLowerCase().startsWith("schalterkanone"))
 						item = new Schalterpistole(1, Integer.parseInt(build.substring(15, build.length() - 1)));
+					if(build.toLowerCase().startsWith("flugdingboden"))
+						enterpfeil = loru(build.charAt(14));
+					else if(build.toLowerCase().startsWith("flugding"))
+					{
+						enterpfeil = loru(build.charAt(9));
+						hoehe = 0;
+					}
 			}
 		else
 			switch(build.charAt(0))
@@ -306,5 +322,22 @@ public class LFeld
 					if(build.charAt(0) >= '1' && build.charAt(0) <= '9')
 						diaTuer = build.charAt(0) - '0';
 			}
+	}
+
+	private static int loru(char loru)
+	{
+		switch(loru)
+		{
+			case 'l':
+				return 0;
+			case 'o':
+				return 1;
+			case 'r':
+				return 2;
+			case 'u':
+				return 3;
+			default:
+				return -1;
+		}
 	}
 }

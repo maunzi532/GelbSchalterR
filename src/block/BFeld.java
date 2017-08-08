@@ -35,6 +35,7 @@ public class BFeld extends LFeld implements Feld
 		copy.eis = von.eis;
 		copy.loescher = von.loescher;
 		copy.enterstange = von.enterstange;
+		copy.enterpfeil = von.enterpfeil;
 		copy.lift = von.lift;
 		copy.item = von.item;
 		return copy;
@@ -47,8 +48,6 @@ public class BFeld extends LFeld implements Feld
 
 	public boolean betretengeht(int side)
 	{
-		if(!aufBoden())
-			return false;
 		if(einhauwand >= 0 && !benutzt && einhauwand != side)
 			return false;
 		if(pfeil >= 0 && pfeil == side)
@@ -108,32 +107,40 @@ public class BFeld extends LFeld implements Feld
 
 	public void gehen()
 	{
-		if(loescher)
+		if(schalterR.hp == bodenH() && loescher)
 			schalterR.items.forEach(Item::loescher);
 		Item itemA = schalterR.items.get(schalterR.akItem);
 		schalterR.items.removeIf(Item::weg);
-		if(item != null)
+		if(item != null && (schalterR.items.indexOf(item) < 0 || item.priority >= schalterR.items.get(schalterR.items.indexOf(item)).priority))
 		{
 			schalterR.items.remove(item);
 			schalterR.items.add(item.kopie(schalterR));
 		}
+		if(schalterR.hp == enterstange && enterpfeil >= 0)
+		{
+			schalterR.items.remove(new FahrenderPfeil());
+			schalterR.items.add(new FahrenderPfeil(enterpfeil, schalterR.xp, schalterR.yp, schalterR.hp).kopie(schalterR));
+		}
 		int nA = schalterR.items.indexOf(itemA);
 		schalterR.akItem = nA >= 0 ? nA : 0;
-		if(schalter != 'n')
-			schalterR.farbeAktuell = schalter;
-		if(dia && !benutzt)
+		if(schalterR.hp == bodenH())
 		{
-			benutzt = true;
-			schalterR.dias++;
-		}
-		if(einhauwand >= 0)
-			benutzt = true;
-		if(eis)
-			benutzt = true;
-		if(ziel)
-		{
-			schalterR.setRichtung(3);
-			schalterR.gewonnen = true;
+			if(schalter != 'n')
+				schalterR.farbeAktuell = schalter;
+			if(dia && !benutzt)
+			{
+				benutzt = true;
+				schalterR.dias++;
+			}
+			if(einhauwand >= 0)
+				benutzt = true;
+			if(eis)
+				benutzt = true;
+			if(ziel)
+			{
+				schalterR.setRichtung(3);
+				schalterR.gewonnen = true;
+			}
 		}
 	}
 
@@ -179,7 +186,11 @@ public class BFeld extends LFeld implements Feld
 		if(loescher)
 			rc.addw("Löscher");
 		if(enterstange >= 0)
+		{
 			rc.addm("Stange" + (darauf && (schalterR.hp == enterstange || schalterR.hp + 1 == enterstange) ? "B" : "") + enterstange, 0);
+			if(enterpfeil >= 0)
+				rc.addm("Enterpfeil" + enterpfeil, enterstange);
+		}
 		if(lift)
 			if(liftOben())
 				rc.addm("LiftOben", steinH());

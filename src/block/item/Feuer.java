@@ -29,6 +29,6 @@ public class Feuer extends Item
 	@Override
 	public ItemD saveState()
 	{
-		return new ItemD(1, level);
+		return new ItemD(1, level, priority);
 	}
 }

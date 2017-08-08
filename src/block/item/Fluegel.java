@@ -67,6 +67,6 @@ public class Fluegel extends LaengeItem
 	@Override
 	public ItemD saveState()
 	{
-		return new ItemD(5, level, laenge);
+		return new ItemD(5, level, priority, laenge);
 	}
 }

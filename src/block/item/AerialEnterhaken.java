@@ -45,6 +45,8 @@ public class AerialEnterhaken extends Item
 	{
 		BFeld f = schalterR.feld[yf][xf];
 		int zh = f.enterstange;
+		if(xf == xp && yf == yp && zh == hp)
+			return -1;
 		if(zh < f.bodenH() || (zh > f.bodenH() && !doppelt))
 			return -1;
 		int xd = (xf - xp) * (xf - xp);
@@ -105,6 +107,6 @@ public class AerialEnterhaken extends Item
 	@Override
 	public ItemD saveState()
 	{
-		return new ItemD(2, level, laenge, doppelt ? 2 : 1);
+		return new ItemD(2, level, priority, laenge, doppelt ? 2 : 1);
 	}
 }

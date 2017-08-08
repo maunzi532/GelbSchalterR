@@ -57,6 +57,6 @@ public class Sprungfeder extends LaengeItem
 	@Override
 	public ItemD saveState()
 	{
-		return new ItemD(4, level, laenge);
+		return new ItemD(4, level, priority, laenge);
 	}
 }

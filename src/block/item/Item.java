@@ -10,6 +10,7 @@ public abstract class Item implements PreItem
 {
 	SchalterR schalterR;
 	int level;
+	public int priority;
 	public boolean disabled;
 
 	Item()
@@ -89,7 +90,7 @@ public abstract class Item implements PreItem
 		return true;
 	}
 
-	private void gehen(D3C ziel)
+	void gehen(D3C ziel)
 	{
 		schalterR.xp = ziel.x;
 		schalterR.yp = ziel.y;
@@ -131,6 +132,8 @@ public abstract class Item implements PreItem
 		{
 			if(textKey.toLowerCase().equals("level"))
 				level = Integer.parseInt(value);
+			else if(textKey.toLowerCase().equals("priorität"))
+				priority = Integer.parseInt(value);
 			else
 				vial.add(new CError("Unbekannter Wert: " + textKey, errStart, errEnd));
 		}catch(Exception e)
@@ -142,6 +145,8 @@ public abstract class Item implements PreItem
 	public void speichern(StringBuilder sb)
 	{
 		sb.append("level = ").append(String.valueOf(level));
+		if(priority != 0)
+			speichernZ(sb, "priorität", String.valueOf(priority));
 	}
 
 	void speichernZ(StringBuilder sb, String key, String value)
