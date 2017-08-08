@@ -27,50 +27,47 @@ public class Cheatmode
 
 	public void move()
 	{
-		int fokusY = 0;
-		int fokusX = 0;
-		if(SIN.feldAuswahl != null)
+		int xp = schalterR.xp;
+		int yp = schalterR.yp;
+		D3C fa = SIN.feldAuswahl;
+		if(TA.take[112] == 2)
 		{
-			fokusY = SIN.feldAuswahl.y;
-			fokusX = SIN.feldAuswahl.x;
-		}
-		if(TA.take[112] == 2 && SIN.feldAuswahl != null)
-		{
-			String alt = schalterR.feld[fokusY][fokusX].speichern();
-			Object neu = JOptionPane.showInputDialog(null, null, null, JOptionPane.QUESTION_MESSAGE, null, null, alt);
+			String alt = schalterR.feld[yp][xp].speichern(false);
+			Object neu = JOptionPane.showInputDialog(SIN.fr, "x   " + xp + "\ny   " + yp, null, JOptionPane.QUESTION_MESSAGE, null, null, alt);
+			TA.fix();
 			if(neu instanceof String)
 			{
 				BFeld nf = new BFeld();
 				nf.liesDirekt((String) neu);
-				sl.feld[fokusY][fokusX] = nf;
-				schalterR.feld[fokusY][fokusX] = BFeld.copy(nf, schalterR);
+				sl.feld[yp][xp] = nf;
+				schalterR.feld[yp][xp] = BFeld.copy(nf, schalterR);
 			}
 		}
-		if(TA.take[113] == 2 || TA.take[114] == 2)
+		int hc = 0;
+		if(TA.take[113] == 2)
+			hc--;
+		if(TA.take[114] == 2)
+			hc++;
+		if(hc != 0)
 		{
-			int p = 0;
-			if(TA.take[113] == 2)
-				p--;
-			if(TA.take[114] == 2)
-				p++;
-			if(p != 0)
+			if(TA.take[16] > 0)
 			{
-				if(TA.take[16] > 0 || pfadmodus)
+				if(fa != null)
 				{
-					schalterR.hp += p;
-					if(schalterR.hp < 0)
-						schalterR.hp = 0;
-					if(pfadmodus)
-						schalterR.angleichen();
-				}
-				else if(fokusX >= 0)
-				{
-					LFeld f1 = sl.feld[fokusY][fokusX];
-					f1.hoehe += p;
+					LFeld f1 = sl.feld[fa.y][fa.x];
+					f1.hoehe += hc;
 					if(f1.hoehe < 0)
 						f1.hoehe = 0;
-					schalterR.feld[fokusY][fokusX] = BFeld.copy(f1, schalterR);
+					schalterR.feld[fa.y][fa.x] = BFeld.copy(f1, schalterR);
 				}
+			}
+			else
+			{
+				schalterR.hp += hc;
+				if(schalterR.hp < 0)
+					schalterR.hp = 0;
+				if(pfadmodus)
+					schalterR.angleichen();
 			}
 		}
 		if(TA.take[115] == 2)
@@ -79,55 +76,62 @@ public class Cheatmode
 			if(pfadmodus)
 				schalterR.angleichen();
 		}
-		if(TA.take[116] == 2 && fokusX >= 0)
-		{
-			LFeld f1 = sl.feld[fokusY][fokusX];
-			if(f1.schalter != 'n')
+		if(TA.take[116] == 2)
+			label68:
 			{
-				f1.schalter = plusfarbe(f1.schalter);
-				schalterR.feld[fokusY][fokusX] = BFeld.copy(f1, schalterR);
-			}
-			else if(f1.blockFarbe != 'n')
-			{
-				f1.blockFarbe = plusfarbe(f1.blockFarbe);
-				schalterR.feld[fokusY][fokusX] = BFeld.copy(f1, schalterR);
-			}
-			else
+				if(fa != null)
+				{
+					LFeld f1 = sl.feld[fa.y][fa.x];
+					if(f1.schalter != 'n')
+					{
+						f1.schalter = plusfarbe(f1.schalter);
+						schalterR.feld[fa.y][fa.x] = BFeld.copy(f1, schalterR);
+						break label68;
+					}
+					if(f1.blockFarbe != 'n')
+					{
+						f1.blockFarbe = plusfarbe(f1.blockFarbe);
+						schalterR.feld[fa.y][fa.x] = BFeld.copy(f1, schalterR);
+						break label68;
+					}
+				}
 				schalterR.farbeAktuell = plusfarbe(schalterR.farbeAktuell);
-		}
+			}
+		int ec = 0;
 		if(TA.take[117] == 2)
+			ec--;
+		if(TA.take[118] == 2)
+			ec++;
+		if(ec != 0)
 		{
 			if(TA.take[16] > 0)
-				schalterR.dias--;
+				schalterR.dias += ec;
 			else
 			{
-				enhkey--;
+				enhkey += ec;
 				if(enhkey < 0)
 					enhkey = LFeld.maxenh;
-			}
-		}
-		if(TA.take[118] == 2)
-		{
-			if(TA.take[16] > 0)
-				schalterR.dias++;
-			else
-			{
-				enhkey++;
 				if(enhkey > LFeld.maxenh)
 					enhkey = 0;
 			}
 		}
-		if(TA.take[119] == 2 && fokusX >= 0)
+		if(TA.take[119] == 2)
+			enhance(xp, yp, false);
+		if(TA.take[203] == 2 && fa != null)
+			enhance(fa.x, fa.y, true);
+		if(TA.take[127] == 2 && fa != null)
 		{
-			LFeld f1 = sl.feld[fokusY][fokusX];
-			if(enhkey == 0)
-			{
-				f1 = new BFeld(f1.hoehe);
-				sl.feld[fokusY][fokusX] = f1;
-			}
-			f1.enhance(schalterR, enhkey);
-			schalterR.feld[fokusY][fokusX] = BFeld.copy(f1, schalterR);
+			LFeld f1 = new BFeld(0);
+			sl.feld[fa.y][fa.x] = f1;
+			schalterR.feld[fa.y][fa.x] = BFeld.copy(f1, schalterR);
 		}
+	}
+
+	private void enhance(int x, int y, boolean autoh)
+	{
+		LFeld f1 = sl.feld[y][x];
+		f1.enhance(schalterR, enhkey, autoh);
+		schalterR.feld[y][x] = BFeld.copy(f1, schalterR);
 	}
 
 	private static char plusfarbe(char farbe)
@@ -137,18 +141,16 @@ public class Cheatmode
 		return (char)(farbe + 1);
 	}
 
-	public void rahmen(Graphics2D gd, Texturen tex, int w1, int ht)
+	void rahmen(Graphics2D gd, Texturen tex, int w1, int ht)
 	{
 		if(Shift.tile > 0)
 		{
 			RenderCreater rc = new RenderCreater();
-			int th = 1;
-			if(enhkey == 0)
-				rc.addm("Löscher", 1);
-			else if(SIN.feldAuswahl != null)
+			int th = schalterR.hp;
+			if(SIN.feldAuswahl != null)
 			{
 				BFeld fn = BFeld.copy(sl.feld[SIN.feldAuswahl.y][SIN.feldAuswahl.x], schalterR);
-				fn.enhance(schalterR, enhkey);
+				fn.enhance(schalterR, enhkey, true);
 				th = fn.markH();
 				fn.addToRender(rc, false, true);
 			}

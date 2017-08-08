@@ -148,7 +148,7 @@ public class SchalterLies
 			{
 				if(ix > 0)
 					sb.append(", ");
-				sb.append(feld[iy][ix].speichern());
+				sb.append(feld[iy][ix].speichern(true));
 			}
 			sb.append(";\n");
 		}

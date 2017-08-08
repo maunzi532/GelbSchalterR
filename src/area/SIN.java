@@ -13,7 +13,7 @@ public class SIN
 	public static int testmode;
 	private static boolean ende;
 	private static Texturen tex;
-	private static JFrame fr;
+	public static JFrame fr;
 	private static Dimension size;
 	private static Dimension size2;
 	private static BufferedImage img;

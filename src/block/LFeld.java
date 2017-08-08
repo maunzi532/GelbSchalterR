@@ -1,12 +1,13 @@
 package block;
 
+import area.*;
 import block.item.*;
 import javax.swing.*;
 import laderLC.*;
 
 public class LFeld
 {
-	public static final int maxenh = 12;
+	static final int maxenh = 12;
 
 	public int hoehe;
 	boolean ziel;
@@ -23,8 +24,10 @@ public class LFeld
 	public boolean lift;
 	Item item;
 
-	public void enhance(SchalterR mit, int wie)
+	void enhance(SchalterR mit, int wie, boolean autoh)
 	{
+		if(autoh && wie != 3 && wie != 10 && wie != 12)
+			hoehe = mit.hp;
 		switch(wie)
 		{
 			case 1:
@@ -68,18 +71,21 @@ public class LFeld
 		}
 	}
 
-	public void liesDirekt(String build)
+	void liesDirekt(String build)
 	{
 		ErrorVial vial = new ErrorVial();
 		build = vial.prep(build);
 		lies(build, 0, vial.end(), vial);
 		if(vial.errors())
-			JOptionPane.showMessageDialog(null, vial.toString(), null, JOptionPane.ERROR_MESSAGE);
+		{
+			JOptionPane.showMessageDialog(SIN.fr, vial.toString(), null, JOptionPane.ERROR_MESSAGE);
+			TA.fix();
+		}
 	}
 
 	private static final KXS IKL = new KXS(true, false, true, true, false);
 
-	public void lies(String build, int errStart, int errEnd, ErrorVial vial)
+	void lies(String build, int errStart, int errEnd, ErrorVial vial)
 	{
 		build = LC2.removeKlammernVllt(build);
 		if(build.contains(";"))
@@ -168,7 +174,7 @@ public class LFeld
 		}
 	}
 
-	public String speichern()
+	String speichern(boolean shorten)
 	{
 		StringBuilder sb = new StringBuilder();
 		sb.append("{h = ").append(hoehe).append(';');
@@ -202,12 +208,10 @@ public class LFeld
 			item.speichern(sb);
 			sb.append("};");
 		}
-		if(sb.indexOf("; ") >= 0)
-		{
-			sb.append('}');
-			return sb.toString();
-		}
-		return String.valueOf(hoehe);
+		if(shorten && sb.indexOf("; ") < 0)
+			return String.valueOf(hoehe);
+		sb.append('}');
+		return sb.toString();
 	}
 
 	private void speichernZ(StringBuilder sb, String key, String value)
@@ -218,7 +222,7 @@ public class LFeld
 		sb.append(';');
 	}
 
-	public void liesA(String build)
+	void liesA(String build)
 	{
 		hoehe = 1;
 		if(build.length() >= 5)

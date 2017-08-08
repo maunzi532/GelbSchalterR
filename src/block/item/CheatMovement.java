@@ -30,7 +30,8 @@ public class CheatMovement extends Item
 	@Override
 	public void setzeOptionen(int xp, int yp, int hp, int xw, int yw, BFeld fp)
 	{
-		option(xp, yp, hp + (fp.bodenH() < hp ? -1 : 1), 0);
+		if(fp.lift)
+			option(xp, yp, hp + (fp.liftOben() ? -1 : 1), 0);
 		for(int r = 0; r <= 3; r++)
 		{
 			int xm = r != 3 ? r - 1 : 0;

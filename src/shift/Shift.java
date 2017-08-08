@@ -46,6 +46,14 @@ public class Shift
 		return null;
 	}
 
+	private static boolean checkObDarauf(int mx, int my, D3C hier)
+	{
+		return mx > hier.x * tile - tshX - hier.h * th &&
+				mx < (hier.x + 1) * tile - tshX - hier.h * th &&
+				my > hier.y * tile - tshY - hier.h * th &&
+				my < (hier.y + 1) * tile - tshY - hier.h * th;
+	}
+
 	public static D3C zeigerF(int mex, int mey)
 	{
 		int mx = mex - xd2 + tile / 2;
@@ -54,18 +62,20 @@ public class Shift
 			for(int ix = SIN.area.xw - 1; ix >= 0; ix--)
 			{
 				D3C z = new D3C(ix, iy, SIN.area.feld(iy, ix).markH());
-				if(checkObDarauf(mx, my, z))
+				if(checkObDarauf2(mx, my, z))
 					return z;
 			}
 		return null;
 	}
 
-	private static boolean checkObDarauf(int mx, int my, D3C hier)
+	private static boolean checkObDarauf2(int mx, int my, D3C hier)
 	{
 		return mx > hier.x * tile - tshX - hier.h * th &&
-				mx < (hier.x + 1) * tile - tshX - hier.h * th &&
+				mx < (hier.x + 1) * tile - tshX &&
 				my > hier.y * tile - tshY - hier.h * th &&
-				my < (hier.y + 1) * tile - tshY - hier.h * th;
+				my < (hier.y + 1) * tile - tshY &&
+				my - mx < ((hier.y + 1) * tile - tshY) - (hier.x * tile - tshX) &&
+				mx - my < ((hier.x + 1) * tile - tshX) - (hier.y * tile - tshY);
 	}
 
 	public static void localReset(D3C hier)
@@ -118,8 +128,8 @@ public class Shift
 			curT--;
 		double realX = srd.x - 1d / 2;
 		double realY = srd.y - 1d / 2;
-		int pixshX = (int) (realX * tile - curX * tile) * acpix / delpix;
-		int pixshY = (int) (realY * tile - curY * tile) * acpix / delpix;
+		int pixshX = (int) ((realX * tile - curX * tile) * acpix / delpix);
+		int pixshY = (int) ((realY * tile - curY * tile) * acpix / delpix);
 		tile = basetile / curT;
 		tshX = curX * tile + pixshX;
 		tshY = curY * tile + pixshY;
