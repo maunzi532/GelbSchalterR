@@ -48,6 +48,7 @@ public class Texturen
 		try
 		{
 			boolean dreh = false;
+			int autoh = -1;
 			int kmin = Integer.MAX_VALUE;
 			int kmax = Integer.MIN_VALUE;
 			ArrayList<TBild> tb = new ArrayList<>();
@@ -56,6 +57,8 @@ public class Texturen
 				String filename = files[j].getName();
 				if(filename.equals("dreh"))
 					dreh = true;
+				if(filename.startsWith("autoh"))
+					autoh = Integer.parseInt(filename.substring(5));
 				if(!filename.endsWith(".png"))
 					continue;
 				String[] ft = filename.substring(0, filename.lastIndexOf('.')).split("_");
@@ -74,6 +77,9 @@ public class Texturen
 			lk2.put(dir.getName(), new Textur(kmax, kmin, im));
 			if(dreh)
 				drehTex1(dir.getName());
+			if(autoh >= 0)
+				autoh1(dir.getName(), autoh);
+
 		}
 		catch(Exception e)
 		{
@@ -107,6 +113,33 @@ public class Texturen
 			toR[j] = n;
 		}
 		return toR;
+	}
+
+	private void autoh1(String vonname, int keep)
+	{
+		if(!lk2.containsKey(vonname))
+			return;
+		Textur von = lk2.get(vonname);
+		for(int h = 0; h < 10; h++)
+		{
+			String toname = vonname + h;
+			if(!lk2.containsKey(toname))
+			{
+				BufferedImage[] auto = new BufferedImage[accuracy * h + keep];
+				if(auto.length <= von.look.length)
+					System.arraycopy(von.look, von.look.length - auto.length, auto, 0, auto.length);
+				else
+				{
+					int vll2 = 0 - von.h_down;
+					int vll3 = von.h_up;
+					System.arraycopy(von.look, 0, auto, 0, vll2);
+					System.arraycopy(von.look, von.look.length - vll3, auto, auto.length - vll3, vll3);
+					for(int i = vll2; i < auto.length - vll3; i++)
+						auto[i] = von.look[vll2];
+				}
+				lk2.put(toname, new Textur(accuracy * h + keep, 0, auto));
+			}
+		}
 	}
 
 	public void placeAll2(Graphics2D gd, ArrayList<Render>[][] renders, int xw, int yw)

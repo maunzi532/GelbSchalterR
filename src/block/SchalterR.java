@@ -223,7 +223,7 @@ public class SchalterR extends Area
 	{
 		super.mapAdd(renders2, feldAuswahl);
 		if(feldAuswahl != null && cheatmode != null)
-			renders2[feldAuswahl.y][feldAuswahl.x].add(new Render("Auswahl", feld(feldAuswahl.y, feldAuswahl.x).markH()));
+			renders2[feldAuswahl.y][feldAuswahl.x].add(new Render("Auswahl" + feld(feldAuswahl.y, feldAuswahl.x).markH(), 0));
 	}
 
 	@Override

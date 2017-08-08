@@ -179,7 +179,7 @@ public class BFeld extends LFeld implements Feld
 		if(loescher)
 			rc.addw("Löscher");
 		if(enterstange >= 0)
-			rc.addm("Stange" + (darauf ? "B" : ""), enterstange);
+			rc.addm("Stange" + (darauf && (schalterR.hp == enterstange || schalterR.hp + 1 == enterstange) ? "B" : "") + enterstange, 0);
 		if(lift)
 			if(liftOben())
 				rc.addm("LiftOben", steinH());

@@ -38,8 +38,8 @@ public class Shift
 
 	public static Ziel zeiger(int mex, int mey, ArrayList<Ziel> eintrag)
 	{
-		int mx = mex - xd2 + tile / 2;
-		int my = mey - yd2 + tile / 2;
+		int mx = mex - xd2 + th * curH;
+		int my = mey - yd2 + th * curH;
 		for(Ziel z : eintrag)
 			if(checkObDarauf(mx, my, z))
 				return z;
@@ -56,8 +56,8 @@ public class Shift
 
 	public static D3C zeigerF(int mex, int mey)
 	{
-		int mx = mex - xd2 + tile / 2;
-		int my = mey - yd2 + tile / 2;
+		int mx = mex - xd2 + th * curH;
+		int my = mey - yd2 + th * curH;
 		for(int iy = SIN.area.yw - 1; iy >= 0; iy--)
 			for(int ix = SIN.area.xw - 1; ix >= 0; ix--)
 			{
@@ -126,8 +126,8 @@ public class Shift
 			curT++;
 		if(curT > newT)
 			curT--;
-		double realX = srd.x - 1d / 2;
-		double realY = srd.y - 1d / 2;
+		double realX = srd.x;
+		double realY = srd.y;
 		int pixshX = (int) ((realX * tile - curX * tile) * acpix / delpix);
 		int pixshY = (int) ((realY * tile - curY * tile) * acpix / delpix);
 		tile = basetile / curT;
