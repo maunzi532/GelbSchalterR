@@ -3,9 +3,9 @@ package block.state;
 import block.item.*;
 import java.util.*;
 
-public class ItemD implements Comparable<ItemD>
+public class ItemD
 {
-	private final int type;
+	final int type;
 	private final int[] data;
 
 	public ItemD(int type, int... data)
@@ -33,12 +33,6 @@ public class ItemD implements Comparable<ItemD>
 			default:
 				throw new RuntimeException();
 		}
-	}
-
-	@Override
-	public int compareTo(ItemD itemD)
-	{
-		return type - itemD.type;
 	}
 
 	@Override

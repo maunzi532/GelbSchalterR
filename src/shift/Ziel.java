@@ -27,4 +27,26 @@ public class Ziel extends D3C implements Comparable<Ziel>
 			return ziel.h - h;
 		return id - ziel.id;
 	}
+
+	@Override
+	public boolean equals(Object o)
+	{
+		if(this == o) return true;
+		if(!(o instanceof Ziel)) return false;
+		if(!super.equals(o)) return false;
+		Ziel ziel = (Ziel) o;
+		return id == ziel.id && nummer == ziel.nummer && taste == ziel.taste &&
+				(von != null ? von.equals(ziel.von) : ziel.von == null);
+	}
+
+	@Override
+	public int hashCode()
+	{
+		int result = super.hashCode();
+		result = 31 * result + (von != null ? von.hashCode() : 0);
+		result = 31 * result + id;
+		result = 31 * result + nummer;
+		result = 31 * result + taste;
+		return result;
+	}
 }

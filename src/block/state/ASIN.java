@@ -47,11 +47,11 @@ public class ASIN
 				{
 					Shift.moveToTarget(schalterR.srd);
 					SIN.drawX();
-					/*do
+					do
 					{
 						U.warte(20);
 						TA.bereit();
-					}while(TA.take[16] != 2);*/
+					}while(TA.take[16] != 2 && TA.take[65] <= 0);
 				}
 				else
 					System.out.println(states.size());
@@ -147,6 +147,7 @@ public class ASIN
 
 	private static void showFastPath()
 	{
+		schalterR.gewonnen = false;
 		caret1 = 0;
 		states.get(caret1).charge(schalterR);
 		schalterR.srd.reset(schalterR);
@@ -158,13 +159,18 @@ public class ASIN
 			U.warte(20);
 		}
 		schalterR.srd.dspeed = 0.25;
-		schalterR.srd.mspeed = 2;
+		schalterR.srd.mspeed = 6;
 		int noch = ws[0];
 		while(!states.get(caret1).gewonnen)
 		{
 			Shift.moveToTarget(schalterR.srd);
 			SIN.drawX();
-			U.warte(20);
+			/*do
+			{
+				U.warte(20);
+				TA.bereit();
+			}while(TA.take[16] != 2);*/
+			U.warte(100);
 			schalterR.checkFields();
 			int c2 = 0;
 			for(int i = 0; i < pointers.get(caret1).size(); i++)
@@ -177,6 +183,12 @@ public class ASIN
 			noch = ws[caret1];
 			schalterR.moveR(c2);
 			Shift.selectTarget(schalterR.d3c());
+			BState check = new BState(schalterR);
+			if(!states.get(caret1).equals(check))
+			{
+				System.out.println("Fehler");
+				states.get(caret1).charge(schalterR);
+			}
 		}
 		schalterR.noMovement();
 		for(int i = 0; i < 20; i++)

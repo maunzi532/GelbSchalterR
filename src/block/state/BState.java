@@ -27,7 +27,7 @@ public class BState
 			for(int ix = 0; ix < schalterR.xw; ix++)
 				if(schalterR.feld[iy][ix].benutzt)
 					bd.add(new BlockD(ix, iy));
-		items = schalterR.items.stream().map(Item::saveState).sorted().collect(Collectors.toList());
+		items = schalterR.items.stream().map(Item::saveState).collect(Collectors.toList());
 	}
 
 	public void charge(SchalterR schalterR)
@@ -66,7 +66,7 @@ public class BState
 			if(!bd.get(i).equals(bState.bd.get(i)))
 				return false;
 		for(int i = 0; i < items.size(); i++)
-			if(!items.get(i).equals(bState.items.get(i)))
+			if(!bState.items.contains(items.get(i)))
 				return false;
 		return true;
 	}
