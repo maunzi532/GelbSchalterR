@@ -17,6 +17,14 @@ public class FahrendeEbene extends Item
 		ort = start;
 	}
 
+	public FahrendeEbene(D3C start, D3C ort)
+	{
+		id = 8;
+		level = -1;
+		this.start = start;
+		this.ort = ort;
+	}
+
 	@Override
 	public Item kopie(SchalterR schalterR)
 	{
@@ -28,13 +36,20 @@ public class FahrendeEbene extends Item
 	@Override
 	public boolean weg()
 	{
-		return level == 0 || schalterR.xp != ort.x || schalterR.yp != ort.y || schalterR.hp != ort.h;
+		if(schalterR.xp != ort.x || schalterR.yp != ort.y || schalterR.hp != ort.h)
+			level = 0;
+		if(level == 0 && (schalterR.xp != start.x || schalterR.yp != start.y))
+		{
+			schalterR.feld[start.y][start.x].fahrebene1 = null;
+			return true;
+		}
+		return false;
 	}
 
 	@Override
 	public void setzeOptionen(int xp, int yp, int hp, int xw, int yw, BFeld fp)
 	{
-		if(schalterR.ebeneRichtung >= 4)
+		if(schalterR.ebeneRichtung >= 4 || level == 0)
 			return;
 		int xm = schalterR.ebeneRichtung != 3 ? schalterR.ebeneRichtung - 1 : 0;
 		int ym = schalterR.ebeneRichtung != 0 ? schalterR.ebeneRichtung - 2 : 0;
@@ -64,6 +79,6 @@ public class FahrendeEbene extends Item
 	@Override
 	public ItemD saveState()
 	{
-		return new ItemD(id, ort.x, ort.y, ort.h);
+		return new ItemD(id, start.x, start.y, start.h, ort.x, ort.y, ort.h);
 	}
 }

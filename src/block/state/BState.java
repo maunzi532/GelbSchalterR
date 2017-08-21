@@ -1,6 +1,7 @@
 package block.state;
 
 import block.*;
+import block.item.*;
 import java.util.*;
 
 public class BState
@@ -52,11 +53,16 @@ public class BState
 					caret++;
 				}
 			}
-		for(int i = 0; i < SchalterR.itemtypes; i++)
+		for(int i = 1; i < SchalterR.itemtypes; i++)
 			if(items[i] != null)
 				schalterR.items[i] = items[i].toItem().kopie(schalterR);
 			else
 				schalterR.items[i] = null;
+		if(schalterR.items[8] != null)
+		{
+			FahrendeEbene fe = (FahrendeEbene) schalterR.items[8];
+			schalterR.feld[fe.start.y][fe.start.x].fahrebene1 = fe;
+		}
 	}
 
 	@Override

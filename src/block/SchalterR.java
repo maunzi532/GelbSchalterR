@@ -143,6 +143,7 @@ public class SchalterR extends Area
 				states.pop().charge(this);
 				srd.reset2(this);
 				Shift.localReset(new D3C(xp, yp, hp));
+				generateShowItems();
 			}
 		if(SIN.mfokusX >= 1 && itemauswahl(showItems.size() > 4 ? SIN.mfokusY * 2 + SIN.mfokusX - 1 : SIN.mfokusY / 2))
 			return false;
@@ -213,8 +214,6 @@ public class SchalterR extends Area
 
 	public void gehen(D3C ziel)
 	{
-		if(ziel.x != xp && ziel.y != yp)
-			feld[yp][xp].weggehen();
 		xp = ziel.x;
 		yp = ziel.y;
 		hp = ziel.h;

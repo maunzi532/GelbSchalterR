@@ -11,6 +11,7 @@ public class BFeld extends LFeld implements Feld
 	private SchalterR schalterR;
 
 	public boolean benutzt = false;
+	public Item fahrebene1;
 
 	public BFeld(){}
 
@@ -90,14 +91,7 @@ public class BFeld extends LFeld implements Feld
 
 	private int existEbene()
 	{
-		return fahrebene;
-		/*if(fahrebene < 0)
-			return -1;
-		int idx = schalterR.items.indexOf(new FahrendeEbene());
-		if(idx < 0)
-			return fahrebene;
-		FahrendeEbene fe = (FahrendeEbene) schalterR.items.get(idx);
-		return fe.start.x == schalterR.xp && fe.start.y == schalterR.yp ? -1 : fahrebene;*/
+		return fahrebene1 == null || schalterR.items[8] != fahrebene1 ? fahrebene : -1;
 	}
 
 	private int steinH()
@@ -126,11 +120,6 @@ public class BFeld extends LFeld implements Feld
 		return ebenH();
 	}
 
-	public void weggehen()
-	{
-
-	}
-
 	public void gehenL()
 	{
 		if(schalterR.hp == bodenH() && loescher)
@@ -146,7 +135,10 @@ public class BFeld extends LFeld implements Feld
 		if(schalterR.hp == enterstange && enterpfeil >= 0)
 			items[7] = new FahrenderPfeil(enterpfeil, schalterR.d3c()).kopie(schalterR);
 		if(schalterR.hp == existEbene() && bodenH() < fahrebene)
-			items[8] = new FahrendeEbene(schalterR.d3c()).kopie(schalterR);
+		{
+			fahrebene1 = new FahrendeEbene(schalterR.d3c()).kopie(schalterR);
+			items[8] = fahrebene1;
+		}
 	}
 
 	public void gehenFeld()
