@@ -47,7 +47,7 @@ public class FahrendeEbene extends Item
 	}
 
 	@Override
-	public boolean benutze(int num, boolean cl, boolean main, boolean lvm)
+	public boolean benutze(int num, boolean cl, boolean charge, boolean lvm)
 	{
 		schalterR.setRichtung(schalterR.ebeneRichtung);
 		ort = g1.get(num);

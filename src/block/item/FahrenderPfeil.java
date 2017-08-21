@@ -51,7 +51,7 @@ public class FahrenderPfeil extends Item
 	}
 
 	@Override
-	public boolean benutze(int num, boolean cl, boolean main, boolean lvm)
+	public boolean benutze(int num, boolean cl, boolean charge, boolean lvm)
 	{
 		if(g1.get(num).equals(ort))
 			level = 0;

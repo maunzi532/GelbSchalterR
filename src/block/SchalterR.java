@@ -146,11 +146,14 @@ public class SchalterR extends Area
 			}
 		if(SIN.mfokusX >= 1 && itemauswahl(showItems.size() > 4 ? SIN.mfokusY * 2 + SIN.mfokusX - 1 : SIN.mfokusY / 2))
 			return false;
-		int code = slowerInput();
-		if(code >= 0)
-			benutze(SIN.tasten[code], false);
+		int[] code = slowerInput();
+		if(code[0] >= 0)
+		{
+			if(benutze(SIN.tasten[code[0]], false, code[1] > 0))
+				discharge(code[0]);
+		}
 		else if(TA.take[201] == 2)
-			return benutze(SIN.auswahl, true);
+			return benutze(SIN.auswahl, true, true);
 		else if(cheatmode != null)
 			cheatmode.move();
 		return false;
@@ -174,10 +177,10 @@ public class SchalterR extends Area
 		return false;
 	}
 
-	private boolean benutze(Ziel ziel, boolean cl)
+	private boolean benutze(Ziel ziel, boolean cl, boolean charge)
 	{
 		return ziel != null && ziel.von instanceof Item && ((Item) ziel.von)
-				.benutze(ziel.nummer, cl, items[akItem] == ziel.von, false);
+				.benutze(ziel.nummer, cl, charge, false);
 	}
 
 	public boolean moveR(int caret2)

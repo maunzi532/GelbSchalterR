@@ -67,12 +67,18 @@ public class Schalterpistole extends LaengeItem
 		}
 	}
 
-	public boolean benutze(int num, boolean cl, boolean main, boolean lvm)
+	public boolean benutze(int num, boolean cl, boolean charge, boolean lvm)
 	{
 		setzeR(schalterR.xp, schalterR.yp, g1.get(num).x, g1.get(num).y);
 		D3C zo = g1.get(num);
 		schalterR.farbeAktuell = schalterR.feld[zo.y][zo.x].schalter;
 		return true;
+	}
+
+	@Override
+	public String marker(boolean hier)
+	{
+		return "B";
 	}
 
 	@Override

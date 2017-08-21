@@ -55,6 +55,12 @@ public class Fluegel extends LaengeItem
 	}
 
 	@Override
+	public String marker(boolean hier)
+	{
+		return "A";
+	}
+
+	@Override
 	public String speichername()
 	{
 		return "flügel";

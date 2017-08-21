@@ -66,9 +66,9 @@ public abstract class Item implements PreItem
 	}
 
 	@Override
-	public String marker()
+	public String marker(boolean hier)
 	{
-		return "A";
+		return hier ? "B" : "C";
 	}
 
 	@Override
@@ -81,7 +81,7 @@ public abstract class Item implements PreItem
 		return String.valueOf(taste - 1);
 	}
 
-	public boolean benutze(int num, boolean cl, boolean main, boolean lvm)
+	public boolean benutze(int num, boolean cl, boolean charge, boolean lvm)
 	{
 		setzeR(schalterR.xp, schalterR.yp, g1.get(num).x, g1.get(num).y);
 		if(lvm && level > 0)

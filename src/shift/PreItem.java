@@ -2,7 +2,7 @@ package shift;
 
 public interface PreItem
 {
-	String marker();
+	String marker(boolean hier);
 
 	String symbol(int key);
 }

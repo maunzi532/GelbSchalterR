@@ -1,6 +1,5 @@
 package block.item;
 
-import area.*;
 import laderLC.*;
 
 public abstract class LaengeItem extends Item
@@ -16,11 +15,9 @@ public abstract class LaengeItem extends Item
 	}
 
 	@Override
-	public boolean benutze(int num, boolean cl, boolean main, boolean lvm)
+	public boolean benutze(int num, boolean cl, boolean charge, boolean lvm)
 	{
-		if(!cl && !main && TA.take[16] <= 0 && level >= 0)
-			return false;
-		return super.benutze(num, cl, main, true);
+		return (cl || charge) && super.benutze(num, cl, charge, true);
 	}
 
 	@Override

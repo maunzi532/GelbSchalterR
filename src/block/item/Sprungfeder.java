@@ -51,6 +51,12 @@ public class Sprungfeder extends LaengeItem
 	}
 
 	@Override
+	public String marker(boolean hier)
+	{
+		return "A";
+	}
+
+	@Override
 	public String bildname()
 	{
 		return "Sprungfeder";

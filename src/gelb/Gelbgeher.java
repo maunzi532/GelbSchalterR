@@ -139,7 +139,7 @@ public class Gelbgeher extends Area implements PreItem
 	}
 
 	@Override
-	public String marker()
+	public String marker(boolean hier)
 	{
 		return "";
 	}
@@ -219,7 +219,7 @@ public class Gelbgeher extends Area implements PreItem
 		}
 		else
 		{
-			int code = slowerInput();
+			int code = slowerInput()[0];
 			if(code == 0)
 				moved = useItem();
 			else if(code > 0)
