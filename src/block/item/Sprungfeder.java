@@ -7,6 +7,7 @@ public class Sprungfeder extends LaengeItem
 {
 	public Sprungfeder()
 	{
+		id = 4;
 		level = 1;
 		laenge = 2;
 	}
@@ -14,6 +15,7 @@ public class Sprungfeder extends LaengeItem
 	public Sprungfeder(int level, int priority, int laenge)
 	{
 		super(level, priority, laenge);
+		id = 4;
 	}
 
 	@Override
@@ -27,7 +29,7 @@ public class Sprungfeder extends LaengeItem
 	@Override
 	public void setzeOptionen(int xp, int yp, int hp, int xw, int yw, BFeld fp)
 	{
-		if(!fp.aufBoden())
+		if(!schalterR.aufEben())
 			return;
 		for(int r = 0; r <= 3; r++)
 		{
@@ -42,7 +44,7 @@ public class Sprungfeder extends LaengeItem
 				BFeld f = schalterR.feld[yf][xf];
 				if(f.getBlockH() > hp)
 					break;
-				if(i == laenge && f.aufBoden())
+				if(i == laenge && f.aufEben())
 					option(xf, yf, hp, r + 1);
 			}
 		}
@@ -57,6 +59,6 @@ public class Sprungfeder extends LaengeItem
 	@Override
 	public ItemD saveState()
 	{
-		return new ItemD(4, level, priority, laenge);
+		return new ItemD(id, level, priority, laenge);
 	}
 }

@@ -9,6 +9,7 @@ public class CheatMovement extends Item
 
 	public CheatMovement(Cheatmode cheatmode)
 	{
+		id = 0;
 		this.cheatmode = cheatmode;
 		level = -1;
 	}
@@ -60,6 +61,6 @@ public class CheatMovement extends Item
 	@Override
 	public ItemD saveState()
 	{
-		return new ItemD(0);
+		return new ItemD(id);
 	}
 }

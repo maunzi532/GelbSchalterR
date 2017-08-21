@@ -28,6 +28,7 @@ public class BFeld extends LFeld implements Feld
 		copy.blockFarbe = von.blockFarbe;
 		copy.sonstH = von.sonstH;
 		copy.schalter = von.schalter;
+		copy.eSchalter = von.eSchalter;
 		copy.pfeil = von.pfeil;
 		copy.einhauwand = von.einhauwand;
 		copy.dia = von.dia;
@@ -36,6 +37,7 @@ public class BFeld extends LFeld implements Feld
 		copy.loescher = von.loescher;
 		copy.enterstange = von.enterstange;
 		copy.enterpfeil = von.enterpfeil;
+		copy.fahrebene = von.fahrebene;
 		copy.lift = von.lift;
 		copy.item = von.item;
 		return copy;
@@ -46,42 +48,56 @@ public class BFeld extends LFeld implements Feld
 		benutzt = false;
 	}
 
-	public boolean betretengeht(int side)
+	public boolean betretengeht(int h, int side)
 	{
+		if(h != bodenH())
+			return true;
 		if(einhauwand >= 0 && !benutzt && einhauwand != side)
 			return false;
 		if(pfeil >= 0 && pfeil == side)
 			return false;
 		if(diaTuer > schalterR.dias)
 			return false;
-		if(eis && !benutzt && !schalterR.items.contains(new Feuer()))
+		if(eis && !benutzt && schalterR.items[2] == null)
 			return false;
 		return true;
 	}
 
-	public boolean aufBoden()
+	public boolean weggehengeht(int h, int side)
 	{
-		return schalterR.hp == bodenH();
+		return h != bodenH() || !(pfeil >= 0 && pfeil != side);
 	}
 
-	public boolean weggehengeht(int side)
+	public boolean aufEben()
 	{
-		return !(pfeil >= 0 && pfeil != side);
+		return schalterR.hp == ebenH();
 	}
 
 	/*public int getBlockLaserH()
 	{
-		return (einhauwand >= 0 && !benutzt) || diaTuer > 0 || (eis && !benutzt) ? bodenH() + 1 : bodenH();
+		return Math.max((einhauwand >= 0 && !benutzt) || diaTuer > 0 || (eis && !benutzt) ? bodenH() + 1 : bodenH(), existEbene());
 	}*/
 
 	public int getBlockH()
 	{
-		return (einhauwand >= 0 && !benutzt) || diaTuer > schalterR.dias || (eis && !benutzt) ? bodenH() + 1 : bodenH();
+		return Math.max((einhauwand >= 0 && !benutzt) || diaTuer > schalterR.dias || (eis && !benutzt) ? bodenH() + 1 : bodenH(), existEbene());
 	}
 
 	public boolean farbeAktiv()
 	{
 		return blockFarbe == schalterR.farbeAktuell;
+	}
+
+	private int existEbene()
+	{
+		return fahrebene;
+		/*if(fahrebene < 0)
+			return -1;
+		int idx = schalterR.items.indexOf(new FahrendeEbene());
+		if(idx < 0)
+			return fahrebene;
+		FahrendeEbene fe = (FahrendeEbene) schalterR.items.get(idx);
+		return fe.start.x == schalterR.xp && fe.start.y == schalterR.yp ? -1 : fahrebene;*/
 	}
 
 	private int steinH()
@@ -99,34 +115,48 @@ public class BFeld extends LFeld implements Feld
 		return liftOben() ? steinH() + 1 : steinH();
 	}
 
+	public int ebenH()
+	{
+		return Math.max(bodenH(), existEbene());
+	}
+
 	@Override
 	public int markH()
 	{
-		return bodenH();
+		return ebenH();
 	}
 
-	public void gehen()
+	public void weggehen()
+	{
+
+	}
+
+	public void gehenL()
 	{
 		if(schalterR.hp == bodenH() && loescher)
-			schalterR.items.forEach(Item::loescher);
-		Item itemA = schalterR.items.get(schalterR.akItem);
-		schalterR.items.removeIf(Item::weg);
-		if(item != null && (schalterR.items.indexOf(item) < 0 || item.priority >= schalterR.items.get(schalterR.items.indexOf(item)).priority))
-		{
-			schalterR.items.remove(item);
-			schalterR.items.add(item.kopie(schalterR));
-		}
+			for(int i = 0; i < SchalterR.itemtypes; i++)
+				if(schalterR.items[i] != null)
+					schalterR.items[i].loescher();
+	}
+
+	public void gehenItem(Item[] items)
+	{
+		if(item != null && (items[item.id] == null || item.priority >= items[item.id].priority))
+			items[item.id] = item.kopie(schalterR);
 		if(schalterR.hp == enterstange && enterpfeil >= 0)
-		{
-			schalterR.items.remove(new FahrenderPfeil());
-			schalterR.items.add(new FahrenderPfeil(enterpfeil, schalterR.xp, schalterR.yp, schalterR.hp).kopie(schalterR));
-		}
-		int nA = schalterR.items.indexOf(itemA);
-		schalterR.akItem = nA >= 0 ? nA : 0;
+			items[7] = new FahrenderPfeil(enterpfeil, schalterR.d3c()).kopie(schalterR);
+		if(schalterR.hp == existEbene() && bodenH() < fahrebene)
+			items[8] = new FahrendeEbene(schalterR.d3c()).kopie(schalterR);
+	}
+
+	public void gehenFeld()
+	{
 		if(schalterR.hp == bodenH())
 		{
 			if(schalter != 'n')
 				schalterR.farbeAktuell = schalter;
+			if(eSchalter >= 0)
+				schalterR.ebeneRichtung = eSchalter;
 			if(dia && !benutzt)
 			{
 				benutzt = true;
@@ -164,6 +194,8 @@ public class BFeld extends LFeld implements Feld
 		}
 		if(schalter != 'n')
 			rc.addw("Schalter" + (schalterR.farbeAktuell == schalter ? "1" : "") + schalter);
+		if(eSchalter >= 0)
+			rc.addw("RSchalter" + (schalterR.ebeneRichtung == eSchalter ? "B" : "") + eSchalter);
 		if(pfeil >= 0)
 			rc.addw("Pfeil" + pfeil);
 		if(einhauwand >= 0)
@@ -191,6 +223,8 @@ public class BFeld extends LFeld implements Feld
 			if(enterpfeil >= 0)
 				rc.addm("Enterpfeil" + enterpfeil, enterstange);
 		}
+		if(existEbene() >= 0)
+			rc.addm("Fahrebene", fahrebene);
 		if(lift)
 			if(liftOben())
 				rc.addm("LiftOben", steinH());

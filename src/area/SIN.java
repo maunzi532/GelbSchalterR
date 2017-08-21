@@ -37,7 +37,8 @@ public class SIN
 			fr.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 			TA.einbau(fr);
 			fr.pack();
-			size2 = new Dimension(800, 800);
+			int h1 = Toolkit.getDefaultToolkit().getScreenSize().height / 6 * 5;
+			size2 = new Dimension(h1, h1);
 			size = new Dimension(size2.width + size2.height / 10 * 3, size2.height);
 			fr.setSize(size);
 			resizeImg();

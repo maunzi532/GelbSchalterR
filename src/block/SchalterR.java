@@ -8,6 +8,8 @@ import java.io.*;
 import java.nio.charset.*;
 import java.nio.file.*;
 import java.util.*;
+import java.util.List;
+import java.util.stream.*;
 import javax.swing.*;
 import laderLC.*;
 import shift.*;
@@ -15,14 +17,18 @@ import tex.*;
 
 public class SchalterR extends Area
 {
+	public static final int itemtypes = 9;
+
 	public BFeld[][] feld;
 	private SchalterLies sl;
 
 	public char farbeAktuell = 'A';
+	public int ebeneRichtung;
 	public int dias;
 
 	int akItem;
-	public final ArrayList<Item> items = new ArrayList<>();
+	public Item[] items;
+	public List<Item> showItems;
 
 	private Cheatmode cheatmode;
 
@@ -64,11 +70,13 @@ public class SchalterR extends Area
 		tick = 0;
 		mapview = false;
 		farbeAktuell = 'A';
+		ebeneRichtung = 4;
 		dias = 0;
-		items.clear();
+		items = new Item[itemtypes];
 		if(cheatmode != null)
 			cheatmode.reset();
-		items.add(new Movement().kopie(this));
+		items[1] = new Movement().kopie(this);
+		generateShowItems();
 		xw = sl.se[0][0];
 		yw = sl.se[0][1];
 		xp = sl.se[1][0];
@@ -91,32 +99,35 @@ public class SchalterR extends Area
 	@Override
 	public void noMovement()
 	{
-		for(int i = 0; i < items.size(); i++)
-			items.get(akvorne(i)).noMovement();
+		for(int i = 0; i < itemtypes; i++)
+			if(items[i] != null)
+				items[i].noMovement();
 	}
 
 	@Override
 	public void checkFields()
 	{
 		boolean[] tasten = new boolean[5];
-		for(int i = 0; i < items.size(); i++)
-			if(items.get(akvorne(i)).disabled)
-				items.get(akvorne(i)).noMovement();
-			else
-				items.get(akvorne(i)).setzeOptionen1(xp, yp, hp, xw, yw, akvorne(i), tasten);
+		for(int i = 0; i < itemtypes; i++)
+			if(items[i] != null)
+				if(items[i].disabled)
+					items[i].noMovement();
+				else
+					items[i].setzeOptionen1(xp, yp, hp, xw, yw, tasten);
 	}
 
 	private int akvorne(int i)
 	{
-		return i == 0 ? akItem : i <= akItem ? i - 1 : i;
+		return akItem < 0 ? i : i == 0 ? akItem : i <= akItem ? i - 1 : i;
 	}
 
 	@Override
 	public ArrayList<Ziel> anzielbar()
 	{
 		ArrayList<Ziel> eintrag = new ArrayList<>();
-		for(int i = 0; i < items.size(); i++)
-			eintrag.addAll(items.get(akvorne(i)).g1);
+		for(int i = 0; i < itemtypes; i++)
+			if(items[akvorne(i)] != null)
+				eintrag.addAll(items[akvorne(i)].g1);
 		Collections.sort(eintrag);
 		return eintrag;
 	}
@@ -133,7 +144,7 @@ public class SchalterR extends Area
 				srd.reset2(this);
 				Shift.localReset(new D3C(xp, yp, hp));
 			}
-		if(SIN.mfokusX >= 1 && itemauswahl(items.size() > 4 ? SIN.mfokusY * 2 + SIN.mfokusX - 1 : SIN.mfokusY / 2))
+		if(SIN.mfokusX >= 1 && itemauswahl(showItems.size() > 4 ? SIN.mfokusY * 2 + SIN.mfokusX - 1 : SIN.mfokusY / 2))
 			return false;
 		int code = slowerInput();
 		if(code >= 0)
@@ -147,16 +158,16 @@ public class SchalterR extends Area
 
 	private boolean itemauswahl(int nummer)
 	{
-		if(nummer < items.size())
+		if(nummer < showItems.size())
 		{
 			if(TA.take[201] == 2)
 			{
-				akItem = nummer;
+				akItem = showItems.get(nummer).id;
 				return true;
 			}
 			if(TA.take[203] == 2)
 			{
-				items.get(nummer).disabled = !items.get(nummer).disabled;
+				showItems.get(nummer).disabled = !showItems.get(nummer).disabled;
 				return true;
 			}
 		}
@@ -166,29 +177,59 @@ public class SchalterR extends Area
 	private boolean benutze(Ziel ziel, boolean cl)
 	{
 		return ziel != null && ziel.von instanceof Item && ((Item) ziel.von)
-				.benutze(ziel.nummer, cl, items.get(akItem) == ziel.von, false);
+				.benutze(ziel.nummer, cl, items[akItem] == ziel.von, false);
 	}
 
 	public boolean moveR(int caret2)
 	{
 		int k = 0;
-		for(int i = 0; i < items.size(); i++)
-			for(int j = 0; j < items.get(i).g1.size(); j++)
-			{
-				if(k == caret2)
+		for(int i = 0; i < itemtypes; i++)
+			if(items[i] != null)
+				for(int j = 0; j < items[i].g1.size(); j++)
 				{
-					items.get(i).benutze(j, true, true, false);
-					return true;
+					if(k == caret2)
+					{
+						items[i].benutze(j, true, true, false);
+						return true;
+					}
+					k++;
 				}
-				k++;
-			}
 		return false;
+	}
+
+	public boolean aufEben()
+	{
+		return hp == feld[yp][xp].bodenH() || items[8] != null;
 	}
 
 	public void angleichen()
 	{
 		sl.feld[yp][xp].hoehe = hp;
 		feld[yp][xp] = BFeld.copy(sl.feld[yp][xp], this);
+	}
+
+	public void gehen(D3C ziel)
+	{
+		if(ziel.x != xp && ziel.y != yp)
+			feld[yp][xp].weggehen();
+		xp = ziel.x;
+		yp = ziel.y;
+		hp = ziel.h;
+		feld[ziel.y][ziel.x].gehenL();
+		Item itemA = items[akItem];
+		for(int i = 0; i < itemtypes; i++)
+			if(items[i] != null && items[i].weg())
+				items[i] = null;
+		feld[ziel.y][ziel.x].gehenItem(items);
+		int nA = Arrays.asList(items).indexOf(itemA);
+		akItem = nA >= 0 ? nA : 0;
+		generateShowItems();
+		feld[ziel.y][ziel.x].gehenFeld();
+	}
+
+	private void generateShowItems()
+	{
+		showItems = Arrays.stream(items).filter(Objects::nonNull).collect(Collectors.toList());
 	}
 
 	public void speichern()
@@ -239,22 +280,22 @@ public class SchalterR extends Area
 		gd.setColor(Color.WHITE);
 		gd.drawRect(w1, 0, ht - 1, h - 1);
 		gd.setColor(Color.RED);
-		if(items.size() <= 4)
+		if(showItems.size() <= 4)
 		{
-			for(int i = 0; i < items.size(); i++)
+			for(int i = 0; i < showItems.size(); i++)
 			{
-				gd.drawImage(tex.bilder2D.get(items.get(i).bildname()), w1 + ht, ht * 2 * i, ht * 2, ht * 2, null);
-				if(items.get(i).disabled)
+				gd.drawImage(tex.bilder2D.get(showItems.get(i).bildname()), w1 + ht, ht * 2 * i, ht * 2, ht * 2, null);
+				if(showItems.get(i).disabled)
 					gd.drawLine(w1 + ht, ht * 2 * i, w1 + ht * 3 - 1, ht * 2 * (i + 1) - 1);
 			}
 			gd.drawRect(w1 + ht, ht * 2 * akItem, ht * 2 - 1, ht * 2 - 1);
 		}
 		else
 		{
-			for(int i = 0; i < items.size(); i++)
+			for(int i = 0; i < showItems.size(); i++)
 			{
-				gd.drawImage(tex.bilder2D.get(items.get(i).bildname()), w1 + ht + (i % 2) * ht, ht * (i / 2), ht, ht, null);
-				if(items.get(i).disabled)
+				gd.drawImage(tex.bilder2D.get(showItems.get(i).bildname()), w1 + ht + (i % 2) * ht, ht * (i / 2), ht, ht, null);
+				if(showItems.get(i).disabled)
 					gd.drawLine(w1 + ht + (i % 2) * ht, ht * (i / 2), w1 + ht + (i % 2 + 1) * ht - 1, ht * (i / 2 + 1) - 1);
 			}
 			gd.drawRect(w1 + ht + (akItem % 2) * ht, ht * (akItem / 2), ht - 1, ht - 1);

@@ -7,13 +7,14 @@ import laderLC.*;
 
 public class LFeld
 {
-	static final int maxenh = 12;
+	static final int maxenh = 14;
 
 	public int hoehe;
 	boolean ziel;
 	public char blockFarbe = 'n';
 	public int sonstH;
 	public char schalter = 'n';
+	public int eSchalter = -1;
 	int pfeil = -1;
 	int einhauwand = -1;
 	boolean dia = false;
@@ -22,12 +23,13 @@ public class LFeld
 	boolean loescher;
 	public int enterstange = -1;
 	public int enterpfeil = -1;
+	public int fahrebene = -1;
 	public boolean lift;
 	Item item;
 
 	void enhance(SchalterR mit, int wie, boolean autoh)
 	{
-		if(autoh && wie != 3 && wie != 10 && wie != 12)
+		if(hoehe == 0 && autoh && wie != 3 && wie != 10 && wie != 12 && wie != 14)
 			hoehe = mit.hp;
 		switch(wie)
 		{
@@ -71,6 +73,12 @@ public class LFeld
 				break;
 			case 12:
 				lift = true;
+				break;
+			case 13:
+				eSchalter = eSchalter < 0 ? mit.richtung : eSchalter < 4 ? 4 : -1;
+				break;
+			case 14:
+				fahrebene = mit.hp;
 				break;
 		}
 	}
@@ -128,6 +136,9 @@ public class LFeld
 				case "schalter":
 					schalter = Character.toUpperCase(value.charAt(0));
 					break;
+				case "ebeneschalter":
+					eSchalter = Integer.parseInt(value);
+					break;
 				case "pfeil":
 					pfeil = Integer.parseInt(value);
 					break;
@@ -151,6 +162,9 @@ public class LFeld
 					break;
 				case "enterpfeil":
 					enterpfeil = Integer.parseInt(value);
+					break;
+				case "fahrebene":
+					fahrebene = Integer.parseInt(value);
 					break;
 				case "lift":
 					lift = true;
@@ -193,6 +207,8 @@ public class LFeld
 			speichernZ(sb, "sonsth", String.valueOf(sonstH));
 		if(schalter != 'n')
 			speichernZ(sb, "schalter", String.valueOf(schalter));
+		if(eSchalter >= 0)
+			speichernZ(sb, "ebeneschalter", String.valueOf(eSchalter));
 		if(pfeil >= 0)
 			speichernZ(sb, "pfeil", String.valueOf(pfeil));
 		if(einhauwand >= 0)
@@ -209,6 +225,8 @@ public class LFeld
 			speichernZ(sb, "stange", enterstange == hoehe ? null : String.valueOf(enterstange));
 		if(enterpfeil >= 0)
 			speichernZ(sb, "enterpfeil", String.valueOf(enterpfeil));
+		if(fahrebene >= 0)
+			speichernZ(sb, "fahrebene", String.valueOf(fahrebene));
 		if(lift)
 			speichernZ(sb, "lift", null);
 		if(item != null)
@@ -251,6 +269,10 @@ public class LFeld
 					break;
 				case "sprung":
 					item = new Sprungfeder(1, 0, 2);
+					break;
+				case "plattform":
+					fahrebene = 1;
+					hoehe = 0;
 					break;
 				default:
 					if(build.toLowerCase().startsWith("enterhaken"))
@@ -300,6 +322,9 @@ public class LFeld
 					break;
 				case 's':
 					schalter = build.charAt(1);
+					break;
+				case 'k':
+					eSchalter = loru(build.charAt(1));
 					break;
 				case 'd':
 					dia = true;

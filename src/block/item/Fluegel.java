@@ -7,6 +7,7 @@ public class Fluegel extends LaengeItem
 {
 	public Fluegel()
 	{
+		id = 5;
 		level = 2;
 		laenge = 5;
 	}
@@ -14,6 +15,7 @@ public class Fluegel extends LaengeItem
 	public Fluegel(int level, int priority, int laenge)
 	{
 		super(level, priority, laenge);
+		id = 5;
 	}
 
 	@Override
@@ -27,7 +29,7 @@ public class Fluegel extends LaengeItem
 	@Override
 	public void setzeOptionen(int xp, int yp, int hp, int xw, int yw, BFeld fp)
 	{
-		if(!fp.aufBoden())
+		if(!schalterR.aufEben())
 			return;
 		for(int r = 0; r <= 3; r++)
 		{
@@ -42,7 +44,7 @@ public class Fluegel extends LaengeItem
 				BFeld f = schalterR.feld[yf][xf];
 				if(f.getBlockH() > hp)
 					break;
-				if(f.aufBoden())
+				if(f.aufEben())
 				{
 					if(i > 1)
 						option(xf, yf, hp, r + 1);
@@ -67,6 +69,6 @@ public class Fluegel extends LaengeItem
 	@Override
 	public ItemD saveState()
 	{
-		return new ItemD(5, level, priority, laenge);
+		return new ItemD(id, level, priority, laenge);
 	}
 }

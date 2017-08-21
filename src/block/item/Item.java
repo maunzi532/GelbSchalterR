@@ -8,6 +8,7 @@ import shift.*;
 
 public abstract class Item implements PreItem
 {
+	public int id;
 	SchalterR schalterR;
 	int level;
 	public int priority;
@@ -38,13 +39,11 @@ public abstract class Item implements PreItem
 		return level == 0;
 	}
 
-	private int id;
 	private boolean[] tasten;
 	public final ArrayList<Ziel> g1 = new ArrayList<>();
 
-	public void setzeOptionen1(int xp, int yp, int hp, int xw, int yw, int id, boolean[] tasten)
+	public void setzeOptionen1(int xp, int yp, int hp, int xw, int yw, boolean[] tasten)
 	{
-		this.id = id;
 		this.tasten = tasten;
 		g1.clear();
 		setzeOptionen(xp, yp, hp, xw, yw, schalterR.feld[yp][xp]);
@@ -87,16 +86,8 @@ public abstract class Item implements PreItem
 		setzeR(schalterR.xp, schalterR.yp, g1.get(num).x, g1.get(num).y);
 		if(lvm && level > 0)
 			level--;
-		gehen(g1.get(num));
+		schalterR.gehen(g1.get(num));
 		return true;
-	}
-
-	void gehen(D3C ziel)
-	{
-		schalterR.xp = ziel.x;
-		schalterR.yp = ziel.y;
-		schalterR.hp = ziel.h;
-		schalterR.feld[ziel.y][ziel.x].gehen();
 	}
 
 	void setzeR(int xa, int ya, int xn, int yn)

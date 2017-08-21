@@ -8,12 +8,14 @@ public class Schalterpistole extends LaengeItem
 {
 	public Schalterpistole()
 	{
+		id = 3;
 		laenge = 5;
 	}
 
 	public Schalterpistole(int level, int priority, int laenge)
 	{
 		super(level, priority, laenge);
+		id = 3;
 	}
 
 	@Override
@@ -28,7 +30,7 @@ public class Schalterpistole extends LaengeItem
 	public void setzeOptionen(int xp, int yp, int hp, int xw, int yw, BFeld fp)
 	{
 		char verboten = 'n';
-		if(fp.aufBoden())
+		if(hp == fp.bodenH())
 		{
 			if(fp.farbeAktiv() || fp.schalter != 'n')
 				return;
@@ -55,7 +57,7 @@ public class Schalterpistole extends LaengeItem
 				BFeld f = schalterR.feld[yf][xf];
 				if(f.getBlockH() > hp)
 					break;
-				if(f.schalter != 'n' && f.aufBoden())
+				if(f.schalter != 'n' && hp == f.bodenH())
 				{
 					if(!f.farbeAktiv() && f.schalter != verboten)
 						option(xf, yf, hp, r + 1);
@@ -82,6 +84,6 @@ public class Schalterpistole extends LaengeItem
 	@Override
 	public ItemD saveState()
 	{
-		return new ItemD(3, level, priority, laenge);
+		return new ItemD(id, level, priority, laenge);
 	}
 }

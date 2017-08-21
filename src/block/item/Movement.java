@@ -7,6 +7,7 @@ public class Movement extends Item
 {
 	public Movement()
 	{
+		id = 1;
 		level = -1;
 	}
 
@@ -27,7 +28,7 @@ public class Movement extends Item
 	@Override
 	public void setzeOptionen(int xp, int yp, int hp, int xw, int yw, BFeld fp)
 	{
-		if(!fp.aufBoden())
+		if(!schalterR.aufEben())
 			return;
 		if(fp.lift)
 			option(xp, yp, hp + (fp.liftOben() ? -1 : 1), 0);
@@ -38,7 +39,7 @@ public class Movement extends Item
 			if(xp + xm < 0 || yp + ym < 0 || xp + xm >= xw || yp + ym >= yw)
 				continue;
 			BFeld nf = schalterR.feld[yp + ym][xp + xm];
-			if(fp.weggehengeht(r) && nf.aufBoden() && nf.betretengeht((r + 2) % 4))
+			if(fp.weggehengeht(hp, r) && nf.aufEben() && nf.betretengeht(hp, (r + 2) % 4))
 				option(xp + xm, yp + ym, hp, r + 1);
 		}
 	}
@@ -52,6 +53,6 @@ public class Movement extends Item
 	@Override
 	public ItemD saveState()
 	{
-		return new ItemD(0);
+		return new ItemD(id);
 	}
 }

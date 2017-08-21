@@ -11,12 +11,14 @@ public class AerialEnterhaken extends Item
 
 	public AerialEnterhaken()
 	{
+		id = 6;
 		laenge = 5;
 	}
 
 	public AerialEnterhaken(int level, int priority, int laenge, boolean doppelt)
 	{
 		super(level, priority);
+		id = 6;
 		this.laenge = laenge;
 		this.doppelt = doppelt;
 	}
@@ -47,7 +49,7 @@ public class AerialEnterhaken extends Item
 		int zh = f.enterstange;
 		if(xf == xp && yf == yp && zh == hp)
 			return -1;
-		if(zh < f.bodenH() || (zh > f.bodenH() && !doppelt))
+		if(zh < f.ebenH() || (zh > f.ebenH() && !doppelt))
 			return -1;
 		int xd = (xf - xp) * (xf - xp);
 		int yd = (yf - yp) * (yf - yp);
@@ -107,6 +109,6 @@ public class AerialEnterhaken extends Item
 	@Override
 	public ItemD saveState()
 	{
-		return new ItemD(2, level, priority, laenge, doppelt ? 2 : 1);
+		return new ItemD(id, level, priority, laenge, doppelt ? 2 : 1);
 	}
 }

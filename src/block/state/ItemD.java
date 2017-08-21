@@ -2,6 +2,7 @@ package block.state;
 
 import block.item.*;
 import java.util.*;
+import shift.*;
 
 public class ItemD
 {
@@ -11,6 +12,8 @@ public class ItemD
 	public ItemD(int type, int... data)
 	{
 		this.type = type;
+		if(type == 0)
+			System.out.println(Arrays.toString(data));
 		this.data = data;
 	}
 
@@ -18,18 +21,22 @@ public class ItemD
 	{
 		switch(type)
 		{
-			case 0:
-				return new Movement();
 			case 1:
-				return new Feuer(data[0], data[1]);
+				return new Movement();
 			case 2:
-				return new AerialEnterhaken(data[0], data[1], data[2], data[3] == 2);
+				return new Feuer(data[0], data[1]);
 			case 3:
 				return new Schalterpistole(data[0], data[1], data[2]);
 			case 4:
 				return new Sprungfeder(data[0], data[1], data[2]);
 			case 5:
 				return new Fluegel(data[0], data[1], data[2]);
+			case 6:
+				return new AerialEnterhaken(data[0], data[1], data[2], data[3] == 2);
+			case 7:
+				return new FahrenderPfeil(data[0], new D3C(data[1], data[2], data[3]));
+			case 8:
+				return new FahrendeEbene(new D3C(data[0], data[1], data[2]));
 			default:
 				throw new RuntimeException();
 		}

@@ -5,11 +5,15 @@ import block.state.*;
 
 public class Feuer extends Item
 {
-	public Feuer(){}
+	public Feuer()
+	{
+		id = 2;
+	}
 
 	public Feuer(int level, int priority)
 	{
 		super(level, priority);
+		id = 2;
 	}
 
 	@Override
@@ -29,6 +33,6 @@ public class Feuer extends Item
 	@Override
 	public ItemD saveState()
 	{
-		return new ItemD(1, level, priority);
+		return new ItemD(id, level, priority);
 	}
 }
