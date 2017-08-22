@@ -8,7 +8,12 @@ import shift.*;
 public class ASIN
 {
 	private static ArrayList<BState> states;
+	private static ArrayList<Boolean> checked;
 	private static int caret1;
+	private static boolean ziel;
+	private static int maxdias;
+	private static boolean nca;
+	private static int caret2;
 	private static ArrayList<ArrayList<Integer>> pointers;
 	private static SchalterR schalterR;
 
@@ -17,22 +22,24 @@ public class ASIN
 	public static void run()
 	{
 		states = new ArrayList<>();
+		checked = new ArrayList<>();
 		caret1 = 0;
-		boolean nca = true;
-		int caret2 = 0;
+		ziel = false;
+		maxdias = 0;
+		nca = true;
+		caret2 = 0;
 		pointers = new ArrayList<>();
 		schalterR = (SchalterR) SIN.area;
 
 		states.add(new BState(schalterR));
+		checked.add(null);
 		pointers.add(new ArrayList<>());
 		while(caret1 < states.size())
 		{
 			if(states.get(caret1).gewonnen)
 			{
-				nca = true;
-				caret1++;
-				caret2 = 0;
-				pointers.add(new ArrayList<>());
+				ziel = true;
+				inc();
 				continue;
 			}
 			states.get(caret1).charge(schalterR);
@@ -54,7 +61,7 @@ public class ASIN
 					}while(TA.take[16] != 2 && TA.take[65] <= 0);
 				}
 				else
-					System.out.println(states.size());
+					System.out.println(states.size() + (ziel ? " z " : " ") + maxdias);
 			}
 			if(schalterR.moveR(caret2))
 			{
@@ -63,22 +70,49 @@ public class ASIN
 				int ind = states.indexOf(nst);
 				if(ind >= 0)
 					pointers.get(caret1).add(ind);
+				else if(SIN.testmode == 3 && strictlyBetter(nst))
+					pointers.get(caret1).add(-1);
 				else
 				{
 					pointers.get(caret1).add(states.size());
 					states.add(nst);
+					checked.add(null);
+					pointers.add(new ArrayList<>());
 				}
 			}
 			else
-			{
-				nca = true;
-				caret1++;
-				caret2 = 0;
-				pointers.add(new ArrayList<>());
-			}
+				inc();
 		}
-		System.out.println(states.size());
+		System.out.println(states.size() + (ziel ? " z" : ""));
 		ws();
+	}
+
+	private static void inc()
+	{
+		nca = true;
+		caret2 = 0;
+		maxdias = Math.max(maxdias, states.get(caret1).dias);
+		//pointers.add(new ArrayList<>());
+		if(SIN.testmode == 3)
+		{
+			checked.set(caret1, true);
+			for(caret1 = checked.size() - 1; checked.get(caret1) != null; caret1--)
+				if(caret1 <= 0)
+				{
+					caret1 = checked.size();
+					break;
+				}
+		}
+		else
+			caret1++;
+	}
+
+	private static boolean strictlyBetter(BState nst)
+	{
+		for(int i = 0; i < states.size(); i++)
+			if(nst.strictlyBetter(states.get(i)))
+				return true;
+		return false;
 	}
 
 	private static void ws()
@@ -114,13 +148,18 @@ public class ASIN
 				}
 			newws = newws2;
 		}
-		if(newws.isEmpty())
-			System.out.println("rip " + tcl);
+		if(SIN.testmode != 3)
+		{
+			if(newws.isEmpty())
+				System.out.println("rip " + tcl);
+			else
+				System.out.println("yay");
+			System.out.println(ws[0]);
+			if(newws.isEmpty())
+				showDeadEnds();
+		}
 		else
-			System.out.println("yay");
-		System.out.println(ws[0]);
-		if(newws.isEmpty())
-			showDeadEnds();
+			System.out.println(ws[0] + "?");
 		if(ws[0] >= 0)
 			showFastPath();
 	}
@@ -165,11 +204,6 @@ public class ASIN
 		{
 			Shift.moveToTarget(schalterR.srd);
 			SIN.drawX();
-			/*do
-			{
-				U.warte(20);
-				TA.bereit();
-			}while(TA.take[16] != 2);*/
 			U.warte(100);
 			schalterR.checkFields();
 			int c2 = 0;

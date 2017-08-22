@@ -33,6 +33,9 @@ class M
 				case "testmodevis":
 					testmode = 2;
 					break;
+				case "testmodefast":
+					testmode = 3;
+					break;
 				default:
 					selected = new File(args[i]);
 			}

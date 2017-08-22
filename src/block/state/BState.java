@@ -10,7 +10,7 @@ public class BState
 	private final int x, y, z;
 	private final char farbe;
 	private final int eRichtung;
-	private final int dias;
+	final int dias;
 	private final List<BlockD> bd;
 	private final ItemD[] items;
 
@@ -96,6 +96,21 @@ public class BState
 		result = 31 * result + bd.hashCode();
 		result = 31 * result + Arrays.hashCode(items);
 		return result;
+	}
+
+	public boolean strictlyBetter(BState bState)
+	{
+		if(x != bState.x || y != bState.y || z != bState.z || farbe != bState.farbe || eRichtung != bState.eRichtung || dias > bState.dias)
+			return false;
+		if(bd.size() > bState.bd.size())
+			return false;
+		for(int i = 0; i < bd.size(); i++)
+			if(!bState.bd.contains(bd.get(i)))
+				return false;
+		for(int i = 0; i < SchalterR.itemtypes; i++)
+			if((bState.items[i] == null || items[i] != null) && !Objects.equals(items[i], bState.items[i]))
+				return false;
+		return true;
 	}
 
 	@Override
