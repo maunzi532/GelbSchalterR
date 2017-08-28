@@ -1,6 +1,8 @@
 package block.state;
 
-class BlockD
+import java.io.*;
+
+class BlockD implements Serializable
 {
 	final int x, y;
 

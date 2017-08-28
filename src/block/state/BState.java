@@ -1,10 +1,13 @@
 package block.state;
 
+import area.*;
 import block.*;
 import block.item.*;
+import java.io.*;
 import java.util.*;
+import javax.swing.*;
 
-public class BState
+public class BState implements Serializable
 {
 	final boolean gewonnen;
 	private final int x, y, z;
@@ -63,6 +66,46 @@ public class BState
 			FahrendeEbene fe = (FahrendeEbene) schalterR.items[8];
 			schalterR.feld[fe.start.y][fe.start.x].fahrebene1 = fe;
 		}
+	}
+
+	public void speichernState()
+	{
+		JFileChooser fc = new JFileChooser(new File("saves"));
+		if(fc.showSaveDialog(null) == JFileChooser.APPROVE_OPTION)
+		{
+			try
+			{
+				ObjectOutputStream sv = new ObjectOutputStream(new FileOutputStream(fc.getSelectedFile()));
+				sv.writeObject(this);
+				sv.close();
+			}catch(IOException e)
+			{
+				throw new RuntimeException(e);
+			}
+		}
+		TA.fix();
+	}
+
+	public static BState ladenState()
+	{
+		JFileChooser fc = new JFileChooser(new File("saves"));
+		boolean sh = TA.take[16] > 0;
+		if(fc.showOpenDialog(null) == JFileChooser.APPROVE_OPTION)
+		{
+			try
+			{
+				ObjectInputStream sv = new ObjectInputStream(new FileInputStream(fc.getSelectedFile()));
+				BState re = (BState) sv.readObject();
+				sv.close();
+				TA.fix();
+				return re;
+			}catch(IOException | ClassNotFoundException e)
+			{
+				throw new RuntimeException(e);
+			}
+		}
+		TA.fix();
+		return null;
 	}
 
 	@Override

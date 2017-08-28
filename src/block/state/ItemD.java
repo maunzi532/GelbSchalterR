@@ -1,10 +1,11 @@
 package block.state;
 
 import block.item.*;
+import java.io.*;
 import java.util.*;
 import shift.*;
 
-public class ItemD
+public class ItemD implements Serializable
 {
 	final int type;
 	private final int[] data;

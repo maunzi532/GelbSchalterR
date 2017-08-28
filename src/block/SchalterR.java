@@ -136,15 +136,27 @@ public class SchalterR extends Area
 	public boolean moveX()
 	{
 		if(TA.take[120] == 2)
-			states.add(new BState(this));
+		{
+			if(TA.take[16] > 0)
+				new BState(this).speichernState();
+			else
+				states.add(new BState(this));
+		}
 		if(TA.take[121] == 2)
-			if(!states.empty())
+		{
+			BState lade = null;
+			if(TA.take[16] > 0)
+				lade = BState.ladenState();
+			else if(!states.empty())
+				lade = states.pop();
+			if(lade != null)
 			{
-				states.pop().charge(this);
+				lade.charge(this);
 				srd.reset2(this);
 				Shift.localReset(new D3C(xp, yp, hp));
 				generateShowItems();
 			}
+		}
 		if(SIN.mfokusX >= 1 && itemauswahl(showItems.size() > 4 ? SIN.mfokusY * 2 + SIN.mfokusX - 1 : SIN.mfokusY / 2))
 			return false;
 		int[] code = slowerInput();
@@ -253,6 +265,7 @@ public class SchalterR extends Area
 				throw new RuntimeException(e);
 			}
 		}
+		TA.fix();
 	}
 
 	@Override

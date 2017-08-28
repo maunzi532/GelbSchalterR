@@ -49,7 +49,7 @@ public class AerialEnterhaken extends Item
 		int zh = f.enterstange;
 		if(xf == xp && yf == yp && zh == hp)
 			return -1;
-		if(zh < f.ebenH() || (zh > f.ebenH() && !doppelt))
+		if(zh < f.ebenH() || (!doppelt && (!schalterR.aufEben() || (zh > f.ebenH() && f.enterpfeil < 0))))
 			return -1;
 		int xd = (xf - xp) * (xf - xp);
 		int yd = (yf - yp) * (yf - yp);
