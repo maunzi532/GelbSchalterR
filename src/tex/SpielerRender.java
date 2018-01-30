@@ -30,7 +30,7 @@ public class SpielerRender extends Render3
 		double hb2 = 0.9;
 		double hb3 = 0.5;
 		int cs = 46;
-		int ct1 = 1;
+		int ct1 = 4;
 		int cs2a = cs + ct1;
 		int cs2b = cs + ct1 * 3 + 1;
 		double cwb = 2.2;

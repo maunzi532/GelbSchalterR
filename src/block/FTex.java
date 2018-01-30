@@ -35,10 +35,12 @@ class FTex extends Texturen
 	{
 		super(pack, texOrdnerName);
 		for(int i = 0; i < 10; i++)
-			farbTex1("Höhe" + String.valueOf(i), false, 'A',  farben);
-		farbTex1("HöheI", true, 'A',  farben);
-		farbTex1("Schalter", true, 'A',  farben);
-		farbTex1("Schalter1", true, 'A',  farben);
+			farbTex1("Höhe" + String.valueOf(i), false, 'A', farben);
+		farbTex1("HöheI", true, 'A', farben);
+		farbTex1("Schalter", true, 'A', farben);
+		farbTex1("Schalter1", true, 'A', farben);
+		farbTex1("Würfel", true, 'A', marker);
+		farbTex1("Würfel1", true, 'A', marker);
 		farbTex1("Möglich", true, 'A', marker);
 		for(int i = 0; i < 4; i++)
 			farbTex1("Symbol" + i, true, 'A', symbol);

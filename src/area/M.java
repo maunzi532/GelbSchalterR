@@ -17,6 +17,7 @@ class M
 
 	public static void main(String[] args)
 	{
+		Lader5.inJarCheck();
 		for(int i = 0; i < args.length; i++)
 		{
 			switch(args[i])
@@ -44,7 +45,7 @@ class M
 		{
 			if(selected == null)
 			{
-				JFileChooser fc = new JFileChooser(new File("saves"));
+				JFileChooser fc = new JFileChooser(Lader5.jarLocation.toPath().resolve("saves").toFile());
 				if(fc.showOpenDialog(null) == JFileChooser.APPROVE_OPTION)
 					selected = fc.getSelectedFile();
 				else

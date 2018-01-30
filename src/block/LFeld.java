@@ -7,7 +7,7 @@ import laderLC.*;
 
 public class LFeld
 {
-	static final int maxenh = 14;
+	static final int maxenh = 16;
 
 	public int hoehe;
 	boolean ziel;
@@ -17,7 +17,7 @@ public class LFeld
 	public int eSchalter = -1;
 	int pfeil = -1;
 	int einhauwand = -1;
-	boolean dia = false;
+	boolean dia;
 	int diaTuer = 0;
 	boolean eis;
 	boolean loescher;
@@ -25,6 +25,8 @@ public class LFeld
 	public int enterpfeil = -1;
 	public int fahrebene = -1;
 	public boolean lift;
+	public char wspender = 'n';
+	public boolean wporter;
 	Item item;
 
 	void enhance(SchalterR mit, int wie, boolean autoh)
@@ -79,6 +81,12 @@ public class LFeld
 				break;
 			case 14:
 				fahrebene = mit.hp;
+				break;
+			case 15:
+				wspender = mit.farbeAktuell;
+				break;
+			case 16:
+				wporter = true;
 				break;
 		}
 	}
@@ -169,6 +177,12 @@ public class LFeld
 				case "lift":
 					lift = true;
 					break;
+				case "wspender":
+					wspender = Character.toUpperCase(value.charAt(0));
+					break;
+				case "wporter":
+					wporter = true;
+					break;
 				case "itemfeuer":
 					item = new Feuer();
 					break;
@@ -229,6 +243,10 @@ public class LFeld
 			speichernZ(sb, "fahrebene", String.valueOf(fahrebene));
 		if(lift)
 			speichernZ(sb, "lift", null);
+		if(wspender != 'n')
+			speichernZ(sb, "wspender", String.valueOf(wspender));
+		if(wporter)
+			speichernZ(sb, "wporter", null);
 		if(item != null)
 		{
 			sb.append(" item").append(item.speichername()).append(" = {");

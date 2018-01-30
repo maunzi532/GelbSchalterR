@@ -17,7 +17,7 @@ import tex.*;
 
 public class SchalterR extends Area
 {
-	public static final int itemtypes = 9;
+	public static final int itemtypes = 15;
 
 	public BFeld[][] feld;
 	private SchalterLies sl;

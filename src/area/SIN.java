@@ -52,12 +52,12 @@ public class SIN
 			}
 			fr.setVisible(true);
 			while(!fr.hasFocus())
-				U.warte(100);
+				Lader5.warte(100);
 		}
 		else
 			resizeImg();
 		fr.getGraphics().drawImage(img, 0, 0, null);
-		U.warte(200);
+		Lader5.warte(200);
 		if(testmode > 0)
 		{
 			ASIN.run();
@@ -83,7 +83,7 @@ public class SIN
 	{
 		while(!ende)
 		{
-			U.warte(20);
+			Lader5.warte(20);
 			if(Shift.blockMovement())
 				area.noMovement();
 			else
@@ -101,7 +101,7 @@ public class SIN
 			{
 				area.victoryTick();
 				drawX();
-				U.warte(20);
+				Lader5.warte(20);
 				Shift.moveToTarget(area.srd);
 			}
 		}

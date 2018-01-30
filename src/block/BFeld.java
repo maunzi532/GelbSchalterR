@@ -40,6 +40,8 @@ public class BFeld extends LFeld implements Feld
 		copy.enterpfeil = von.enterpfeil;
 		copy.fahrebene = von.fahrebene;
 		copy.lift = von.lift;
+		copy.wspender = von.wspender;
+		copy.wporter = von.wporter;
 		copy.item = von.item;
 		return copy;
 	}
@@ -139,6 +141,8 @@ public class BFeld extends LFeld implements Feld
 			fahrebene1 = new FahrendeEbene(schalterR.d3c()).kopie(schalterR);
 			items[8] = fahrebene1;
 		}
+		if(schalterR.hp == bodenH() && wspender != 'n')
+			items[9 + (wspender - 'A')] = new Wuerfel(wspender).kopie(schalterR);
 	}
 
 	public void gehenFeld()
@@ -222,6 +226,13 @@ public class BFeld extends LFeld implements Feld
 				rc.addm("LiftOben", steinH());
 			else
 				rc.addm("LiftUnten", steinH());
+		if(wspender != 'n')
+		{
+			rc.addw("Würfelspender");
+			rc.addw("Würfel1" + wspender);
+		}
+		if(wporter)
+			rc.addw("Würfelporter");
 		if(item != null && !darauf)
 			rc.addw(item.bildname());
 		return rc.renders;

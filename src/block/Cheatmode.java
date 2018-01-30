@@ -88,6 +88,12 @@ public class Cheatmode
 						schalterR.feld[fa.y][fa.x] = BFeld.copy(f1, schalterR);
 						break label68;
 					}
+					if(f1.wspender != 'n')
+					{
+						f1.wspender = plusfarbe(f1.wspender);
+						schalterR.feld[fa.y][fa.x] = BFeld.copy(f1, schalterR);
+						break label68;
+					}
 					if(f1.blockFarbe != 'n')
 					{
 						f1.blockFarbe = plusfarbe(f1.blockFarbe);
