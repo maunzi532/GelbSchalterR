@@ -91,6 +91,20 @@ public class BFeld extends LFeld implements Feld
 		return blockFarbe == schalterR.farbeAktuell;
 	}
 
+	public char wuerfel()
+	{
+		return 'n';
+	}
+
+	public int wuerfelPlatzierbar()
+	{
+		if(wuerfel() != 'n')
+			return -1;
+		if(wporter)
+			return bodenH();
+		return -1;
+	}
+
 	private int existEbene()
 	{
 		return fahrebene1 == null || schalterR.items[8] != fahrebene1 ? fahrebene : -1;
@@ -232,7 +246,12 @@ public class BFeld extends LFeld implements Feld
 			rc.addw("Würfel1" + wspender);
 		}
 		if(wporter)
+		{
 			rc.addw("Würfelporter");
+			char wHier = wuerfel();
+			if(wHier != 'n')
+				rc.addw("Würfel1" + wHier);
+		}
 		if(item != null && !darauf)
 			rc.addw(item.bildname());
 		return rc.renders;

@@ -303,7 +303,9 @@ public class SchalterR extends Area
 				if(showItems.get(i).disabled)
 					gd.drawLine(w1 + ht, ht * 2 * i, w1 + ht * 3 - 1, ht * 2 * (i + 1) - 1);
 			}
-			gd.drawRect(w1 + ht, ht * 2 * akItem, ht * 2 - 1, ht * 2 - 1);
+			int akp = showItems.indexOf(items[akItem]);
+			if(akp > 0)
+				gd.drawRect(w1 + ht, ht * 2 * akp, ht * 2 - 1, ht * 2 - 1);
 		}
 		else
 		{
@@ -313,7 +315,9 @@ public class SchalterR extends Area
 				if(showItems.get(i).disabled)
 					gd.drawLine(w1 + ht + (i % 2) * ht, ht * (i / 2), w1 + ht + (i % 2 + 1) * ht - 1, ht * (i / 2 + 1) - 1);
 			}
-			gd.drawRect(w1 + ht + (akItem % 2) * ht, ht * (akItem / 2), ht - 1, ht - 1);
+			int akp = showItems.indexOf(items[akItem]);
+			if(akp > 0)
+				gd.drawRect(w1 + ht + (akp % 2) * ht, ht * (akp / 2), ht - 1, ht - 1);
 		}
 		if(cheatmode != null)
 			cheatmode.rahmen(gd, tex, w1, ht);

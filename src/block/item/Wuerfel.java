@@ -2,21 +2,30 @@ package block.item;
 
 import block.*;
 import block.state.*;
+import shift.*;
 
 public class Wuerfel extends Item
 {
-	char farbe;
+	public char farbe;
+	private D3C ort;
 
 	public Wuerfel(char farbe)
 	{
-		id = 9;
+		id = 9 + (farbe - 'A');
 		this.farbe = farbe;
+	}
+
+	public Wuerfel(char farbe, D3C ort)
+	{
+		id = 9 + (farbe - 'A');
+		this.farbe = farbe;
+		this.ort = ort;
 	}
 
 	@Override
 	public Item kopie(SchalterR schalterR)
 	{
-		Wuerfel i1 = new Wuerfel(farbe);
+		Wuerfel i1 = new Wuerfel(farbe, ort);
 		i1.schalterR = schalterR;
 		return i1;
 	}
