@@ -44,9 +44,9 @@ public class CheatMovement extends Item
 	}
 
 	@Override
-	public boolean benutze(int num, boolean cl, boolean charge, boolean lvm)
+	public boolean benutze(int num, boolean cl, boolean lvm)
 	{
-		boolean b = super.benutze(num, cl, charge, lvm);
+		boolean b = super.benutze(num, cl, lvm);
 		if(cheatmode.pfadmodus)
 			schalterR.angleichen();
 		return b;

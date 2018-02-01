@@ -15,9 +15,9 @@ public abstract class LaengeItem extends Item
 	}
 
 	@Override
-	public boolean benutze(int num, boolean cl, boolean charge, boolean lvm)
+	public boolean benutze(int num, boolean cl, boolean lvm)
 	{
-		return (cl || charge) && super.benutze(num, cl, charge, true);
+		return super.benutze(num, cl, true);
 	}
 
 	@Override

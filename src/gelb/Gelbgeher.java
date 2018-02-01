@@ -219,7 +219,7 @@ public class Gelbgeher extends Area implements PreItem
 		}
 		else
 		{
-			int code = slowerInput()[0];
+			int code = slowerInput();
 			if(code == 0)
 				moved = useItem();
 			else if(code > 0)

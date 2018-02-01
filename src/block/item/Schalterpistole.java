@@ -49,7 +49,6 @@ public class Schalterpistole extends LaengeItem
 			int ym = r != 0 ? r - 2 : 0;
 			for(int i = 1; i <= laenge; i++)
 			{
-
 				int xf = xp + i * xm;
 				int yf = yp + i * ym;
 				if(xf < 0 || yf < 0 || xf >= xw || yf >= yw)
@@ -67,11 +66,12 @@ public class Schalterpistole extends LaengeItem
 		}
 	}
 
-	public boolean benutze(int num, boolean cl, boolean charge, boolean lvm)
+	public boolean benutze(int num, boolean cl, boolean lvm)
 	{
 		setzeR(schalterR.xp, schalterR.yp, g1.get(num).x, g1.get(num).y);
 		D3C zo = g1.get(num);
 		schalterR.farbeAktuell = schalterR.feld[zo.y][zo.x].schalter;
+		schalterR.showItems.actionTaken();
 		return true;
 	}
 

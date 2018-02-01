@@ -105,11 +105,20 @@ public class ShowItems
 	public ArrayList<Ziel> anzielbar()
 	{
 		ArrayList<Ziel> eintrag = new ArrayList<>();
-		for(int i = 0; i < SchalterR.itemtypes; i++)
-			if(schalterR.items[i] != null)
-				eintrag.addAll(schalterR.items[i].g1);
+		if(chosen1 >= 0)
+			eintrag.addAll(schalterR.items[chosen1].g1);
+		else
+			for(int i = 0; i < SchalterR.itemtypes; i++)
+				if(schalterR.items[i] != null)
+					eintrag.addAll(schalterR.items[i].g1);
 		Collections.sort(eintrag);
 		return eintrag;
+	}
+
+	public void actionTaken()
+	{
+		if(!locked)
+			chosen1 = -1;
 	}
 
 	public void removeUnused()
@@ -128,7 +137,7 @@ public class ShowItems
 			for(int i = 0; i < showItems.size(); i++)
 			{
 				gd.drawImage(tex.bilder2D.get(showItems.get(i).bildname()), w1 + ht, ht * 2 * i, ht * 2, ht * 2, null);
-				if(showItems.get(i).disabled)
+				if(showItems.get(i).disabled || (locked && !showItems.get(i).equals(schalterR.items[chosen1])))
 					gd.drawLine(w1 + ht, ht * 2 * i, w1 + ht * 3 - 1, ht * 2 * (i + 1) - 1);
 			}
 			if(chosen1 >= 0)
@@ -143,7 +152,7 @@ public class ShowItems
 			for(int i = 0; i < showItems.size(); i++)
 			{
 				gd.drawImage(tex.bilder2D.get(showItems.get(i).bildname()), w1 + ht + (i % 2) * ht, ht * (i / 2), ht, ht, null);
-				if(showItems.get(i).disabled)
+				if(showItems.get(i).disabled || (locked && !showItems.get(i).equals(schalterR.items[chosen1])))
 					gd.drawLine(w1 + ht + (i % 2) * ht, ht * (i / 2), w1 + ht + (i % 2 + 1) * ht - 1, ht * (i / 2 + 1) - 1);
 			}
 			if(chosen1 >= 0)

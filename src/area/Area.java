@@ -9,7 +9,6 @@ import tex.*;
 public abstract class Area
 {
 	private static final int slow = 6;
-	private static final int slow2 = 20;
 
 	public boolean gewonnen;
 	public boolean mapview;
@@ -52,7 +51,7 @@ public abstract class Area
 		throw new NotImplementedException();
 	}
 
-	protected int[] slowerInput()
+	protected int slowerInput()
 	{
 		if(TA.take[37] <= 0 || TA.take[39] <= 0)
 		{
@@ -81,16 +80,16 @@ public abstract class Area
 		else if(TA.take[40] == 2)
 			oum = slow;
 		if(TA.take[32] == 2)
-			return new int[]{0, 1};
+			return 0;
 		if(TA.take[37] > 0 && lrm <= -slow)
-			return new int[]{1, lrm <= -slow2 ? 1 : 0};
+			return 1;
 		if(TA.take[38] > 0 && oum <= -slow)
-			return new int[]{2, oum <= -slow2 ? 1 : 0};
+			return 2;
 		if(TA.take[39] > 0 && lrm >= slow)
-			return new int[]{3, lrm >= slow2 ? 1 : 0};
+			return 3;
 		if(TA.take[40] > 0 && oum >= slow)
-			return new int[]{4, oum >= slow2 ? 1 : 0};
-		return new int[]{-1, 0};
+			return 4;
+		return -1;
 	}
 
 	protected void discharge(int code)

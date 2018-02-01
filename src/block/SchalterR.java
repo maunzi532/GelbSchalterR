@@ -24,7 +24,7 @@ public class SchalterR extends Area
 	public int ebeneRichtung;
 	public int dias;
 
-	ShowItems showItems;
+	public ShowItems showItems;
 	public Item[] items;
 
 	private Cheatmode cheatmode;
@@ -105,12 +105,20 @@ public class SchalterR extends Area
 	public void checkFields()
 	{
 		boolean[] tasten = new boolean[5];
-		for(int i = 0; i < itemtypes; i++)
-			if(items[i] != null)
-				if(items[i].disabled)
-					items[i].noMovement();
-				else
-					items[i].setzeOptionen1(xp, yp, hp, xw, yw, tasten);
+		if(showItems.chosen1 >= 0)
+		{
+			if(items[showItems.chosen1].disabled)
+				items[showItems.chosen1].noMovement();
+			else
+				items[showItems.chosen1].setzeOptionen1(xp, yp, hp, xw, yw, tasten);
+		}
+		else
+			for(int i = 0; i < itemtypes; i++)
+				if(items[i] != null)
+					if(items[i].disabled)
+						items[i].noMovement();
+					else
+						items[i].setzeOptionen1(xp, yp, hp, xw, yw, tasten);
 	}
 
 	@Override
@@ -148,23 +156,23 @@ public class SchalterR extends Area
 			return false;
 		if(showItems.itemauswahl())
 			return false;
-		int[] code = slowerInput();
-		if(code[0] >= 0)
+		int code = slowerInput();
+		if(code >= 0)
 		{
-			if(benutze(SIN.tasten[code[0]], false, code[1] > 0))
-				discharge(code[0]);
+			if(benutze(SIN.tasten[code], false))
+				discharge(code);
 		}
 		else if(TA.take[201] == 2)
-			return benutze(SIN.auswahl, true, true);
+			return benutze(SIN.auswahl, true);
 		else if(cheatmode != null)
 			cheatmode.move();
 		return false;
 	}
 
-	private boolean benutze(Ziel ziel, boolean cl, boolean charge)
+	private boolean benutze(Ziel ziel, boolean cl)
 	{
-		return ziel != null && ziel.von instanceof Item && ((Item) ziel.von)
-				.benutze(ziel.nummer, cl, charge, false);
+		return ziel != null && ziel.von instanceof Item &&
+				((Item) ziel.von).benutze(ziel.nummer, cl, false);
 	}
 
 	public boolean moveR(int caret2)
@@ -176,7 +184,7 @@ public class SchalterR extends Area
 				{
 					if(k == caret2)
 					{
-						items[i].benutze(j, true, true, false);
+						items[i].benutze(j, true, false);
 						return true;
 					}
 					k++;
@@ -205,6 +213,7 @@ public class SchalterR extends Area
 			if(items[i] != null && items[i].weg())
 				items[i] = null;
 		feld[ziel.y][ziel.x].gehenItem(items);
+		showItems.actionTaken();
 		showItems.removeUnused();
 		showItems.generateShowItems();
 		feld[ziel.y][ziel.x].gehenFeld();
