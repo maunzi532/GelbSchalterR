@@ -41,6 +41,7 @@ class FTex extends Texturen
 		farbTex1("Schalter1", true, 'A', farben);
 		farbTex1("Würfel", true, 'A', marker);
 		farbTex1("Würfel1", true, 'A', marker);
+		farbTex2("Würfel", true, 'A', marker);
 		farbTex1("Möglich", true, 'A', marker);
 		for(int i = 0; i < 4; i++)
 			farbTex1("Symbol" + i, true, 'A', symbol);
@@ -60,6 +61,19 @@ class FTex extends Texturen
 		}
 	}
 
+	private void farbTex2(String vonname, boolean in, char start, Color[] farben1)
+	{
+		if(!bilder2D.containsKey(vonname))
+			return;
+		BufferedImage von = bilder2D.get(vonname);
+		for(int farb = 0; farb < farben1.length; farb++)
+		{
+			String toname = vonname + (char)(start + farb);
+			if(!bilder2D.containsKey(toname))
+				bilder2D.put(toname, farbTex(new BufferedImage[]{von}, in, farben1[farb])[0]);
+		}
+	}
+
 	private BufferedImage[] farbTex(BufferedImage[] std, boolean trans, Color farbe)
 	{
 		BufferedImage[] toR = new BufferedImage[std.length];
@@ -70,10 +84,18 @@ class FTex extends Texturen
 			if(trans)
 			{
 				WritableRaster ar = td.getRaster();
+				int max = 0;
+				for(int ix = 0; ix < n.getWidth(); ix++)
+					for(int iy = 0; iy < n.getHeight(); iy++)
+					{
+						int[] pix = ar.getPixel(ix, iy, (int[]) null);
+						if(pix[3] > 0 && pix[0] > max)
+							max = pix[0];
+					}
 				for(int ix = 0; ix < n.getWidth(); ix++)
 					for(int iy = 0; iy < n.getHeight(); iy++)
 						if(ar.getPixel(ix, iy, (int[])null)[3] > 0)
-							n.setRGB(ix, iy, farbe.getRGB());
+							n.setRGB(ix, iy, combine(max, ar.getPixel(ix, iy, (int[])null), farbe).getRGB());
 			}
 			else
 			{
@@ -85,5 +107,25 @@ class FTex extends Texturen
 			toR[j] = n;
 		}
 		return toR;
+	}
+
+	private Color combine(int max, int[] von, Color clr)
+	{
+		int[] clr2 = new int[3];
+		for(int i = 0; i < 3; i++)
+		{
+			if(max <= 0)
+				clr2[i] = 255;
+			else
+				clr2[i] = von[i] * 255 / max;
+		}
+		int[] mid = new int[3];
+		for(int i = 0; i < 3; i++)
+		{
+			mid[i] = clr2[i] * ((clr.getRGB() >> (8 * i)) & 255) / 255;
+			if(mid[i] > 255)
+				mid[i] = 255;
+		}
+		return new Color(mid[0], mid[1], mid[2], von[3] * clr.getAlpha() / 255);
 	}
 }

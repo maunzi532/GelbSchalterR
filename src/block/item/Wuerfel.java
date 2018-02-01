@@ -39,7 +39,7 @@ public class Wuerfel extends Item
 	@Override
 	public String bildname()
 	{
-		return "Würfel";
+		return "Würfel" + farbe;
 	}
 
 	@Override
