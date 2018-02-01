@@ -8,8 +8,6 @@ import java.io.*;
 import java.nio.charset.*;
 import java.nio.file.*;
 import java.util.*;
-import java.util.List;
-import java.util.stream.*;
 import javax.swing.*;
 import laderLC.*;
 import shift.*;
@@ -26,9 +24,8 @@ public class SchalterR extends Area
 	public int ebeneRichtung;
 	public int dias;
 
-	int akItem;
+	ShowItems showItems;
 	public Item[] items;
-	public List<Item> showItems;
 
 	private Cheatmode cheatmode;
 
@@ -76,7 +73,7 @@ public class SchalterR extends Area
 		if(cheatmode != null)
 			cheatmode.reset();
 		items[1] = new Movement().kopie(this);
-		generateShowItems();
+		showItems = new ShowItems(this);
 		xw = sl.se[0][0];
 		yw = sl.se[0][1];
 		xp = sl.se[1][0];
@@ -116,20 +113,10 @@ public class SchalterR extends Area
 					items[i].setzeOptionen1(xp, yp, hp, xw, yw, tasten);
 	}
 
-	private int akvorne(int i)
-	{
-		return akItem < 0 ? i : i == 0 ? akItem : i <= akItem ? i - 1 : i;
-	}
-
 	@Override
 	public ArrayList<Ziel> anzielbar()
 	{
-		ArrayList<Ziel> eintrag = new ArrayList<>();
-		for(int i = 0; i < itemtypes; i++)
-			if(items[akvorne(i)] != null)
-				eintrag.addAll(items[akvorne(i)].g1);
-		Collections.sort(eintrag);
-		return eintrag;
+		return showItems.anzielbar();
 	}
 
 	@Override
@@ -154,10 +141,12 @@ public class SchalterR extends Area
 				lade.charge(this);
 				srd.reset2(this);
 				Shift.localReset(new D3C(xp, yp, hp));
-				generateShowItems();
+				showItems.generateShowItems();
 			}
 		}
-		if(SIN.mfokusX >= 1 && itemauswahl(showItems.size() > 4 ? SIN.mfokusY * 2 + SIN.mfokusX - 1 : SIN.mfokusY / 2))
+		if(SIN.mfokusX >= 1 && showItems.itemauswahl(showItems.showItems.size() > 4 ? SIN.mfokusY * 2 + SIN.mfokusX - 1 : SIN.mfokusY / 2))
+			return false;
+		if(showItems.itemauswahl())
 			return false;
 		int[] code = slowerInput();
 		if(code[0] >= 0)
@@ -169,24 +158,6 @@ public class SchalterR extends Area
 			return benutze(SIN.auswahl, true, true);
 		else if(cheatmode != null)
 			cheatmode.move();
-		return false;
-	}
-
-	private boolean itemauswahl(int nummer)
-	{
-		if(nummer < showItems.size())
-		{
-			if(TA.take[201] == 2)
-			{
-				akItem = showItems.get(nummer).id;
-				return true;
-			}
-			if(TA.take[203] == 2)
-			{
-				showItems.get(nummer).disabled = !showItems.get(nummer).disabled;
-				return true;
-			}
-		}
 		return false;
 	}
 
@@ -230,20 +201,13 @@ public class SchalterR extends Area
 		yp = ziel.y;
 		hp = ziel.h;
 		feld[ziel.y][ziel.x].gehenL();
-		Item itemA = items[akItem];
 		for(int i = 0; i < itemtypes; i++)
 			if(items[i] != null && items[i].weg())
 				items[i] = null;
 		feld[ziel.y][ziel.x].gehenItem(items);
-		int nA = Arrays.asList(items).indexOf(itemA);
-		akItem = nA >= 0 ? nA : 0;
-		generateShowItems();
+		showItems.removeUnused();
+		showItems.generateShowItems();
 		feld[ziel.y][ziel.x].gehenFeld();
-	}
-
-	private void generateShowItems()
-	{
-		showItems = Arrays.stream(items).filter(Objects::nonNull).collect(Collectors.toList());
 	}
 
 	public void speichern()
@@ -295,30 +259,7 @@ public class SchalterR extends Area
 		gd.setColor(Color.WHITE);
 		gd.drawRect(w1, 0, ht - 1, h - 1);
 		gd.setColor(Color.RED);
-		if(showItems.size() <= 4)
-		{
-			for(int i = 0; i < showItems.size(); i++)
-			{
-				gd.drawImage(tex.bilder2D.get(showItems.get(i).bildname()), w1 + ht, ht * 2 * i, ht * 2, ht * 2, null);
-				if(showItems.get(i).disabled)
-					gd.drawLine(w1 + ht, ht * 2 * i, w1 + ht * 3 - 1, ht * 2 * (i + 1) - 1);
-			}
-			int akp = showItems.indexOf(items[akItem]);
-			if(akp > 0)
-				gd.drawRect(w1 + ht, ht * 2 * akp, ht * 2 - 1, ht * 2 - 1);
-		}
-		else
-		{
-			for(int i = 0; i < showItems.size(); i++)
-			{
-				gd.drawImage(tex.bilder2D.get(showItems.get(i).bildname()), w1 + ht + (i % 2) * ht, ht * (i / 2), ht, ht, null);
-				if(showItems.get(i).disabled)
-					gd.drawLine(w1 + ht + (i % 2) * ht, ht * (i / 2), w1 + ht + (i % 2 + 1) * ht - 1, ht * (i / 2 + 1) - 1);
-			}
-			int akp = showItems.indexOf(items[akItem]);
-			if(akp > 0)
-				gd.drawRect(w1 + ht + (akp % 2) * ht, ht * (akp / 2), ht - 1, ht - 1);
-		}
+		showItems.rahmen(gd, tex, w1, ht);
 		if(cheatmode != null)
 			cheatmode.rahmen(gd, tex, w1, ht);
 	}
