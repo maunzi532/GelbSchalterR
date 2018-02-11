@@ -145,16 +145,16 @@ public class BFeld extends LFeld implements Feld
 	public void gehenItem(Item[] items)
 	{
 		if(item != null && (items[item.id] == null || item.priority >= items[item.id].priority))
-			schalterR.updateItem(item.kopie(schalterR));
+			schalterR.updateItem(item.kopie(schalterR), true);
 		if(schalterR.hp == enterstange && enterpfeil >= 0)
-			schalterR.updateItem(new FahrenderPfeil(enterpfeil, schalterR.d3c()).kopie(schalterR));
+			schalterR.updateItem(new FahrenderPfeil(enterpfeil, schalterR.d3c()).kopie(schalterR), true);
 		if(schalterR.hp == existEbene() && bodenH() < fahrebene)
 		{
 			fahrebene1 = new FahrendeEbene(schalterR.d3c()).kopie(schalterR);
-			schalterR.updateItem(fahrebene1);
+			schalterR.updateItem(fahrebene1, true);
 		}
 		if(schalterR.hp == bodenH() && wspender != 'n')
-			schalterR.updateItem(new Wuerfel(wspender).kopie(schalterR));
+			schalterR.updateItem(new Wuerfel(wspender).kopie(schalterR), false);
 	}
 
 	public void gehenFeld()
@@ -242,13 +242,15 @@ public class BFeld extends LFeld implements Feld
 		{
 			rc.addw("Würfelspender");
 			if(schalterR.items[9 + (wspender - 'A')] == null)
+				rc.addw("Würfel" + wspender);
+			else
 				rc.addw("Würfel1" + wspender);
 		}
 		if(wporter)
 		{
 			rc.addw("Würfelporter");
 			if(wuerfel1 != null)
-				rc.addw("Würfel1" + wuerfel1.farbe);
+				rc.addw("Würfel" + wuerfel1.farbe);
 		}
 		if(item != null && !darauf)
 			rc.addw(item.bildname());

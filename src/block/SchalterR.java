@@ -72,7 +72,7 @@ public class SchalterR extends Area
 		items = new Item[itemtypes];
 		if(cheatmode != null)
 			cheatmode.reset();
-		updateItem(new Movement().kopie(this));
+		updateItem(new Movement().kopie(this), true);
 		showItems = new ShowItems(this);
 		xw = sl.se[0][0];
 		yw = sl.se[0][1];
@@ -224,11 +224,18 @@ public class SchalterR extends Area
 			srd.reset2(this);
 	}
 
-	public void updateItem(Item item)
+	public void updateItem(Item item, boolean override)
 	{
 		if(items[item.id] != null)
-			items[item.id].vernichten();
-		items[item.id] = item;
+		{
+			if(override)
+			{
+				items[item.id].vernichten();
+				items[item.id] = item;
+			}
+		}
+		else
+			items[item.id] = item;
 	}
 
 	public void speichern()

@@ -42,6 +42,21 @@ public class Wuerfel extends Item
 		}
 		else
 		{
+			boolean t0 = false;
+			if(fp.wspender == farbe && fp.bodenH() == hp)
+			{
+				option(xp, yp, hp, 0);
+				t0 = true;
+			}
+			if(!t0)
+			{
+				BFeld tf = schalterR.feld[ort.y][ort.x];
+				if(tf.wporter)
+				{
+					option(ort.x, ort.y, ort.h, 0);
+					t0 = true;
+				}
+			}
 			int taste = -1;
 			int x1 = xp;
 			int y1 = yp;
@@ -60,25 +75,14 @@ public class Wuerfel extends Item
 						break;
 					}
 				}
-			if(taste >= 0)
+			if(taste >= 1)
 			{
+				if(t0 && taste == 0)
+					return;
 				BFeld nf = schalterR.feld[y1][x1];
 				if(nf.wuerfelPlatzierbar(false) == hp)
 					option(x1, y1, hp, taste);
 			}
-			if(taste != 0)
-			{
-				BFeld nf = schalterR.feld[ort.y][ort.x];
-				if(nf.wporter)
-					option(ort.x, ort.y, ort.h + 1, 0);
-			}
-			for(int iy = 0; iy < schalterR.yw; iy++)
-				for(int ix = 0; ix < schalterR.xw; ix++)
-				{
-					BFeld nf = schalterR.feld[iy][ix];
-					if(nf.wspender == farbe)
-						option(ix, iy, nf.bodenH(), -1);
-				}
 		}
 	}
 
@@ -95,16 +99,8 @@ public class Wuerfel extends Item
 		else
 		{
 			BFeld of = schalterR.feld[ort.y][ort.x];
-			if(zo.x == ort.x && zo.y == ort.y)
-			{
-				if(zo.h == ort.h + 1)
-					schalterR.gehen(ort, true);
-			}
-			else
-			{
-				level = 0;
-				schalterR.gehen(schalterR.d3c(), false);
-			}
+			if((zo.x != schalterR.xp || zo.y != schalterR.yp) && zo.x == ort.x && zo.y == ort.y)
+				schalterR.gehen(ort, true);
 			of.wuerfel1 = null;
 			ort = null;
 		}

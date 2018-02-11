@@ -22,7 +22,7 @@ public class Cheatmode
 
 	public void reset()
 	{
-		schalterR.updateItem(new CheatMovement(this).kopie(schalterR));
+		schalterR.updateItem(new CheatMovement(this).kopie(schalterR), true);
 	}
 
 	public void move()
