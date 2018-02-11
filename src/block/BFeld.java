@@ -12,6 +12,7 @@ public class BFeld extends LFeld implements Feld
 
 	public boolean benutzt = false;
 	public Item fahrebene1;
+	public Wuerfel wuerfel1;
 
 	public BFeld(){}
 
@@ -91,14 +92,9 @@ public class BFeld extends LFeld implements Feld
 		return blockFarbe == schalterR.farbeAktuell;
 	}
 
-	public char wuerfel()
+	public int wuerfelPlatzierbar(boolean blocked)
 	{
-		return 'n';
-	}
-
-	public int wuerfelPlatzierbar()
-	{
-		if(wuerfel() != 'n')
+		if(blocked && wuerfel1 != null)
 			return -1;
 		if(wporter)
 			return bodenH();
@@ -147,16 +143,16 @@ public class BFeld extends LFeld implements Feld
 	public void gehenItem(Item[] items)
 	{
 		if(item != null && (items[item.id] == null || item.priority >= items[item.id].priority))
-			items[item.id] = item.kopie(schalterR);
+			schalterR.updateItem(item.kopie(schalterR));
 		if(schalterR.hp == enterstange && enterpfeil >= 0)
-			items[7] = new FahrenderPfeil(enterpfeil, schalterR.d3c()).kopie(schalterR);
+			schalterR.updateItem(new FahrenderPfeil(enterpfeil, schalterR.d3c()).kopie(schalterR));
 		if(schalterR.hp == existEbene() && bodenH() < fahrebene)
 		{
 			fahrebene1 = new FahrendeEbene(schalterR.d3c()).kopie(schalterR);
-			items[8] = fahrebene1;
+			schalterR.updateItem(fahrebene1);
 		}
 		if(schalterR.hp == bodenH() && wspender != 'n')
-			items[9 + (wspender - 'A')] = new Wuerfel(wspender).kopie(schalterR);
+			schalterR.updateItem(new Wuerfel(wspender).kopie(schalterR));
 	}
 
 	public void gehenFeld()
@@ -248,9 +244,8 @@ public class BFeld extends LFeld implements Feld
 		if(wporter)
 		{
 			rc.addw("Würfelporter");
-			char wHier = wuerfel();
-			if(wHier != 'n')
-				rc.addw("Würfel1" + wHier);
+			if(wuerfel1 != null)
+				rc.addw("Würfel1" + wuerfel1.farbe);
 		}
 		if(item != null && !darauf)
 			rc.addw(item.bildname());

@@ -72,7 +72,7 @@ public class SchalterR extends Area
 		items = new Item[itemtypes];
 		if(cheatmode != null)
 			cheatmode.reset();
-		items[1] = new Movement().kopie(this);
+		updateItem(new Movement().kopie(this));
 		showItems = new ShowItems(this);
 		xw = sl.se[0][0];
 		yw = sl.se[0][1];
@@ -211,12 +211,22 @@ public class SchalterR extends Area
 		feld[ziel.y][ziel.x].gehenL();
 		for(int i = 0; i < itemtypes; i++)
 			if(items[i] != null && items[i].weg())
+			{
+				items[i].vernichten();
 				items[i] = null;
+			}
 		feld[ziel.y][ziel.x].gehenItem(items);
 		showItems.actionTaken();
 		showItems.removeUnused();
 		showItems.generateShowItems();
 		feld[ziel.y][ziel.x].gehenFeld();
+	}
+
+	public void updateItem(Item item)
+	{
+		if(items[item.id] != null)
+			items[item.id].vernichten();
+		items[item.id] = item;
 	}
 
 	public void speichern()

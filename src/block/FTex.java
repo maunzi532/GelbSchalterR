@@ -42,6 +42,7 @@ class FTex extends Texturen
 		farbTex1("Würfel", true, 'A', marker);
 		farbTex1("Würfel1", true, 'A', marker);
 		farbTex2("Würfel", true, 'A', marker);
+		farbTex2("Würfel1", true, 'A', marker);
 		farbTex1("Möglich", true, 'A', marker);
 		for(int i = 0; i < 4; i++)
 			farbTex1("Symbol" + i, true, 'A', symbol);

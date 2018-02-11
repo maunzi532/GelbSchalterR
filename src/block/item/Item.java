@@ -102,6 +102,8 @@ public abstract class Item implements PreItem
 			schalterR.setRichtung(3);
 	}
 
+	public void vernichten(){}
+
 	public String speichername()
 	{
 		return getClass().getSimpleName().toLowerCase();

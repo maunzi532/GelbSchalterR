@@ -66,6 +66,12 @@ public class BState implements Serializable
 			FahrendeEbene fe = (FahrendeEbene) schalterR.items[8];
 			schalterR.feld[fe.start.y][fe.start.x].fahrebene1 = fe;
 		}
+		for(int i = 9; i < 15; i++)
+			if(schalterR.items[i] != null)
+			{
+				Wuerfel wu = (Wuerfel) schalterR.items[i];
+				schalterR.feld[wu.ort.y][wu.ort.x].wuerfel1 = wu;
+			}
 	}
 
 	public void speichernState()

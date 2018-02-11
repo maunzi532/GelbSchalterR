@@ -80,7 +80,11 @@ public class ShowItems
 			{
 				int id = showItems.get(nummer).id;
 				if(chosen1 == id)
+				{
+					if(locked)
+						chosen1 = -1;
 					locked = !locked;
+				}
 				else
 				{
 					chosen1 = id;
