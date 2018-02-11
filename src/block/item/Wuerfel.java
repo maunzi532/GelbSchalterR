@@ -99,7 +99,7 @@ public class Wuerfel extends Item
 		else
 		{
 			BFeld of = schalterR.feld[ort.y][ort.x];
-			if((zo.x != schalterR.xp || zo.y != schalterR.yp) && zo.x == ort.x && zo.y == ort.y)
+			if(of.wporter && (zo.x != schalterR.xp || zo.y != schalterR.yp) && zo.x == ort.x && zo.y == ort.y)
 				schalterR.gehen(ort, true);
 			of.wuerfel1 = null;
 			ort = null;
