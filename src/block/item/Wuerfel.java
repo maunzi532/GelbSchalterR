@@ -127,6 +127,8 @@ public class Wuerfel extends Item
 	@Override
 	public ItemD saveState()
 	{
-		return new ItemD(id, farbe);
+		if(ort != null)
+			return new ItemD(id, (int) farbe, ort.x, ort.y, ort.h);
+		return new ItemD(id, (int) farbe);
 	}
 }

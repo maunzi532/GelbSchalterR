@@ -70,7 +70,8 @@ public class BState implements Serializable
 			if(schalterR.items[i] != null)
 			{
 				Wuerfel wu = (Wuerfel) schalterR.items[i];
-				schalterR.feld[wu.ort.y][wu.ort.x].wuerfel1 = wu;
+				if(wu.ort != null)
+					schalterR.feld[wu.ort.y][wu.ort.x].wuerfel1 = wu;
 			}
 	}
 

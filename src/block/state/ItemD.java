@@ -13,8 +13,6 @@ public class ItemD implements Serializable
 	public ItemD(int type, int... data)
 	{
 		this.type = type;
-		if(type == 0)
-			System.out.println(Arrays.toString(data));
 		this.data = data;
 	}
 
@@ -39,7 +37,14 @@ public class ItemD implements Serializable
 			case 8:
 				return new FahrendeEbene(new D3C(data[0], data[1], data[2]), new D3C(data[3], data[4], data[5]));
 			default:
-				throw new RuntimeException();
+				if(type >= 9 && type < 15)
+				{
+					if(data.length > 1)
+						return new Wuerfel((char) data[0], new D3C(data[1], data[2], data[3]));
+					return new Wuerfel((char) data[0]);
+				}
+				else
+					throw new RuntimeException();
 		}
 	}
 

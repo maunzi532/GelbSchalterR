@@ -50,6 +50,8 @@ public class BFeld extends LFeld implements Feld
 	public void reset()
 	{
 		benutzt = false;
+		fahrebene1 = null;
+		wuerfel1 = null;
 	}
 
 	public boolean betretengeht(int h, int side)
