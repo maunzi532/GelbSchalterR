@@ -241,7 +241,8 @@ public class BFeld extends LFeld implements Feld
 		if(wspender != 'n')
 		{
 			rc.addw("Würfelspender");
-			rc.addw("Würfel1" + wspender);
+			if(schalterR.items[9 + (wspender - 'A')] == null)
+				rc.addw("Würfel1" + wspender);
 		}
 		if(wporter)
 		{

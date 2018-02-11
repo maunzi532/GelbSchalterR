@@ -66,6 +66,19 @@ public class Wuerfel extends Item
 				if(nf.wuerfelPlatzierbar(false) == hp)
 					option(x1, y1, hp, taste);
 			}
+			if(taste != 0)
+			{
+				BFeld nf = schalterR.feld[ort.y][ort.x];
+				if(nf.wporter)
+					option(ort.x, ort.y, ort.h + 1, 0);
+			}
+			for(int iy = 0; iy < schalterR.yw; iy++)
+				for(int ix = 0; ix < schalterR.xw; ix++)
+				{
+					BFeld nf = schalterR.feld[iy][ix];
+					if(nf.wspender == farbe)
+						option(ix, iy, nf.bodenH(), -1);
+				}
 		}
 	}
 
@@ -81,7 +94,18 @@ public class Wuerfel extends Item
 		}
 		else
 		{
-			nf.wuerfel1 = null;
+			BFeld of = schalterR.feld[ort.y][ort.x];
+			if(zo.x == ort.x && zo.y == ort.y)
+			{
+				if(zo.h == ort.h + 1)
+					schalterR.gehen(ort, true);
+			}
+			else
+			{
+				level = 0;
+				schalterR.gehen(schalterR.d3c(), false);
+			}
+			of.wuerfel1 = null;
 			ort = null;
 		}
 		schalterR.showItems.actionTaken();

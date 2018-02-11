@@ -203,7 +203,7 @@ public class SchalterR extends Area
 		feld[yp][xp] = BFeld.copy(sl.feld[yp][xp], this);
 	}
 
-	public void gehen(D3C ziel)
+	public void gehen(D3C ziel, boolean tp)
 	{
 		xp = ziel.x;
 		yp = ziel.y;
@@ -220,6 +220,8 @@ public class SchalterR extends Area
 		showItems.removeUnused();
 		showItems.generateShowItems();
 		feld[ziel.y][ziel.x].gehenFeld();
+		if(tp)
+			srd.reset2(this);
 	}
 
 	public void updateItem(Item item)

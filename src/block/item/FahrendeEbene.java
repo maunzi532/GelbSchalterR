@@ -66,7 +66,7 @@ public class FahrendeEbene extends Item
 	{
 		schalterR.setRichtung(schalterR.ebeneRichtung);
 		ort = g1.get(num);
-		schalterR.gehen(ort);
+		schalterR.gehen(ort, false);
 		return true;
 	}
 

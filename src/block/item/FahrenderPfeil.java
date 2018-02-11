@@ -58,7 +58,7 @@ public class FahrenderPfeil extends Item
 		else
 			schalterR.setRichtung(richtung);
 		ort = g1.get(num);
-		schalterR.gehen(ort);
+		schalterR.gehen(ort, false);
 		return true;
 	}
 

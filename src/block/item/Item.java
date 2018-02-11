@@ -86,7 +86,7 @@ public abstract class Item implements PreItem
 		setzeR(schalterR.xp, schalterR.yp, g1.get(num).x, g1.get(num).y);
 		if(lvm && level > 0)
 			level--;
-		schalterR.gehen(g1.get(num));
+		schalterR.gehen(g1.get(num), false);
 		return true;
 	}
 
