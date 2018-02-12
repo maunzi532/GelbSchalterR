@@ -123,7 +123,7 @@ class FTex extends Texturen
 		int[] mid = new int[3];
 		for(int i = 0; i < 3; i++)
 		{
-			mid[i] = clr2[i] * ((clr.getRGB() >> (8 * i)) & 255) / 255;
+			mid[i] = clr2[i] * ((clr.getRGB() >> (8 * (2 - i))) & 255) / 255;
 			if(mid[i] > 255)
 				mid[i] = 255;
 		}
