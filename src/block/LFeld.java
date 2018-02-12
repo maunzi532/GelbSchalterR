@@ -7,7 +7,7 @@ import laderLC.*;
 
 public class LFeld
 {
-	static final int maxenh = 16;
+	static final int maxenh = 17;
 
 	public int hoehe;
 	boolean ziel;
@@ -87,6 +87,33 @@ public class LFeld
 				break;
 			case 16:
 				wporter = true;
+				break;
+			case 17:
+				if(item == null)
+					item = new Feuer();
+				else switch(item.id)
+				{
+					case 2:
+						item = new Schalterpistole();
+						break;
+					case 3:
+						item = new Sprungfeder();
+						break;
+					case 4:
+						item = new Fluegel();
+						break;
+					case 5:
+						item = new AerialEnterhaken();
+						break;
+					case 6:
+						if(item instanceof AerialEnterhaken && !((AerialEnterhaken) item).doppelt)
+						{
+							item = new AerialEnterhaken(1, 0, 5, true);
+							break;
+						}
+					default:
+						item = null;
+				}
 				break;
 		}
 	}

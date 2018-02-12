@@ -6,7 +6,7 @@ import laderLC.*;
 
 public class AerialEnterhaken extends Item
 {
-	private boolean doppelt;
+	public boolean doppelt;
 	private int laenge;
 
 	public AerialEnterhaken()
