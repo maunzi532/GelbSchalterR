@@ -21,6 +21,14 @@ public abstract class LaengeItem extends Item
 	}
 
 	@Override
+	public String edgeText(int edge)
+	{
+		if(edge == 2)
+			return String.valueOf(laenge);
+		return super.edgeText(edge);
+	}
+
+	@Override
 	public void lies2(String value, Integer errStart, Integer errEnd, ErrorVial vial, String textKey)
 	{
 		try

@@ -29,6 +29,7 @@ public class Lader5
 			String dir = "";
 			if(jar)
 			{
+				System.out.println(url.getPath());
 				String jarname = url.getPath().substring(url.getPath().indexOf(":") + 1, url.getPath().indexOf("!"));
 				jarLocation = new File(jarname).getParentFile();
 				dataRoot2 = new ZipFile(jarname);

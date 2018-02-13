@@ -32,6 +32,14 @@ public class AerialEnterhaken extends Item
 	}
 
 	@Override
+	public String edgeText(int edge)
+	{
+		if(edge == 2)
+			return String.valueOf(laenge);
+		return super.edgeText(edge);
+	}
+
+	@Override
 	public void setzeOptionen(int xp, int yp, int hp, int xw, int yw, BFeld fp)
 	{
 		for(int ix = Math.max(xp - laenge, 0); ix <= xp + laenge && ix < xw; ix++)

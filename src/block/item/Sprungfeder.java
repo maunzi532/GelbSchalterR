@@ -27,6 +27,14 @@ public class Sprungfeder extends LaengeItem
 	}
 
 	@Override
+	public String edgeText(int edge)
+	{
+		if(edge == 0 && level >= 0)
+			return String.valueOf(level);
+		return super.edgeText(edge);
+	}
+
+	@Override
 	public void setzeOptionen(int xp, int yp, int hp, int xw, int yw, BFeld fp)
 	{
 		if(!schalterR.aufEben())

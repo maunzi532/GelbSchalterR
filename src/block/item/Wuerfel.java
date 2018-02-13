@@ -86,6 +86,14 @@ public class Wuerfel extends Item
 		}
 	}
 
+	@Override
+	public String edgeText(int edge)
+	{
+		if(edge == 3)
+			return "9";
+		return null;
+	}
+
 	public boolean benutze(int num, boolean cl, boolean lvm)
 	{
 		setzeR(schalterR.xp, schalterR.yp, g1.get(num).x, g1.get(num).y);

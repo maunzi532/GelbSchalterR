@@ -25,6 +25,14 @@ public class Feuer extends Item
 	}
 
 	@Override
+	public String edgeText(int edge)
+	{
+		if(edge == 0 && level >= 0)
+			return String.valueOf(level);
+		return super.edgeText(edge);
+	}
+
+	@Override
 	public String bildname()
 	{
 		return "Feuer";

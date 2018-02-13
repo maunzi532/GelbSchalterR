@@ -60,13 +60,22 @@ public class ShowItems
 				else if(schalterR.items[i] != null)
 				{
 					if(chosen1 == i)
+					{
+						if(locked)
+							chosen1 = -1;
 						locked = !locked;
+					}
 					else
 					{
 						chosen1 = i;
 						locked = false;
 					}
 					return true;
+				}
+				else
+				{
+					chosen1 = -1;
+					locked = false;
 				}
 			}
 		return false;
@@ -136,35 +145,59 @@ public class ShowItems
 
 	public void rahmen(Graphics2D gd, Texturen tex, int w1, int ht)
 	{
+		int akp = -1;
+		if(chosen1 >= 0)
+			akp = showItems.indexOf(schalterR.items[chosen1]);
 		if(showItems.size() <= 4)
 		{
+			gd.setFont(new Font(null, Font.PLAIN, ht / 2));
 			for(int i = 0; i < showItems.size(); i++)
-			{
-				gd.drawImage(tex.bilder2D.get(showItems.get(i).bildname()), w1 + ht, ht * 2 * i, ht * 2, ht * 2, null);
-				if(showItems.get(i).disabled || (locked && !showItems.get(i).equals(schalterR.items[chosen1])))
-					gd.drawLine(w1 + ht, ht * 2 * i, w1 + ht * 3 - 1, ht * 2 * (i + 1) - 1);
-			}
-			if(chosen1 >= 0)
-			{
-				int akp = showItems.indexOf(schalterR.items[chosen1]);
-				if(akp >= 0)
-					gd.drawRect(w1 + ht, ht * 2 * akp, ht * 2 - 1, ht * 2 - 1);
-			}
+				drawItem(gd, tex, w1 + ht, ht * 2 * i, ht * 2, showItems.get(i), akp == i);
 		}
 		else
 		{
+			gd.setFont(new Font(null, Font.PLAIN, ht / 4));
 			for(int i = 0; i < showItems.size(); i++)
-			{
-				gd.drawImage(tex.bilder2D.get(showItems.get(i).bildname()), w1 + ht + (i % 2) * ht, ht * (i / 2), ht, ht, null);
-				if(showItems.get(i).disabled || (locked && !showItems.get(i).equals(schalterR.items[chosen1])))
-					gd.drawLine(w1 + ht + (i % 2) * ht, ht * (i / 2), w1 + ht + (i % 2 + 1) * ht - 1, ht * (i / 2 + 1) - 1);
-			}
-			if(chosen1 >= 0)
-			{
-				int akp = showItems.indexOf(schalterR.items[chosen1]);
-				if(akp >= 0)
-					gd.drawRect(w1 + ht + (akp % 2) * ht, ht * (akp / 2), ht - 1, ht - 1);
-			}
+				drawItem(gd, tex, w1 + ht + (i % 2) * ht, ht * (i / 2), ht, showItems.get(i), akp == i);
 		}
+	}
+
+	private static final Color[] edgc = new Color[]{Color.RED, Color.GREEN, Color.BLUE, Color.WHITE};
+	private static final Color[] edgc1 = new Color[]{Color.WHITE, Color.WHITE, Color.WHITE, Color.BLACK};
+
+	public void drawItem(Graphics2D gd, Texturen tex, int xc, int yc, int w, Item item, boolean chosen)
+	{
+		gd.drawImage(tex.bilder2D.get(item.bildname()), xc, yc, w - 1, w - 1, null);
+		FontMetrics fm = gd.getFontMetrics();
+		int in = w / 8;
+		for(int i = 0; i < 4; i++)
+		{
+
+			String edge = item.edgeText(i);
+			if(edge == null)
+				continue;
+			int xp;
+			if(i % 2 == 0)
+				xp = xc + in;
+			else
+				xp = xc + w - 1 - in - fm.stringWidth(edge);
+			int yp;
+			if(i >= 2)
+				yp = yc + w - 1 - in;
+			else
+				yp = yc + in + fm.getHeight();
+			gd.setColor(edgc1[i]);
+			gd.drawString(edge, xp - 1, yp - 1);
+			gd.drawString(edge, xp + 1, yp - 1);
+			gd.drawString(edge, xp - 1, yp + 1);
+			gd.drawString(edge, xp + 1, yp + 1);
+			gd.setColor(edgc[i]);
+			gd.drawString(edge, xp, yp);
+		}
+		gd.setColor(Color.RED);
+		if(item.disabled || (locked && !item.equals(schalterR.items[chosen1])))
+			gd.drawLine(xc, yc, xc + w - 1, yc + w - 1);
+		if(chosen)
+			gd.drawRect(xc, yc, w - 1, w - 1);
 	}
 }

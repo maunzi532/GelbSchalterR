@@ -111,6 +111,13 @@ public abstract class Item implements PreItem
 
 	public abstract String bildname();
 
+	public String edgeText(int edge)
+	{
+		if(edge == 3)
+			return String.valueOf(id);
+		return null;
+	}
+
 	private static final KXS IKL2 = new KXS(false, false, true, true, false);
 
 	public void lies(String build, int errStart, ErrorVial vial)
