@@ -56,7 +56,7 @@ public class ASIN
 					SIN.drawX();
 					do
 					{
-						Lader5.warte(20);
+						S.warte(20);
 						TA.bereit();
 					}while(TA.take[16] != 2 && TA.take[65] <= 0);
 				}
@@ -92,7 +92,6 @@ public class ASIN
 		nca = true;
 		caret2 = 0;
 		maxdias = Math.max(maxdias, states.get(caret1).dias);
-		//pointers.add(new ArrayList<>());
 		if(SIN.testmode == 3)
 		{
 			checked.set(caret1, true);
@@ -178,7 +177,7 @@ public class ASIN
 				TA.bereit();
 				while(TA.take[16] <= 0)
 				{
-					Lader5.warte(20);
+					S.warte(20);
 					TA.bereit();
 				}
 			}
@@ -195,7 +194,7 @@ public class ASIN
 		{
 			Shift.moveToTarget(schalterR.srd);
 			SIN.drawX();
-			Lader5.warte(20);
+			S.warte(20);
 		}
 		schalterR.srd.dspeed = 0.25;
 		schalterR.srd.mspeed = 6;
@@ -204,7 +203,7 @@ public class ASIN
 		{
 			Shift.moveToTarget(schalterR.srd);
 			SIN.drawX();
-			Lader5.warte(100);
+			S.warte(100);
 			schalterR.checkFields();
 			int c2 = 0;
 			for(int i = 0; i < pointers.get(caret1).size(); i++)
@@ -231,7 +230,7 @@ public class ASIN
 				schalterR.victoryTick();
 			Shift.moveToTarget(schalterR.srd);
 			SIN.drawX();
-			Lader5.warte(20);
+			S.warte(20);
 		}
 	}
 }

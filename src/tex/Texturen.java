@@ -5,8 +5,6 @@ import java.awt.*;
 import java.awt.image.*;
 import java.io.*;
 import java.util.*;
-import java.util.List;
-import java.util.zip.*;
 import shift.*;
 
 public class Texturen
@@ -19,10 +17,9 @@ public class Texturen
 	protected Texturen(String pack, String texOrdnerName)
 	{
 		String txtDir = texOrdnerName + File.separator + pack;
-		Lader5.prepareData(texOrdnerName + "/" + pack + "/");
 		try
 		{
-			String settings = Lader5.text(txtDir + File.separator + "desc");
+			String settings = Lader7.textSavedata(txtDir + File.separator + "desc");
 			settings = settings.replaceAll("\\s", "");
 			accuracy = Integer.parseInt(settings);
 		}catch(Exception e)
@@ -31,30 +28,18 @@ public class Texturen
 			e.printStackTrace();
 			System.exit(1);
 		}
-		if(Lader5.jar)
+		File[] ordner = Lader7.jarLocation.toPath().resolve(txtDir).toFile().listFiles();
+		if(ordner == null)
 		{
-			for(Map.Entry<String, List<ZipEntry>> entry : Lader5.deep.entrySet())
-				neueTextur(entry.getValue(), entry.getKey());
-			for(Map.Entry<String, ZipEntry> entry : Lader5.notDeep.entrySet())
-				if(entry.getKey().endsWith(".png"))
-					bilder2D.put(entry.getKey().substring(0, entry.getKey().lastIndexOf(".")),
-							Lader5.bild(entry.getValue()));
+			System.out.println("Fehler beim lesen des Texturenordners");
+			System.exit(3);
 		}
-		else
-		{
-			File[] ordner = Lader5.dataRoot1.resolve(txtDir).toFile().listFiles();
-			if(ordner == null)
-			{
-				System.out.println("Fehler beim lesen des Texturenordners");
-				System.exit(3);
-			}
-			for(int i = 0; i < ordner.length; i++)
-				if(ordner[i].isDirectory())
-					neueTextur(ordner[i].listFiles(), ordner[i]);
-				else if(ordner[i].getName().endsWith(".png"))
-					bilder2D.put(ordner[i].getName().substring(0, ordner[i].getName().lastIndexOf('.')),
-							Lader5.bild(ordner[i]));
-		}
+		for(int i = 0; i < ordner.length; i++)
+			if(ordner[i].isDirectory())
+				neueTextur(ordner[i].listFiles(), ordner[i]);
+			else if(ordner[i].getName().endsWith(".png"))
+				bilder2D.put(ordner[i].getName().substring(0, ordner[i].getName().lastIndexOf('.')),
+						Lader7.imageSavedata(ordner[i].getPath()));
 	}
 
 	private void neueTextur(File[] files, File dir)
@@ -93,49 +78,6 @@ public class Texturen
 				drehTex1(dir.getName());
 			if(autoh >= 0)
 				autoh1(dir.getName(), autoh);
-		}
-		catch(Exception e)
-		{
-			e.printStackTrace();
-		}
-	}
-
-	private void neueTextur(List<ZipEntry> files, String dir)
-	{
-		try
-		{
-			boolean dreh = false;
-			int autoh = -1;
-			int kmin = Integer.MAX_VALUE;
-			int kmax = Integer.MIN_VALUE;
-			ArrayList<TBild> tb = new ArrayList<>();
-			for(int j = 0; j < files.size(); j++)
-			{
-				String filename = files.get(j).getName().substring(files.get(j).getName().lastIndexOf("/") + 1);
-				if(filename.equals("dreh"))
-					dreh = true;
-				if(filename.startsWith("autoh"))
-					autoh = Integer.parseInt(filename.substring(5));
-				if(!filename.endsWith(".png"))
-					continue;
-				String[] ft = filename.substring(0, filename.lastIndexOf('.')).split("_");
-				int min = Integer.parseInt(ft[0]);
-				int max = Integer.parseInt(ft[ft.length > 1 ? 1 : 0]);
-				tb.add(new TBild(files.get(j), min, max));
-				if(kmin > min)
-					kmin = min;
-				if(kmax < max)
-					kmax = max;
-			}
-			BufferedImage[] im = new BufferedImage[kmax - kmin + 1];
-			for(TBild tb1 : tb)
-				for(int i = tb1.min - kmin; i <= tb1.max - kmin; i++)
-					im[i] = tb1.b;
-			lk2.put(dir, new Textur(kmax, kmin, im));
-			if(dreh)
-				drehTex1(dir);
-			if(autoh >= 0)
-				autoh1(dir, autoh);
 		}
 		catch(Exception e)
 		{
