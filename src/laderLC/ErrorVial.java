@@ -4,9 +4,9 @@ import java.util.*;
 
 public class ErrorVial
 {
-	public ArrayList<CError> errors;
-	ArrayList<Integer> areaEnds;
-	String buildX;
+	public final List<CError> errors;
+	private List<Integer> areaEnds;
+	private String buildX;
 
 	public ErrorVial()
 	{

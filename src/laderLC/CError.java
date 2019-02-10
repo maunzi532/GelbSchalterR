@@ -2,9 +2,9 @@ package laderLC;
 
 public class CError
 {
-	String message;
-	int areaStart;
-	int areaEnd;
+	public final String message;
+	public final int areaStart;
+	public final int areaEnd;
 
 	public CError(String message, int areaStart, int areaEnd)
 	{

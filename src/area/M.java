@@ -45,7 +45,7 @@ class M
 		{
 			if(selected == null)
 			{
-				JFileChooser fc = new JFileChooser(Lader7.jarLocation.getAbsoluteFile());
+				JFileChooser fc = new JFileChooser(Lader7.jarLocation);
 				if(fc.showOpenDialog(null) == JFileChooser.APPROVE_OPTION)
 					selected = fc.getSelectedFile();
 				else

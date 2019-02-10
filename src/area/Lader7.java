@@ -24,7 +24,7 @@ public class Lader7
 				String jarname = url.getPath().substring(url.getPath().indexOf(":") + 1, url.getPath().indexOf("!"));
 				try
 				{
-					jarLocation = new File(URLDecoder.decode(jarname, StandardCharsets.UTF_8.name())).getParentFile();
+					jarLocation = new File(URLDecoder.decode(jarname, StandardCharsets.UTF_8.name())).getParentFile().getAbsoluteFile();
 				}catch(UnsupportedEncodingException e)
 				{
 					throw new RuntimeException(e);
@@ -32,7 +32,7 @@ public class Lader7
 			}
 			else
 			{
-				jarLocation = new File(dir);
+				jarLocation = new File(dir).getAbsoluteFile();
 			}
 		}
 	}

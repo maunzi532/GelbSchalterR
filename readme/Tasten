@@ -1,0 +1,39 @@
+16	LShift		Modifier, in Kombination mit anderen Aktionen benutzen
+Pfeiltasten
+	37	Links
+	38	Rechts
+	39	Oben
+	40	unten
+Zahlentasten (0-9)	Item auswählen
+32	Leer		Lift fahren, Würfelaktion
+201	Lklick		Feld betreten, Item markieren
+203	Rklick		Item deaktivieren/aktivieren
+75	K		Kartenmodus aktivieren/deaktivieren
+Zoom
+	77	M
+	78	N
+	210	Scrollrad
+	211	Scrollrad
+83	S			Speichern
+				Modifier: Startposition durch aktuelle Position ersetzen
+82	R			Level zurücksetzen
+				Modifier: Level wechseln
+120	F9			Aktuellen Zustand im Stack speichern
+				Modifier: Aktuellen Zustand in Datei speichern
+121	F10			Neuesten Zustand aus Stack laden
+				Modifier: Zustand aus Datei laden
+Cheatmode
+	112	F1		Aktuelles Feld anpassen
+	113	F2		Spieler senken
+				Modifier: Feld senken
+	114	F3		Spieler erhöhen
+				Modifier: Feld erhöhen
+	115	F4		Höhenanpassungsmodus ein/aus
+	116	F5		Farbe von Feld/Schalter/Spieler ändern
+	117	F6		Feld-Änderungstyp - rückwärts scrollen
+				Modifier: Aktuelle Anzahl Dias verringern
+	118	F7		Feld-Änderungstyp - vorwärts scrollen
+				Modifier: Aktuelle Anzahl Dias erhöhen
+	119	F8		Feld-Änderung auf aktuelles Feld anwenden
+	127	Entf		Änderungen von markiertem Feld entfernen
+	203	Rklick		Feld-Änderung auf markiertes Feld anwenden

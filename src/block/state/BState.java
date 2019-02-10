@@ -77,7 +77,7 @@ public class BState implements Serializable
 
 	public void speichernState()
 	{
-		JFileChooser fc = new JFileChooser(Lader7.jarLocation.getAbsoluteFile());
+		JFileChooser fc = new JFileChooser(Lader7.jarLocation);
 		if(fc.showSaveDialog(null) == JFileChooser.APPROVE_OPTION)
 		{
 			try
@@ -95,7 +95,7 @@ public class BState implements Serializable
 
 	public static BState ladenState()
 	{
-		JFileChooser fc = new JFileChooser(Lader7.jarLocation.getAbsoluteFile());
+		JFileChooser fc = new JFileChooser(Lader7.jarLocation);
 		boolean sh = TA.take[16] > 0;
 		if(fc.showOpenDialog(null) == JFileChooser.APPROVE_OPTION)
 		{

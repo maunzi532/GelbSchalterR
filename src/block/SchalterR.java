@@ -240,7 +240,7 @@ public class SchalterR extends Area
 
 	public void speichern()
 	{
-		JFileChooser fc = new JFileChooser(Lader7.jarLocation.getAbsoluteFile());
+		JFileChooser fc = new JFileChooser(Lader7.jarLocation);
 		boolean sh = TA.take[16] > 0;
 		if(fc.showSaveDialog(null) == JFileChooser.APPROVE_OPTION)
 		{
